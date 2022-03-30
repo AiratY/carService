@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashScreenActivity">
+
+    <TextView
+        android:id="@+id/splashScreenTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_splash_screen_tv"
+        app:layout_constraintBottom_toTopOf="@+id/customerButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconImageView" />
+
+    <Button
+        android:id="@+id/customerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ms_splash_btn"
+        android:layout_marginEnd="@dimen/me_splash_btn"
+        android:layout_marginBottom="@dimen/mb_button_splash_screen"
+        android:text="@string/text_customer_btn"
+        app:layout_constraintBottom_toTopOf="@+id/employeeButton" />
+
+    <Button
+        android:id="@+id/employeeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ms_splash_btn"
+        android:layout_marginEnd="@dimen/me_splash_btn"
+        android:layout_marginBottom="@dimen/mb_button_splash_screen"
+        android:text="@string/text_employee_btn"
+        app:layout_constraintBottom_toTopOf="@+id/adminButton" />
+
+    <Button
+        android:id="@+id/adminButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ms_splash_btn"
+        android:layout_marginEnd="@dimen/me_splash_btn"
+        android:layout_marginBottom="@dimen/mb_admin_btn"
+        android:text="@string/text_admin_btn"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="@dimen/width_icon_splash_screen"
+        android:layout_height="@dimen/width_icon_splash_screen"
+        app:layout_constraintBottom_toTopOf="@+id/splashScreenTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_blue_services_24" />
+</androidx.constraintlayout.widget.ConstraintLayout>

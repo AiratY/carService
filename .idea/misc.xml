@@ -4,6 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/DevelopApp/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
+        <entry key="..\:/DevelopApp/app/src/main/res/layout/fragment_add_car.xml" value="0.20416666666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/layout/fragment_authorization.xml" value="0.20416666666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/layout/fragment_enroll.xml" value="0.20416666666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/layout/fragment_select_date_time.xml" value="0.20416666666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/layout/services_item_on_list.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

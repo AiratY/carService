@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">carService</string>
+    <string name="text_customer_btn">Клиент</string>
+    <string name="text_employee_btn">Сотрудник</string>
+    <string name="text_admin_btn">Администратор</string>
+    <string name="text_splash_screen_tv">Выбирете способ авторизации</string>
+    <string name="hint_login_edit_text">Логин</string>
+    <string name="hint_password_edit_text">Пароль</string>
+    <string name="text_sign_in_btn">Войти</string>
+    <string name="hint_brand_ET">Марка</string>
+    <string name="hint_model_ET">Модель</string>
+    <string name="hint_production_year_ET">Год выпуска</string>
+
+    <string-array name="carList">
+        <item>BMW</item>
+        <item>LADA</item>
+        <item>MERCEDES</item>
+        <item>KIA</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

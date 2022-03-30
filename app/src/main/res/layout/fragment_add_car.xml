@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddCarFragment">
+
+
+    <EditText
+        android:id="@+id/brandCarEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hint_brand_ET"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/modelEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hint_model_ET"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/brandCarEditText" />
+
+    <EditText
+        android:id="@+id/productionYearEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hint_production_year_ET"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/modelEditText" />
+</androidx.constraintlayout.widget.ConstraintLayout>

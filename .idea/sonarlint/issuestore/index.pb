@@ -22,3 +22,21 @@ F
 app/proguard-rules.pro,9\e\9e08934d811afe28fbc77aaa3c0d747b94348db9
 ~
 Napp/src/androidTest/java/ru/airatyunusov/carservice/ExampleInstrumentedTest.kt,4\2\42f9778da6307a698c622af4634cef4d57ba56f0
+r
+Bapp/src/main/java/ru/airatyunusov/carservice/model/ServiceModel.kt,2\f\2f5af1bf39386a9d2a3636de21ce1bcf9d0ceb11
+n
+>app/src/main/java/ru/airatyunusov/carservice/model/CarModel.kt,b\c\bcafccaf4f9f55c4f55bcd2aa13f507c4d01ae11
+n
+>app/src/main/java/ru/airatyunusov/carservice/model/Customer.kt,b\0\b045f00f5d7417b556d9a5dac629fdf6a748d588
+t
+Dapp/src/main/java/ru/airatyunusov/carservice/SplashScreenActivity.kt,0\c\0c82cc382374fe220cc17ed9577b0132a60662da
+@
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+n
+>app/src/main/java/ru/airatyunusov/carservice/AddCarFragment.kt,3\f\3f661fba7d9a0606b6bc0505246e7d37a66fa10f
+u
+Eapp/src/main/java/ru/airatyunusov/carservice/AuthorizationFragment.kt,6\2\62f315ca999296c83d92ba1e354effc212104167
+
+Oapp/src/main/java/ru/airatyunusov/carservice/ServicesListRecyclerViewAdapter.kt,3\b\3be7a7eab3bc505fa4abc8730cf2d5023424a2cb

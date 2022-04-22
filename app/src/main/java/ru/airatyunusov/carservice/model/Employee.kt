@@ -1,12 +1,24 @@
 package ru.airatyunusov.carservice.model
 
-data class Employee(
-    val id: Int,
-    val name: String,
-    val surname: String,
-    val secondName: String,
-) {
+class Employee() {
+    var id: Int = 0
+    var firstName: String = ""
+    var lastName: String = ""
+    var patronymic: String = ""
+
+    constructor(
+        id: Int,
+        firstName: String,
+        lastName: String,
+        patronymic: String,
+    ) : this() {
+        this.id = id
+        this.firstName = firstName
+        this.lastName = lastName
+        this.patronymic = patronymic
+    }
+
     override fun toString(): String {
-        return "$surname ${name[0]}.${secondName[0]}."
+        return "$lastName ${firstName[0]}.${patronymic[0]}."
     }
 }

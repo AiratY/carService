@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="предыдущая\nнеделя "
+        android:enabled="false"
         app:layout_constraintEnd_toStartOf="@+id/nextWeekButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -9,6 +9,6 @@ data class TicketModelTest(
 ) {
     override fun toString(): String {
         return "${startRecordDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))} - " +
-                "${endRecordDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}"
+            "${endRecordDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}"
     }
 }

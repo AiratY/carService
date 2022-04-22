@@ -17,10 +17,10 @@ class ServicesListRecyclerViewAdapter :
         private val servicesCheckBox: CheckBox = view.findViewById(R.id.servicesCheckBox)
 
         init {
-            servicesCheckBox.setOnClickListener{
+            servicesCheckBox.setOnClickListener {
                 val nameService = servicesCheckBox.text.toString()
                 val services = dataset.first { it.name == nameService }
-                if (servicesCheckBox.isChecked){
+                if (servicesCheckBox.isChecked) {
                     checkedServicesList.add(services)
                 } else {
                     checkedServicesList.remove(services)
@@ -31,7 +31,6 @@ class ServicesListRecyclerViewAdapter :
         fun bind(services: ServiceModel) {
             servicesCheckBox.text = services.name
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -53,7 +52,7 @@ class ServicesListRecyclerViewAdapter :
         this.dataset = dataset
     }
 
-    fun getCheckedServices(): List<ServiceModel>{
+    fun getCheckedServices(): List<ServiceModel> {
         return checkedServicesList
     }
 }

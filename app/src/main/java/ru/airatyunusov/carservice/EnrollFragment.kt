@@ -1,7 +1,6 @@
 package ru.airatyunusov.carservice
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import ru.airatyunusov.carservice.model.ServiceModel
@@ -16,7 +16,8 @@ import ru.airatyunusov.carservice.model.ServiceModel
 class EnrollFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_enroll, container, false)
@@ -30,14 +31,13 @@ class EnrollFragment : Fragment() {
         val serviceListRecyclerView: RecyclerView = view.findViewById(R.id.servicesListRecyclerView)
         val sendBtn: Button = view.findViewById(R.id.sendButton)
 
-
         val servicesListRecyclerViewAdapter = ServicesListRecyclerViewAdapter()
         servicesListRecyclerViewAdapter.setDataSet(LIST_SERVICES)
 
         serviceListRecyclerView.adapter = servicesListRecyclerViewAdapter
 
         val carList: Array<out String> =
-            resources.getStringArray(R.array.carList) //arrayListOf("BMW", "LADA", "MERCEDES", "KIA")
+            resources.getStringArray(R.array.carList) // arrayListOf("BMW", "LADA", "MERCEDES", "KIA")
         val branchList: Array<String> =
             arrayOf("СберСервис", "LADAСервис", "MERCEDESСервис", "KIAСервис")
 

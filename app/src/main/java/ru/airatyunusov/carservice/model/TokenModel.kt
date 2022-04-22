@@ -1,16 +1,24 @@
 package ru.airatyunusov.carservice.model
 
+import ru.airatyunusov.carservice.DateTimeHelper
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 data class TokenModel(
-    //val id: Int,
+    // val id: Int,
     val startRecordDateTime: LocalDateTime,
     val endRecordDateTime: LocalDateTime,
-    val idEmployee: Int
+    val idEmployee: Int,
+    // val listServices: List<ServiceModel>
 ) {
     override fun toString(): String {
-        return "${startRecordDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))} - " +
-                "${endRecordDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}"
+        return "${getStringStartDateTime()} - " + getStringEndDateTime()
+    }
+
+    private fun getStringStartDateTime(): String {
+        return DateTimeHelper.convertToStringMyPattern(startRecordDateTime)
+    }
+
+    private fun getStringEndDateTime(): String {
+        return DateTimeHelper.convertToStringMyPattern(endRecordDateTime)
     }
 }

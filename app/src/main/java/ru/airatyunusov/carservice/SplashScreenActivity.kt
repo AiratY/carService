@@ -2,9 +2,9 @@ package ru.airatyunusov.carservice
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
@@ -30,7 +30,8 @@ class SplashScreenActivity : AppCompatActivity() {
             Intent(
                 this,
                 MainActivity::class.java
-            ).apply { putExtra(MainActivity.MESSAGE_USER, user) })
+            ).apply { putExtra(MainActivity.MESSAGE_USER, user) }
+        )
     }
 
     companion object {

@@ -4,11 +4,11 @@ import ru.airatyunusov.carservice.DateTimeHelper
 import java.time.LocalDateTime
 
 data class TokenModel(
-    // val id: Int,
-    val startRecordDateTime: LocalDateTime,
-    val endRecordDateTime: LocalDateTime,
-    val idEmployee: Int,
-    // val listServices: List<ServiceModel>
+    var id: String = "",
+    val startRecordDateTime: LocalDateTime = LocalDateTime.now(),
+    val endRecordDateTime: LocalDateTime = LocalDateTime.now(),
+    val idEmployee: String = "",
+    var listServices: List<ServiceModel> = emptyList()
 ) {
     override fun toString(): String {
         return "${getStringStartDateTime()} - " + getStringEndDateTime()

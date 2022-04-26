@@ -50,6 +50,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-database-ktx'
 
+    implementation 'com.google.firebase:firebase-auth-ktx'
+
     // Declare the dependencies for the desired Firebase products
     // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
     /*implementation 'com.google.firebase:firebase-auth-ktx'

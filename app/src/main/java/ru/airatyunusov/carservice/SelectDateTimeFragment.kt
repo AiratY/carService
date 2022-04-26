@@ -21,11 +21,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import ru.airatyunusov.carservice.callbacks.EnrollCallBack
-import ru.airatyunusov.carservice.model.Employee
-import ru.airatyunusov.carservice.model.ServiceModel
-import ru.airatyunusov.carservice.model.TicketModelTest
-import ru.airatyunusov.carservice.model.TokenFirebaseModel
-import ru.airatyunusov.carservice.model.TokenModel
+import ru.airatyunusov.carservice.model.*
 import java.lang.ref.WeakReference
 import java.time.Duration
 import java.time.LocalDateTime
@@ -84,7 +80,7 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         /**
          * Нужно учитывать выходные у сотрудников и праздничные дни
          * Сделать минмальную единицу 30 мин.
-         **/
+         */
 
         arguments?.let {
             listServiceModel = it.get(LIST_SERVICE) as? List<ServiceModel> ?: emptyList()
@@ -151,13 +147,21 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
     private fun registryNewTokenInDB(token: TokenModel, listServiceModel: List<ServiceModel>) {
         val myRef = database.getReference(TOKEN_MODEL_FIREBASE_KEY)
 
-        val tokenFirebase = TokenFirebaseModel(
-            DateTimeHelper.convertToStringDateTime(token.startRecordDateTime),
-            DateTimeHelper.convertToStringDateTime(token.endRecordDateTime),
-            token.idEmployee
-        )
+        val key = myRef.push().key
+        key?.let {
+            val tokenFirebase = TokenFirebaseModel(
+                id = key,
+                startRecordDateTime = DateTimeHelper.convertToStringDateTime(token.startRecordDateTime),
+                endRecordDateTime = DateTimeHelper.convertToStringDateTime(token.endRecordDateTime),
+                idEmployee = token.idEmployee,
+                listServices = listServiceModel
+            )
 
-        myRef.push().setValue(tokenFirebase)
+            val childUpdates = hashMapOf<String, Any>(
+                "/$key" to tokenFirebase
+            )
+            myRef.updateChildren(childUpdates)
+        }
     }
 
     private fun registration(callBack: WeakReference<EnrollCallBack>) {
@@ -202,7 +206,7 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
      * */
     private fun filterListTokenByIdEmployee(
         listNewToken: List<TokenModel>,
-        idEmployee: Int
+        idEmployee: String
     ): List<TokenModel> {
         val filtersList: MutableList<TokenModel> = mutableListOf()
         for (token in listNewToken) {
@@ -290,15 +294,15 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
      **/
     private fun convertToListTokenModel(
         listTokenTest: List<TicketModelTest>,
-        employeeId: Int
+        employeeId: String
     ): Collection<TokenModel> {
         val listNewTokenModel: MutableList<TokenModel> = mutableListOf()
         for (token in listTokenTest) {
             listNewTokenModel.add(
                 TokenModel(
-                    token.startRecordDateTime,
-                    token.endRecordDateTime,
-                    employeeId
+                    startRecordDateTime = token.startRecordDateTime,
+                    endRecordDateTime = token.endRecordDateTime,
+                    idEmployee = employeeId
                 )
             )
         }
@@ -365,9 +369,13 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
                     val tokenFirebase = data.getValue<TokenFirebaseModel>()
                     tokenFirebase?.apply {
                         val token = TokenModel(
-                            DateTimeHelper.convertToLocalDateTime(startRecordDateTime),
-                            DateTimeHelper.convertToLocalDateTime(endRecordDateTime),
-                            idEmployee
+                            startRecordDateTime = DateTimeHelper.convertToLocalDateTime(
+                                startRecordDateTime
+                            ),
+                            endRecordDateTime = DateTimeHelper.convertToLocalDateTime(
+                                endRecordDateTime
+                            ),
+                            idEmployee = idEmployee
                         )
                         listToken.add(token)
                         count++

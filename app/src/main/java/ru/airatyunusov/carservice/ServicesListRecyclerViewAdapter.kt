@@ -50,6 +50,7 @@ class ServicesListRecyclerViewAdapter :
 
     fun setDataSet(dataset: List<ServiceModel>) {
         this.dataset = dataset
+        notifyDataSetChanged()
     }
 
     fun getCheckedServices(): List<ServiceModel> {

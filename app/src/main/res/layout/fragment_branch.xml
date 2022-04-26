@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/branch_sm_8dp"
+    android:layout_marginEnd="@dimen/branch_em_8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".BranchFragment">
+
+    <ImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_business_24" />
+
+    <TextView
+        android:id="@+id/addressBranchTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:textSize="20sp"
+        android:text="г. Ульяновск\nул. Промышленная д. 8"
+        app:layout_constraintStart_toEndOf="@+id/iconImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/phoneBranchTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:textSize="18sp"
+        android:text="Тел: 89256412123"
+        app:layout_constraintStart_toEndOf="@+id/iconImageView"
+        app:layout_constraintTop_toBottomOf="@+id/addressBranchTextView" />
+
+    <TextView
+        android:id="@+id/titleEmployeeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сотрудники:"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iconImageView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listEmployeeRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/titleEmployeeTextView"
+        tools:layout_editor_absoluteX="79dp" />
+    <Button
+        android:id="@+id/addEmployeeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+ Добавить сотрудника"
+        app:layout_constraintTop_toBottomOf="@+id/listEmployeeRecyclerView" />
+
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Изменить"
+        app:layout_constraintTop_toBottomOf="@+id/addEmployeeButton"
+        tools:layout_editor_absoluteX="137dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,25 @@
         <item>MERCEDES</item>
         <item>KIA</item>
     </string-array>
+    <string name="text_name_text_view">Иванов И.И.</string>
+    <string name="text_desc_text_view">Категория: А</string>
+    <string name="text_hint_name_branch">Название</string>
+    <string name="text_address_name_branch">Адрес</string>
+    <string name="text_phone_name_branch">Телефон</string>
+    <string name="text_save_branch_btn">Сохранить</string>
+    <string name="text_delete_branch_btn">Удалить</string>
+    <string name="url_database">https://carservice-93ef9-default-rtdb.europe-west1.firebasedatabase.app/</string>
+    <string name="branch_firebase_key">branch</string>
+    <string name="services_firebase_key">services</string>
+    <string name="FIREBASE_LOG_TAG">FIREBASE_LOG_TAG</string>
+    <string name="employees_firebase_key">employees</string>
+    <string name="admin_data_sharedPreference">admin_data</string>
+    <string name="user_id_key_SP">USER_ID</string>
+    <string name="text_hint_name_employee">Имя</string>
+    <string name="text_hint_lastname_employee">Фамилия</string>
+    <string name="text_hint_patronymic_employee">Отчество</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_exit">exit</string>
+    <string name="textedit">edit</string>
 </resources>

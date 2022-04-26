@@ -5,4 +5,7 @@
     <dimen name="me_splash_btn">40dp</dimen>
     <dimen name="mb_admin_btn">50dp</dimen>
     <dimen name="width_icon_splash_screen">150dp</dimen>
+    <dimen name="branch_sm_8dp">8dp</dimen>
+    <dimen name="branch_em_8dp">8dp</dimen>
+    <dimen name="branch_mt_8dp">8dp</dimen>
 </resources>

@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/branch_em_8dp"
+    android:layout_marginEnd="@dimen/branch_em_8dp"
     tools:context=".EnrollFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,9 +45,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SEND"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/servicesListRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/sumPriceTextView" />
+
+        <TextView
+            android:id="@+id/sumPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/valueTheme"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:text="Итого: 0 руб."
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/servicesListRecyclerView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

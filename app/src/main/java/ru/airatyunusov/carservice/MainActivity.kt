@@ -1,5 +1,6 @@
 package ru.airatyunusov.carservice
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,9 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import ru.airatyunusov.carservice.model.BranchModel
-import ru.airatyunusov.carservice.model.Employee
-import ru.airatyunusov.carservice.model.ServiceModel
+import ru.airatyunusov.carservice.model.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
             SplashScreenActivity.CUSTOMER -> {
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
-                    add<EnrollFragment>(R.id.fragment_container_view)
+                    add<CustomerFragment>(R.id.fragment_container_view)
                     addToBackStack(NAME_BACK_STACK)
                 }
             }
@@ -56,15 +55,24 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.setFragmentResultListener(SHOW_ENROLL, this) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
-                replaceFragment(EnrollFragment())
+                val listCars = bundle.get(LIST_CARS) as? List<CarModel> ?: emptyList()
+                replaceFragment(EnrollFragment.newInstance(listCars))
             }
         }
 
         supportFragmentManager.setFragmentResultListener(SHOW_SELECT_DATE_TIME, this) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 val listServicesModel: List<ServiceModel> =
-                    bundle.get(EnrollFragment.LIST_SERVICE) as? List<ServiceModel> ?: emptyList()
-                replaceFragment(SelectDateTimeFragment.newInstance(listServicesModel))
+                    bundle.get(LIST_SERVICES) as? List<ServiceModel> ?: emptyList()
+                val branchId = bundle.getString(BRANCH_ID, "")
+                val carID = bundle.getString(CAR_ID, "")
+                replaceFragment(
+                    SelectDateTimeFragment.newInstance(
+                        listServicesModel,
+                        branchId,
+                        carID
+                    )
+                )
             }
         }
 
@@ -107,6 +115,34 @@ class MainActivity : AppCompatActivity() {
                 replaceFragment(CatalogServicesFragment())
             }
         }
+
+        supportFragmentManager.setFragmentResultListener(SHOW_DETAIL_CAR, this) { _, bundle ->
+            if (bundle.getBoolean(BUNDLE_KEY)) {
+                val car = bundle.get(CAR) as? CarModel
+                if (car == null) {
+                    replaceFragment(CarDetailFragment())
+                } else {
+                    replaceFragment(CarDetailFragment.newInstance(car))
+                }
+            }
+        }
+
+        supportFragmentManager.setFragmentResultListener(SHOW_DETAIL_TOKEN, this) { _, bundle ->
+            if (bundle.getBoolean(BUNDLE_KEY)) {
+                val token = bundle.get(TOKEN) as? TokenFirebaseModel ?: TokenFirebaseModel()
+                replaceFragment(TokenDetailFragment.newInstance(token))
+            }
+        }
+        supportFragmentManager.setFragmentResultListener(SHOW_ADD_SERVICE, this) { _, bundle ->
+            if (bundle.getBoolean(BUNDLE_KEY)) {
+                val serviceModel = bundle.get(SERVICE) as? ServiceModel
+                if (serviceModel == null) {
+                    replaceFragment(ServicesFragment())
+                } else {
+                    replaceFragment(ServicesFragment.newInstance(serviceModel))
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -138,16 +174,25 @@ class MainActivity : AppCompatActivity() {
         const val SHOW_ENROLL = "show enroll"
         const val SHOW_ADMIN_FRAGMENT = "show admin"
         const val SHOW_SELECT_DATE_TIME = "show_select_date_time"
+        const val SHOW_ADD_SERVICE = "show_ADD_SERVICE"
         const val BUNDLE_KEY = "show"
         const val SHOW_DETAIL_BRANCH = "show_detail_branch"
+        const val SHOW_DETAIL_TOKEN = "show_detail_token"
         const val SHOW_BRANCH = "show_branch"
+        const val SHOW_DETAIL_CAR = "show_detail_car"
+        const val CAR = "car"
         const val SHOW_CATALOG_SERVICES = "show_catalog"
         const val BRANCH_ITEM = "branch_item"
         const val BRANCH_ID = "branch_id"
+        const val CAR_ID = "car_id"
         const val BRANCH = "branch"
         const val SHOW_EMPLOYEE = "show_employee"
         const val EMPLOYEE = "employee"
-
+        const val LIST_CARS = "list_cars"
+        const val LIST_SERVICES = "list_services"
         const val AUTH = "is_auth"
+        const val TOKEN = "token"
+        const val SERVICE = "service"
+
     }
 }

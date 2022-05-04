@@ -23,8 +23,6 @@ Napp/src/androidTest/java/ru/airatyunusov/carservice/ExampleInstrumentedTest.kt
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 n
->app/src/main/java/ru/airatyunusov/carservice/model/CarModel.kt,b\c\bcafccaf4f9f55c4f55bcd2aa13f507c4d01ae11
-n
 >app/src/main/java/ru/airatyunusov/carservice/model/Customer.kt,b\0\b045f00f5d7417b556d9a5dac629fdf6a748d588
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
@@ -36,3 +34,25 @@ x
 Happ/src/main/java/ru/airatyunusov/carservice/callbacks/EnrollCallBack.kt,e\b\ebc0eb77163e27c62332c564320953b58866d920
 u
 Eapp/src/main/java/ru/airatyunusov/carservice/model/TicketModelTest.kt,b\3\b31ca82dd94ae0822b166c4883399f690136d62b
+n
+>app/src/main/java/ru/airatyunusov/carservice/model/Employee.kt,2\b\2b6981872cde41829a31bc72941356d32d1753ca
+@
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
+{
+Kapp/src/main/java/ru/airatyunusov/carservice/EmployeeRecyclerViewAdapter.kt,0\c\0c31e1d0ce5564ad1ae2a7bea877939b3980141f
+p
+@app/src/main/java/ru/airatyunusov/carservice/EmployeeFragment.kt,2\c\2c1846d1d09df80ba74e232e54bbf497764586c2
+u
+Eapp/src/main/java/ru/airatyunusov/carservice/AuthorizationFragment.kt,6\2\62f315ca999296c83d92ba1e354effc212104167
+n
+>app/src/main/java/ru/airatyunusov/carservice/BranchFragment.kt,c\e\ce84dbfeb40cf5a17db318a9db706636f6a4faf2
+m
+=app/src/main/java/ru/airatyunusov/carservice/AdminFragment.kt,c\0\c054d4e131254893efb97064dddb56a8eb198439
+t
+Dapp/src/main/java/ru/airatyunusov/carservice/DetailBranchFragment.kt,6\2\62bc6610286c68b006a245b1a222a90e35481b7b
+q
+Aapp/src/main/java/ru/airatyunusov/carservice/model/BranchModel.kt,9\f\9fe660b312f501a461b5770a8f3a9e682329fc74
+z
+Japp/src/main/java/ru/airatyunusov/carservice/callbacks/ServicesCallBack.kt,1\5\15b74556994dff6781de72fc82f7f4dc91e0dcc8
+v
+Fapp/src/main/java/ru/airatyunusov/carservice/callbacks/TestCallBack.kt,d\d\dd968ce30a801fde0897e07c1cbb0e80d5d7d458

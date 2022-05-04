@@ -38,4 +38,20 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_exit">exit</string>
     <string name="textedit">edit</string>
+    <string name="text_delete_token_btn">Удалить запись</string>
+    <string name="text_services_TV">Замена масла\nЗамена свечей</string>
+    <string name="text_title_Services_TV">Услуги:</string>
+    <string name="text_car_TV">BMW M6 A333VV 73</string>
+    <string name="text_title_cat_TV">Автомобиль:</string>
+    <string name="text_employee_TV">Иванов И.И</string>
+    <string name="text_title_employee_tV">Сотрудник:</string>
+    <string name="text_branch_TV">Сигнал\nг. Ульяновск ул.Шолмова д.18\n89654123456</string>
+    <string name="text_title_branch_TV">Компания:</string>
+    <string name="text_date_time_TV">27.04.2022 15:19 - 28.04.2022 18:00</string>
+    <string name="text_title_dateTime_TV">Время выполнения услуги:</string>
+    <string name="text_save_btn">Сохранить</string>
+    <string name="text_title_price_service">Стоимость:</string>
+    <string name="text_title_name_service_TV">Название услуги:</string>
+    <string name="text_title_hours_service_TV">Количество часов:</string>
+    <string name="text_delete_Btn">Удалить</string>
 </resources>

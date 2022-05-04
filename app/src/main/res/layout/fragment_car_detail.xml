@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/branch_sm_8dp"
+    android:layout_marginEnd="@dimen/branch_em_8dp"
+    tools:context=".CarDetailFragment">
+
+    <EditText
+        android:id="@+id/makeCarEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:ems="10"
+        android:hint="Марка"
+        android:inputType="text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/modelCarEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Модель"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/makeCarEditText" />
+
+    <EditText
+        android:id="@+id/numberCarEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Номер"
+        android:inputType="textCapWords"
+        android:maxLength="6"
+        app:layout_constraintTop_toBottomOf="@+id/modelCarEditText" />
+
+    <EditText
+        android:id="@+id/yearCarEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Год выпуска"
+        android:inputType="number"
+        android:maxLength="4"
+        app:layout_constraintTop_toBottomOf="@+id/numberCarEditText" />
+
+    <Button
+        android:id="@+id/saveCarButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:text="СОхранить автомобиль"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yearCarEditText" />
+
+    <Button
+        android:id="@+id/deleteCarButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:text="Удалить"
+        app:layout_constraintTop_toBottomOf="@+id/saveCarButton"
+        tools:layout_editor_absoluteX="128dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

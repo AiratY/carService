@@ -30,30 +30,8 @@
             android:text="Добавить услугу"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameServiceEditText" />
-
-        <EditText
-            android:id="@+id/nameServiceEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/branch_mt_8dp"
-            android:ems="10"
-            android:hint="Название"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toStartOf="@+id/countHoursServiceEditText"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/listServicesRecyclerView" />
 
-        <EditText
-            android:id="@+id/countHoursServiceEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/branch_mt_8dp"
-            android:ems="10"
-            android:hint="Кол-во часов"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/nameServiceEditText"
-            app:layout_constraintTop_toBottomOf="@+id/listServicesRecyclerView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -5,18 +5,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import ru.airatyunusov.carservice.model.CarModel
 import ru.airatyunusov.carservice.model.ServiceModel
 
-class ServicesRecyclerViewAdapter : RecyclerView.Adapter<ServicesRecyclerViewAdapter.ViewHolder>() {
+class ServicesRecyclerViewAdapter(private val onClick: (ServiceModel) -> Unit) :
+    RecyclerView.Adapter<ServicesRecyclerViewAdapter.ViewHolder>() {
     private var dataset: List<ServiceModel> = emptyList()
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nameServiceTV: TextView = view.findViewById(R.id.nameServiceTextView)
-        val hoursServiceTV: TextView = view.findViewById(R.id.hoursServiceTV)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val nameServiceTV: TextView = view.findViewById(R.id.nameServiceTextView)
+        private val hoursServiceTV: TextView = view.findViewById(R.id.hoursServiceTV)
+        private val priceServiceTV: TextView = view.findViewById(R.id.priceServiceTextView)
+        private var currentService = ServiceModel()
+
+        init {
+            view.setOnClickListener {
+                onClick(currentService)
+            }
+        }
 
         fun bind(serviceModel: ServiceModel) {
+            currentService = serviceModel
             nameServiceTV.text = serviceModel.name
-            hoursServiceTV.text = serviceModel.hours.toString()
+            hoursServiceTV.text = serviceModel.hours.toString() + "ч."
+            priceServiceTV.text = serviceModel.price.toString() + "руб."
         }
     }
 

@@ -7,9 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -17,19 +15,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import ru.airatyunusov.carservice.callbacks.TestCallBack
 import ru.airatyunusov.carservice.model.BranchModel
+import ru.airatyunusov.carservice.model.CarModel
+import ru.airatyunusov.carservice.model.FirebaseHelper
 import ru.airatyunusov.carservice.model.ServiceModel
 
 class EnrollFragment : Fragment(), TestCallBack {
-    private val database =
-        Firebase.database("https://carservice-93ef9-default-rtdb.europe-west1.firebasedatabase.app/")
+    private val reference = FirebaseHelper().getDatabaseReference()
     private val callBack: TestCallBack = this
     private var branchSpinner: Spinner? = null
-    private val servicesListRecyclerViewAdapter = ServicesListRecyclerViewAdapter()
+    private var servicesListRecyclerViewAdapter: ServicesListRecyclerViewAdapter? = null
+    private var listCars: List<CarModel>? = null
+    private var sumPriceTV: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,54 +41,89 @@ class EnrollFragment : Fragment(), TestCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        arguments?.let {
+            listCars = it.get(LIST_CARS) as? List<CarModel>
+        }
+
         val carSpinner: Spinner = view.findViewById(R.id.carSpinner)
+        sumPriceTV = view.findViewById(R.id.sumPriceTextView)
+        servicesListRecyclerViewAdapter =
+            ServicesListRecyclerViewAdapter { sum -> setSumPriceService(sum) }
         branchSpinner = view.findViewById(R.id.branchSpinner)
         val serviceListRecyclerView: RecyclerView = view.findViewById(R.id.servicesListRecyclerView)
         val sendBtn: Button = view.findViewById(R.id.sendButton)
 
         serviceListRecyclerView.adapter = servicesListRecyclerViewAdapter
 
-        val carList: Array<out String> =
-            resources.getStringArray(R.array.carList) // arrayListOf("BMW", "LADA", "MERCEDES", "KIA")
+        /* val carList: Array<out String> =
+             resources.getStringArray(R.array.carList) */// arrayListOf("BMW", "LADA", "MERCEDES", "KIA")
         /*val branchList: Array<String> =
             arrayOf("СберСервис", "LADAСервис", "MERCEDESСервис", "KIAСервис")*/
         // val branchList: List<BranchModel> = loadBranchList()
         loadBranchList()
-        loadListService()
 
-        val carSpinnerAdapter: ArrayAdapter<String> = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item, carList
-        )
+        //Заполняем спинер списком автомобилей
+        listCars?.let {
+            val carSpinnerAdapter: ArrayAdapter<CarModel> = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item, it
+            )
+            carSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+            carSpinner.adapter = carSpinnerAdapter
+        }
 
-        carSpinner.adapter = carSpinnerAdapter
+        branchSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val branch: BranchModel =
+                    parent?.getItemAtPosition(position) as? BranchModel ?: BranchModel()
+                loadListService(branch.adminId)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                Log.e("SELECTED", "Ничего не выбранно")
+            }
+
+        }
 
         sendBtn.setOnClickListener {
-            val list: List<ServiceModel> = servicesListRecyclerViewAdapter.getCheckedServices()
-            val chooseBranch: String = branchSpinner?.selectedItem.toString()
-            val chooseCar = carSpinner.selectedItem.toString()
-            transferDataOfEnroll(list, chooseBranch, chooseCar)
+            //Поменять на callBack вместо метода RecyclerViewAdapter
+            val list: List<ServiceModel> =
+                servicesListRecyclerViewAdapter?.getCheckedServices() ?: emptyList()
+            val chooseBranchId: BranchModel =
+                branchSpinner?.selectedItem as? BranchModel ?: BranchModel()
+            val chooseCar = carSpinner.selectedItem as? CarModel ?: CarModel()
+            transferDataOfEnroll(list, chooseBranchId.id, chooseCar.id)
         }
     }
 
-    private fun loadListService() {
-        val childName = "services"
+    /**
+     * Обновляем значение итоговой суммы
+     * */
 
+    private fun setSumPriceService(sum: Int) {
+        sumPriceTV?.text = "Итого:" + sum.toString() + "руб."
+    }
+
+    /**
+     * Загружает список улуг по копаниям
+     * */
+
+    private fun loadListService(adminId: String) {
         val listServices: MutableList<ServiceModel> = mutableListOf()
 
-        var allCount = 0L
-        var count = 1L
-
         val branchQuery =
-            database.reference.child(childName).orderByChild("adminId").equalTo("jdbVeE5Y4iYmXofnRu7P2st8Tyq1")
+            reference.child(CHILD_SERVICES).orderByChild(ORDER_KEY_ADMIN_ID).equalTo(adminId)
 
         branchQuery.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                allCount = snapshot.childrenCount
                 for (child in snapshot.children) {
                     val serviceModel = child.getValue<ServiceModel>()
                     serviceModel?.let { listServices.add(it) }
-                    count++
                     Handler(Looper.getMainLooper()).post {
                         callBack.setListServices(listServices)
                     }
@@ -102,24 +136,20 @@ class EnrollFragment : Fragment(), TestCallBack {
         })
     }
 
-    private fun loadBranchList(): List<BranchModel> {
-        val childName = "branch"
+    /**
+     * Загружает список филиалов
+     * */
 
+    private fun loadBranchList() {
         val listBranch: MutableList<BranchModel> = mutableListOf()
 
-        var allCount = 0L
-        var count = 1L
-
-        val branchQuery =
-            database.reference.child(childName)
+        val branchQuery = reference.child(CHILD_BRANCH)
 
         branchQuery.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                allCount = snapshot.childrenCount
                 for (child in snapshot.children) {
                     val branch = child.getValue<BranchModel>()
                     branch?.let { listBranch.add(it) }
-                    count++
                     Handler(Looper.getMainLooper()).post {
                         callBack.setListBranch(listBranch)
                     }
@@ -130,31 +160,39 @@ class EnrollFragment : Fragment(), TestCallBack {
                 Log.e(getString(R.string.FIREBASE_LOG_TAG), error.message)
             }
         })
-
-        /*val branchDataSnapshot = branchQuery.get()
-        while (count < allCount || !branchDataSnapshot.isComplete) {
-            Thread.sleep(500)
-        }*/
-
-        return listBranch
     }
 
-    private fun transferDataOfEnroll(listService: List<ServiceModel>, branch: String, car: String) {
+    /**
+     * Переходим на фрагмент для генерации и выбора талонов на запись
+     * */
+
+    private fun transferDataOfEnroll(
+        listService: List<ServiceModel>,
+        branchId: String,
+        carID: String
+    ) {
         setFragmentResult(
             MainActivity.SHOW_SELECT_DATE_TIME,
             bundleOf(
                 MainActivity.BUNDLE_KEY to true,
-                LIST_SERVICE to listService,
-                BRANCH_SERVICES to branch,
-                CAR to car
+                MainActivity.LIST_SERVICES to listService,
+                MainActivity.BRANCH_ID to branchId,
+                MainActivity.CAR_ID to carID
             )
         )
     }
 
     companion object {
-        const val LIST_SERVICE = "list_services"
-        const val BRANCH_SERVICES = "branch_services"
-        const val CAR = "car"
+        private const val CHILD_BRANCH = "branch"
+        private const val CHILD_SERVICES = "services"
+        private const val ORDER_KEY_ADMIN_ID = "adminId"
+        private const val LIST_CARS = "list_cars"
+
+        fun newInstance(listCars: List<CarModel>): EnrollFragment {
+            return EnrollFragment().apply {
+                arguments = bundleOf(LIST_CARS to listCars)
+            }
+        }
 
         /*val LIST_SERVICES: List<ServiceModel> =
             listOf(
@@ -182,7 +220,7 @@ class EnrollFragment : Fragment(), TestCallBack {
     }
 
     override fun setListServices(listServices: List<ServiceModel>) {
-        servicesListRecyclerViewAdapter.setDataSet(listServices)
+        servicesListRecyclerViewAdapter?.setDataSet(listServices)
     }
 
     /*"Промывка инжектора",

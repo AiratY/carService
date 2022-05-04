@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_directions_car_24" />
+
+    <TextView
+        android:id="@+id/makeCarTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Марка: BMW"
+        android:textSize="20sp"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/modelCarTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:text="Модель: M6"
+        android:textSize="18sp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/makeCarTextView" />
+
+    <TextView
+        android:id="@+id/numberCatTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:text="А692ЕМ 73"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/modelCarTextView" />
+
+    <TextView
+        android:id="@+id/yearCarTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:text="Год выпуска: 1997 г."
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/numberCatTextView"
+        app:layout_constraintTop_toBottomOf="@+id/modelCarTextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

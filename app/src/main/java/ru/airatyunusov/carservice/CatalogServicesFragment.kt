@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -27,7 +29,7 @@ import java.util.concurrent.Executors
 class CatalogServicesFragment : Fragment(), ServicesCallBack {
 
     private var recyclerView: RecyclerView? = null
-    private val serviceAdapter = ServicesRecyclerViewAdapter()
+    private var serviceAdapter: ServicesRecyclerViewAdapter? = null
     private val callBack: ServicesCallBack = this
     private val database =
         Firebase.database("https://carservice-93ef9-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -42,8 +44,7 @@ class CatalogServicesFragment : Fragment(), ServicesCallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.listServicesRecyclerView)
-        val nameEditText: EditText = view.findViewById(R.id.nameServiceEditText)
-        val hoursEditText: EditText = view.findViewById(R.id.countHoursServiceEditText)
+        serviceAdapter = ServicesRecyclerViewAdapter { serviceModel -> changeService(serviceModel) }
         val addService: Button = view.findViewById(R.id.addServicesButton)
         recyclerView?.adapter = serviceAdapter
 
@@ -57,16 +58,35 @@ class CatalogServicesFragment : Fragment(), ServicesCallBack {
         }
 
         addService.setOnClickListener {
-            val name = nameEditText.text.toString()
-            val hours = hoursEditText.text.toString().toInt()
-            if (name.isEmpty() || (hours == 0)) {
-                Toast.makeText(requireContext(), "Поля не должны быть пустыми", Toast.LENGTH_LONG).show()
-            } else {
-                saveServiceModel(name, hours)
-                nameEditText.setText("")
-                hoursEditText.setText("")
-            }
+            openFragmentToAddServices()
         }
+    }
+
+    /**
+     * Осуществляет переход на другой фрагмент для изменения данных услуги
+     * */
+
+    private fun changeService(serviceModel: ServiceModel) {
+        setFragmentResult(
+            MainActivity.SHOW_ADD_SERVICE,
+            bundleOf(
+                MainActivity.BUNDLE_KEY to true,
+                MainActivity.SERVICE to serviceModel
+            )
+        )
+    }
+
+    /**
+     * Осуществляет переход на фрагмент добавления услуги
+     * */
+
+    private fun openFragmentToAddServices() {
+        setFragmentResult(
+            MainActivity.SHOW_ADD_SERVICE,
+            bundleOf(
+                MainActivity.BUNDLE_KEY to true,
+            )
+        )
     }
 
     private fun loadListServices(): List<ServiceModel> {
@@ -116,24 +136,11 @@ class CatalogServicesFragment : Fragment(), ServicesCallBack {
         return sharedPreferences.getString(userId, "") ?: ""
     }
 
-    private fun saveServiceModel(name: String, hours: Int) {
-        val childName = getString(R.string.services_firebase_key)
-        val ref = database.reference
-        val key = ref.child(childName).push().key
-        key?.let {
-            val service = ServiceModel(key, getAdminId(), name, hours)
-            val childUpdates = hashMapOf<String, Any>(
-                "/$childName/$key" to service
-            )
-            ref.updateChildren(childUpdates)
-        }
-    }
 
     companion object {
     }
 
     override fun setListServices(list: List<ServiceModel>) {
-        serviceAdapter.setDateSet(list)
-        serviceAdapter.notifyDataSetChanged()
+        serviceAdapter?.setDateSet(list)
     }
 }

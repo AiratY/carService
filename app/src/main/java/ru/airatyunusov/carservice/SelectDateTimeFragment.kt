@@ -54,6 +54,9 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
     private var selectedEmployee: Employee? = null
     private var selectedToken: TokenModel? = null
 
+    private var carId = ""
+    private var branchId = ""
+
     private val database =
         Firebase.database("https://carservice-93ef9-default-rtdb.europe-west1.firebasedatabase.app/")
 
@@ -84,6 +87,8 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
 
         arguments?.let {
             listServiceModel = it.get(LIST_SERVICE) as? List<ServiceModel> ?: emptyList()
+            carId = it.getString(CAR_ID, "")
+            branchId = it.getString(BRANCH_ID, "")
 
             disablePrevBtn()
             // myExecutor = EnrollExecutor(this)
@@ -151,6 +156,9 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         key?.let {
             val tokenFirebase = TokenFirebaseModel(
                 id = key,
+                userId = getUserId(),
+                branchId = branchId,
+                carId = carId,
                 startRecordDateTime = DateTimeHelper.convertToStringDateTime(token.startRecordDateTime),
                 endRecordDateTime = DateTimeHelper.convertToStringDateTime(token.endRecordDateTime),
                 idEmployee = token.idEmployee,
@@ -164,8 +172,11 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         }
     }
 
+    private fun getUserId(): String {
+        return ""
+    }
+
     private fun registration(callBack: WeakReference<EnrollCallBack>) {
-        /**Проверка на пустоту**/
         listEmployee = loadListEmployee() // список сотрудников
 
         if (listEmployee.isNotEmpty()) {
@@ -397,6 +408,40 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
     }
 
     private fun loadListEmployee(): List<Employee> {
+        val childName = getString(R.string.employees_firebase_key)
+
+        val lisEmployee: MutableList<Employee> = mutableListOf()
+
+        var allCount = 0L
+        var count = 1L
+
+        val query =
+            database.reference.child(childName).orderByChild("branchId").equalTo(branchId)
+
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                allCount = snapshot.childrenCount
+                for (child in snapshot.children) {
+                    val employee = child.getValue<Employee>()
+                    employee?.let { lisEmployee.add(it) }
+                    count++
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(getString(R.string.FIREBASE_LOG_TAG), error.message)
+            }
+        })
+
+        val dataSnapshot = query.get()
+        while (count < allCount || !dataSnapshot.isComplete) {
+            Thread.sleep(500)
+        }
+
+        return lisEmployee
+    }
+
+    /*private fun loadListEmployee(): List<Employee> {
         val list: MutableList<Employee> = mutableListOf()
         val employeesRef = database.getReference(EMPLOYEES_FIREBASE_KEY)
         val taskDataSnapshot = employeesRef.get()
@@ -412,7 +457,7 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         }
 
         return list
-    }
+    }*/
 
     private fun updateStartEndWeekDateTime() {
         startWeek = endWeek.plusDays(1).withHour(timeStart.hour).withMinute(timeStart.minute)
@@ -472,14 +517,20 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
 
     companion object {
         private const val LIST_SERVICE = "list_services"
+        private const val BRANCH_ID = "branch_id"
+        private const val CAR_ID = "car_id"
         private const val FIREBASE_LOG_TAG = "Firebase"
 
-        private const val TOKEN_MODEL_FIREBASE_KEY = "test"
+        private const val TOKEN_MODEL_FIREBASE_KEY = "tickets"
         private const val EMPLOYEES_FIREBASE_KEY = "employees"
 
-        fun newInstance(list: List<ServiceModel>): SelectDateTimeFragment {
+        fun newInstance(
+            list: List<ServiceModel>,
+            branchId: String,
+            carId: String
+        ): SelectDateTimeFragment {
             return SelectDateTimeFragment().apply {
-                arguments = bundleOf(LIST_SERVICE to list)
+                arguments = bundleOf(LIST_SERVICE to list, BRANCH_ID to branchId, CAR_ID to carId)
             }
         }
     }

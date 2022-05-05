@@ -2,7 +2,6 @@ package ru.airatyunusov.carservice
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import org.w3c.dom.Text
 import ru.airatyunusov.carservice.callbacks.TokenCallBack
 import ru.airatyunusov.carservice.model.*
 import java.lang.ref.WeakReference
@@ -45,10 +45,12 @@ class TokenDetailFragment : BlankFragment(), TokenCallBack {
         carTextView = view.findViewById(R.id.carTextView)
         val servicesTextView: TextView = view.findViewById(R.id.servicesTextView)
         val deleteTokenButton: Button = view.findViewById(R.id.deleteTokenButton)
+        val priceTextView: TextView = view.findViewById(R.id.priceTextView)
 
         arguments?.let {
             val token = it.get(TOKEN) as? TokenFirebaseModel ?: TokenFirebaseModel()
             dateTimeTextView.text = token.toString()
+            priceTextView.text = "${token.price} руб."
             for (services in token.listServices) {
                 servicesTextView.append(services.name + ",\n")
             }

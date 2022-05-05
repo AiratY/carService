@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.google.firebase.database.ktx.getValue
 import ru.airatyunusov.carservice.model.BranchModel
 import ru.airatyunusov.carservice.model.Employee
 import ru.airatyunusov.carservice.model.FirebaseHelper
+import java.time.LocalTime
 
 class DetailBranchFragment : Fragment() {
 
@@ -42,7 +44,14 @@ class DetailBranchFragment : Fragment() {
         val addressEditText: EditText = view.findViewById(R.id.addressEditText)
         val phoneBranchEditText: EditText = view.findViewById(R.id.phoneBranchEditText)
         val saveBtn: Button = view.findViewById(R.id.saveBranchButton)
+        val startTimeTimePicker: TimePicker = view.findViewById(R.id.startTimeTimePicker)
+        val endTimeTimePicker: TimePicker = view.findViewById(R.id.endTimeTimePicker)
         deleteBtn = view.findViewById(R.id.deleteBranchBtn)
+
+        startTimeTimePicker.setIs24HourView(true)
+        startTimeTimePicker.minute = 0
+        endTimeTimePicker.setIs24HourView(true)
+        endTimeTimePicker.minute = 0
 
         goneDeleteBtn()
 
@@ -53,6 +62,13 @@ class DetailBranchFragment : Fragment() {
                 addressEditText.setText(address)
                 phoneBranchEditText.setText(phone)
                 visibleDeleteBtn()
+
+                val startTime: LocalTime = LocalTime.parse(startTime)
+                val endTime: LocalTime = LocalTime.parse(endTime)
+                startTimeTimePicker.hour = startTime.hour
+                startTimeTimePicker.minute = startTime.minute
+                endTimeTimePicker.hour = endTime.hour
+                endTimeTimePicker.minute = endTime.minute
             }
         }
 
@@ -60,6 +76,8 @@ class DetailBranchFragment : Fragment() {
             val name = nameBranchEditText.text.toString()
             val address = addressEditText.text.toString()
             val phone: Long = phoneBranchEditText.text.toString().toLong()
+            val startTime: LocalTime =LocalTime.of(startTimeTimePicker.hour, startTimeTimePicker.minute)
+            val endTime: LocalTime =LocalTime.of(endTimeTimePicker.hour, endTimeTimePicker.minute)
 
             if (name.isEmpty() || address.isEmpty() || (phone == 0L)) {
                 Toast.makeText(
@@ -76,10 +94,10 @@ class DetailBranchFragment : Fragment() {
             } else {
                 if (branchModel != null) {
                     branchModel?.apply {
-                        updateBranch(BranchModel(id, adminId, name, address, phone.toString()))
+                        updateBranch(BranchModel(id, adminId, name, address, phone.toString(), startTime.toString(), endTime.toString()))
                     }
                 } else {
-                    saveBranch(getAdminId(), name, address, phone.toString())
+                    saveBranch(getAdminId(), name, address, phone.toString(), startTime.toString(), endTime.toString())
                 }
                 returnOnAdminFragment()
             }
@@ -145,9 +163,16 @@ class DetailBranchFragment : Fragment() {
         return sharedPreferences.getString(userId, "") ?: ""
     }
 
-    private fun saveBranch(adminId: String, name: String, address: String, phone: String) {
+    private fun saveBranch(
+        adminId: String,
+        name: String,
+        address: String,
+        phone: String,
+        startTime: String,
+        endTime: String
+    ) {
         val key = reference.child(childName).push().key ?: ""
-        val branchModel = BranchModel(key, adminId, name, address, phone)
+        val branchModel = BranchModel(key, adminId, name, address, phone, startTime, endTime)
         updateBranch(branchModel)
     }
 

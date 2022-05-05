@@ -13,7 +13,6 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Spinner
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -57,6 +56,7 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
 
     private var carId = ""
     private var branchId = ""
+    private var price = 0L
 
     private val database =
         Firebase.database("https://carservice-93ef9-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -90,6 +90,7 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
             listServiceModel = it.get(LIST_SERVICE) as? List<ServiceModel> ?: emptyList()
             carId = it.getString(CAR_ID, "")
             branchId = it.getString(BRANCH_ID, "")
+            price = it.getLong(PRICE, 0)
 
             disablePrevBtn()
             // myExecutor = EnrollExecutor(this)
@@ -116,6 +117,7 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
             }
         }
     }
+
     /**
      * Переходит на страницу КЛиента
      * */
@@ -174,6 +176,7 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
                 startRecordDateTime = DateTimeHelper.convertToStringDateTime(token.startRecordDateTime),
                 endRecordDateTime = DateTimeHelper.convertToStringDateTime(token.endRecordDateTime),
                 idEmployee = token.idEmployee,
+                price = price,
                 listServices = listServiceModel
             )
 
@@ -528,6 +531,7 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
         private const val LIST_SERVICE = "list_services"
         private const val BRANCH_ID = "branch_id"
         private const val CAR_ID = "car_id"
+        private const val PRICE = "price"
         private const val FIREBASE_LOG_TAG = "Firebase"
 
         private const val TOKEN_MODEL_FIREBASE_KEY = "tickets"
@@ -536,10 +540,16 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
         fun newInstance(
             list: List<ServiceModel>,
             branchId: String,
-            carId: String
+            carId: String,
+            price: Long
         ): SelectDateTimeFragment {
             return SelectDateTimeFragment().apply {
-                arguments = bundleOf(LIST_SERVICE to list, BRANCH_ID to branchId, CAR_ID to carId)
+                arguments = bundleOf(
+                    LIST_SERVICE to list,
+                    BRANCH_ID to branchId,
+                    CAR_ID to carId,
+                    PRICE to price
+                )
             }
         }
     }

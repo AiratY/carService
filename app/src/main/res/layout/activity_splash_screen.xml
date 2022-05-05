@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".SplashScreenActivity">
 
-    <TextView
-        android:id="@+id/splashScreenTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_splash_screen_tv"
-        app:layout_constraintBottom_toTopOf="@+id/customerButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iconImageView" />
-
     <!--<Button
         android:id="@+id/customerButton"
         android:layout_width="match_parent"
@@ -46,11 +36,21 @@
         android:text="@string/text_admin_btn"
         app:layout_constraintBottom_toBottomOf="parent" />-->
 
+    <TextView
+        android:id="@+id/splashScreenTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_splash_screen_tv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconImageView" />
+
     <ImageView
         android:id="@+id/iconImageView"
         android:layout_width="@dimen/width_icon_splash_screen"
         android:layout_height="@dimen/width_icon_splash_screen"
-        app:layout_constraintBottom_toTopOf="@+id/splashScreenTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

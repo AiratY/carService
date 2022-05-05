@@ -2,7 +2,6 @@ package ru.airatyunusov.carservice.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import ru.airatyunusov.carservice.DateTimeHelper
 
 data class TokenFirebaseModel(
     var id: String = "",
@@ -12,6 +11,7 @@ data class TokenFirebaseModel(
     var startRecordDateTime: String = "",
     var endRecordDateTime: String = "",
     val idEmployee: String = "",
+    var price: Long = 0,
     var listServices: List<ServiceModel> = emptyList()
 ) :Parcelable {
     constructor(parcel: Parcel) : this(
@@ -22,12 +22,11 @@ data class TokenFirebaseModel(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
-        TODO("listServices")
+        parcel.readLong(),
+        listOf<ServiceModel>().apply {
+            parcel.readArrayList(ServiceModel::class.java.classLoader)
+        }
     ) {
-    }
-
-    override fun toString(): String {
-        return "$startRecordDateTime - $endRecordDateTime"
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -38,10 +37,16 @@ data class TokenFirebaseModel(
         parcel.writeString(startRecordDateTime)
         parcel.writeString(endRecordDateTime)
         parcel.writeString(idEmployee)
+        parcel.writeLong(price)
+        parcel.writeTypedList(listServices)
     }
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    override fun toString(): String {
+        return "$startRecordDateTime - $endRecordDateTime"
     }
 
     companion object CREATOR : Parcelable.Creator<TokenFirebaseModel> {
@@ -53,4 +58,5 @@ data class TokenFirebaseModel(
             return arrayOfNulls(size)
         }
     }
+
 }

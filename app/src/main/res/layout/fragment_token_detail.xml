@@ -23,10 +23,10 @@
         android:id="@+id/dateTimeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_date_time_TV"
         android:theme="@style/valueTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleDateTimeTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/titleDateTimeTextView"
+        tools:text="@string/text_date_time_TV" />
 
     <TextView
         android:id="@+id/titleBranchTextView"
@@ -41,10 +41,10 @@
         android:id="@+id/branchTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_branch_TV"
         android:theme="@style/valueTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleBranchTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/titleBranchTextView"
+        tools:text="@string/text_branch_TV" />
 
     <TextView
         android:id="@+id/titleEmployeeTextView"
@@ -59,10 +59,10 @@
         android:id="@+id/employeeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_employee_TV"
         android:theme="@style/valueTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleEmployeeTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/titleEmployeeTextView"
+        tools:text="@string/text_employee_TV" />
 
     <TextView
         android:id="@+id/titleCarTextView"
@@ -77,10 +77,10 @@
         android:id="@+id/carTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_car_TV"
         android:theme="@style/valueTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleCarTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/titleCarTextView"
+        tools:text="@string/text_car_TV" />
 
     <TextView
         android:id="@+id/titleServicesTextView"
@@ -89,24 +89,42 @@
         android:text="@string/text_title_Services_TV"
         android:theme="@style/titleTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/carTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/priceTextView" />
 
     <TextView
         android:id="@+id/servicesTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_services_TV"
         android:theme="@style/valueTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleServicesTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/titleServicesTextView"
+        tools:text="@string/text_services_TV" />
 
     <Button
         android:id="@+id/deleteTokenButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/text_delete_token_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/servicesTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/servicesTextView"
+        android:text="@string/text_delete_token_btn" />
+
+    <TextView
+        android:id="@+id/titlePriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_title_price_tV"
+        android:theme="@style/titleTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/carTextView" />
+
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="@string/text_price_tV"
+        android:theme="@style/valueTheme"
+        app:layout_constraintTop_toBottomOf="@+id/titlePriceTextView"
+        tools:layout_editor_absoluteX="152dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

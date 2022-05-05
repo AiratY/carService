@@ -3,7 +3,7 @@
     <string name="text_customer_btn">Клиент</string>
     <string name="text_employee_btn">Сотрудник</string>
     <string name="text_admin_btn">Администратор</string>
-    <string name="text_splash_screen_tv">Выбирете способ авторизации</string>
+    <string name="text_splash_screen_tv">Автосервисы</string>
     <string name="hint_login_edit_text">Логин</string>
     <string name="hint_password_edit_text">Пароль</string>
     <string name="text_sign_in_btn">Войти</string>
@@ -58,4 +58,6 @@
     <string name="text_title_name_service_TV">Название услуги:</string>
     <string name="text_title_hours_service_TV">Количество часов:</string>
     <string name="text_delete_Btn">Удалить</string>
+    <string name="text_title_price_tV">Стоимость:</string>
+    <string name="text_price_tV">10000 руб.</string>
 </resources>

@@ -29,6 +29,7 @@ class EnrollFragment : Fragment(), TestCallBack {
     private var servicesListRecyclerViewAdapter: ServicesListRecyclerViewAdapter? = null
     private var listCars: List<CarModel>? = null
     private var sumPriceTV: TextView? = null
+    private var price: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -107,6 +108,7 @@ class EnrollFragment : Fragment(), TestCallBack {
 
     private fun setSumPriceService(sum: Int) {
         sumPriceTV?.text = "Итого:" + sum.toString() + "руб."
+        price = sum.toLong()
     }
 
     /**
@@ -177,7 +179,8 @@ class EnrollFragment : Fragment(), TestCallBack {
                 MainActivity.BUNDLE_KEY to true,
                 MainActivity.LIST_SERVICES to listService,
                 MainActivity.BRANCH_ID to branchId,
-                MainActivity.CAR_ID to carID
+                MainActivity.CAR_ID to carID,
+                MainActivity.PRICE to price
             )
         )
     }

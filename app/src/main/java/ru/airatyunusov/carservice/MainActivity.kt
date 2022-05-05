@@ -64,11 +64,13 @@ class MainActivity : AppCompatActivity() {
                     bundle.get(LIST_SERVICES) as? List<ServiceModel> ?: emptyList()
                 val branchId = bundle.getString(BRANCH_ID, "")
                 val carID = bundle.getString(CAR_ID, "")
+                val price = bundle.getLong(PRICE, 0)
                 replaceFragment(
                     SelectDateTimeFragment.newInstance(
                         listServicesModel,
                         branchId,
-                        carID
+                        carID,
+                        price
                     )
                 )
             }
@@ -206,6 +208,7 @@ class MainActivity : AppCompatActivity() {
         const val BRANCH_ITEM = "branch_item"
         const val BRANCH_ID = "branch_id"
         const val CAR_ID = "car_id"
+        const val PRICE = "price"
         const val BRANCH = "branch"
         const val SHOW_EMPLOYEE = "show_employee"
         const val EMPLOYEE = "employee"

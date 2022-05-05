@@ -18,40 +18,38 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        when (intent.getStringExtra(MESSAGE_USER)) {
-            SplashScreenActivity.CUSTOMER -> {
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    add<CustomerFragment>(R.id.fragment_container_view)
-                    addToBackStack(NAME_BACK_STACK)
+        val sharedPreferences = getSharedPreferences(
+            getString(R.string.user_data_sharedPreference),
+            Context.MODE_PRIVATE
+        )
+        if (!sharedPreferences.getBoolean(AUTH, false)) {
+            showAuthorizationFragment()
+        } else {
+            val ROLE_KEY = getString(R.string.ROLE_SHARED_PREFERENCE_KEY)
+            val role = sharedPreferences.getString(ROLE_KEY, "")
+            when (role) {
+                ROLE_CUSTOMER -> {
+                    supportFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        add<CustomerFragment>(R.id.fragment_container_view)
+                        addToBackStack(NAME_BACK_STACK)
+                    }
                 }
-            }
-            SplashScreenActivity.EMPLOYEE -> {
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    add<AuthorizationFragment>(R.id.fragment_container_view)
-                    addToBackStack(NAME_BACK_STACK)
+                ROLE_EMPLOYEE -> {
+                    showAuthorizationFragment()
                 }
-            }
-            SplashScreenActivity.ADMIN -> {
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    add<AdminFragment>(R.id.fragment_container_view)
-                    addToBackStack(NAME_BACK_STACK)
+                ROLE_ADMIN -> {
+                    supportFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        add<AdminFragment>(R.id.fragment_container_view)
+                        addToBackStack(NAME_BACK_STACK)
+                    }
+                }
+                else -> {
+                    showAuthorizationFragment()
                 }
             }
         }
-
-        /*val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
-        if (sharedPreferences.contains(AUTH) && sharedPreferences.getBoolean(AUTH, false)) {
-            replaceFragment(EnrollFragment())
-        } else {*/
-        /*supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            add<AuthorizationFragment>(R.id.fragment_container_view)
-            addToBackStack(NAME_BACK_STACK)
-        }*/
-        /* }*/
 
         supportFragmentManager.setFragmentResultListener(SHOW_ENROLL, this) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
@@ -133,6 +131,19 @@ class MainActivity : AppCompatActivity() {
                 replaceFragment(TokenDetailFragment.newInstance(token))
             }
         }
+
+        supportFragmentManager.setFragmentResultListener(SHOW_CUSTOMER_FRAGMENT, this) { _, bundle ->
+            if (bundle.getBoolean(BUNDLE_KEY)) {
+                replaceFragment(CustomerFragment())
+            }
+        }
+
+        supportFragmentManager.setFragmentResultListener(SHOW_AUTH, this) { _, bundle ->
+            if (bundle.getBoolean(BUNDLE_KEY)) {
+                replaceFragment(AuthorizationFragment())
+            }
+        }
+
         supportFragmentManager.setFragmentResultListener(SHOW_ADD_SERVICE, this) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 val serviceModel = bundle.get(SERVICE) as? ServiceModel
@@ -142,6 +153,14 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(ServicesFragment.newInstance(serviceModel))
                 }
             }
+        }
+    }
+
+    private fun showAuthorizationFragment() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add<AuthorizationFragment>(R.id.fragment_container_view)
+            addToBackStack(NAME_BACK_STACK)
         }
     }
 
@@ -168,11 +187,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     companion object {
         private const val NAME_BACK_STACK = "fragments"
         const val MESSAGE_USER = "action"
         const val SHOW_ENROLL = "show enroll"
         const val SHOW_ADMIN_FRAGMENT = "show admin"
+        const val SHOW_CUSTOMER_FRAGMENT = "show_customer_page"
         const val SHOW_SELECT_DATE_TIME = "show_select_date_time"
         const val SHOW_ADD_SERVICE = "show_ADD_SERVICE"
         const val BUNDLE_KEY = "show"
@@ -193,6 +214,11 @@ class MainActivity : AppCompatActivity() {
         const val AUTH = "is_auth"
         const val TOKEN = "token"
         const val SERVICE = "service"
+        const val SHOW_AUTH = "show_auth_page"
 
+
+        private const val ROLE_CUSTOMER = "Клиент"
+        private const val ROLE_EMPLOYEE = "employee"
+        private const val ROLE_ADMIN = "Администратор"
     }
 }

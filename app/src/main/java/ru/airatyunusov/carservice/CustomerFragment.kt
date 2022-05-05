@@ -20,7 +20,7 @@ import ru.airatyunusov.carservice.model.CarModel
 import ru.airatyunusov.carservice.model.FirebaseHelper
 import ru.airatyunusov.carservice.model.TokenFirebaseModel
 
-class CustomerFragment : Fragment(), CustomerCallBack {
+class CustomerFragment : BlankFragment(), CustomerCallBack {
 
     private var carsRecyclerView: RecyclerView? = null
     private var carAdapterRecyclerView: CarRecyclerViewAdapter? = null
@@ -28,8 +28,6 @@ class CustomerFragment : Fragment(), CustomerCallBack {
     private var addButton: Button? = null
 
     private var isVisibleMyCars = false
-
-    private val reference = FirebaseHelper().getDatabaseReference()
 
     private var listCars: List<CarModel>? = null
 
@@ -79,6 +77,10 @@ class CustomerFragment : Fragment(), CustomerCallBack {
 
         enrollBtn.setOnClickListener {
             openEnrollPage()
+        }
+
+        view.findViewById<Button>(R.id.signOutButton).setOnClickListener {
+            signOut()
         }
     }
 
@@ -208,15 +210,6 @@ class CustomerFragment : Fragment(), CustomerCallBack {
     companion object {
         const val CARS = "cars"
         private const val TOKEN_MODEL_FIREBASE_KEY = "tickets"
-
-        /**
-         * Возвращает Id клиента
-         * нужно сделать by lazy
-         * */
-
-        fun getUserId(): String {
-            return ""
-        }
     }
 
     /**

@@ -29,8 +29,12 @@
     <string name="services_firebase_key">services</string>
     <string name="FIREBASE_LOG_TAG">FIREBASE_LOG_TAG</string>
     <string name="employees_firebase_key">employees</string>
-    <string name="admin_data_sharedPreference">admin_data</string>
+    <string name="user_data_sharedPreference">user_data</string>
+    <string name="ROLE_SHARED_PREFERENCE_KEY">ROLE</string>
     <string name="user_id_key_SP">USER_ID</string>
+    <string name="user_role_key_SP">ROLE</string>
+    <string name="user_name_key_SP">Name</string>
+    <string name="user_phone_key_SP">Phone</string>
     <string name="text_hint_name_employee">Имя</string>
     <string name="text_hint_lastname_employee">Фамилия</string>
     <string name="text_hint_patronymic_employee">Отчество</string>

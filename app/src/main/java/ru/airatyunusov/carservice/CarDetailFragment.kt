@@ -12,7 +12,7 @@ import androidx.core.os.bundleOf
 import ru.airatyunusov.carservice.model.CarModel
 import ru.airatyunusov.carservice.model.FirebaseHelper
 
-class CarDetailFragment : Fragment() {
+class CarDetailFragment : BlankFragment() {
 
     private var makeCarEditText: EditText? = null
     private var modelCarEditText: EditText? = null
@@ -27,8 +27,6 @@ class CarDetailFragment : Fragment() {
     private var year: Int = 0
 
     private var carModel: CarModel? = null
-
-    private val reference = FirebaseHelper().getDatabaseReference()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +58,7 @@ class CarDetailFragment : Fragment() {
 
             if (checkValuesEditTexts()) {
                 val car = CarModel(
-                    userId = CustomerFragment.getUserId(),
+                    userId = getUserId(),
                     make = make,
                     model = model,
                     numberCar = number,
@@ -104,13 +102,6 @@ class CarDetailFragment : Fragment() {
         carModel?.let {
             reference.child(CHILD_CARS).child(it.id).removeValue()
         }
-    }
-    /**
-     * Возвращает назад
-     * */
-
-    private fun returnBack() {
-        requireActivity().supportFragmentManager.popBackStack()
     }
 
     /**

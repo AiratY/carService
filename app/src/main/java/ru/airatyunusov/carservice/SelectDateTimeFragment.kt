@@ -14,6 +14,7 @@ import android.widget.ProgressBar
 import android.widget.Spinner
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -29,7 +30,7 @@ import java.time.LocalTime
 import java.time.Period
 import java.util.concurrent.Executors
 
-class SelectDateTimeFragment : Fragment(), EnrollCallBack {
+class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
 
     private var dateTimeSpinner: Spinner? = null
     private var listEmployeeSpinner: Spinner? = null
@@ -97,6 +98,7 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
             enrollButton?.setOnClickListener {
                 selectedToken?.let { token ->
                     registryNewTokenInDB(token, listServiceModel)
+                    showCustomerPage()
                 }
             }
 
@@ -113,6 +115,16 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
                 myExecutor.executeOnNextWeek()
             }
         }
+    }
+    /**
+     * Переходит на страницу КЛиента
+     * */
+
+    private fun showCustomerPage() {
+        setFragmentResult(
+            MainActivity.SHOW_CUSTOMER_FRAGMENT,
+            bundleOf(MainActivity.BUNDLE_KEY to true)
+        )
     }
 
     private fun disablePrevBtn() {
@@ -172,9 +184,6 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         }
     }
 
-    private fun getUserId(): String {
-        return ""
-    }
 
     private fun registration(callBack: WeakReference<EnrollCallBack>) {
         listEmployee = loadListEmployee() // список сотрудников

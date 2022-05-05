@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iconImageView" />
 
-    <Button
+    <!--<Button
         android:id="@+id/customerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:layout_marginEnd="@dimen/me_splash_btn"
         android:layout_marginBottom="@dimen/mb_admin_btn"
         android:text="@string/text_admin_btn"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />-->
 
     <ImageView
         android:id="@+id/iconImageView"

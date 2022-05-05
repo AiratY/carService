@@ -99,7 +99,7 @@ class ServicesFragment : BlankFragment() {
             services?.id
         }
         key?.let {
-            val service = ServiceModel(key, getAdminId(), name, hours, price)
+            val service = ServiceModel(key, getUserId(), name, hours, price)
             val childUpdates = hashMapOf<String, Any>(
                 "/$childName/$key" to service
             )

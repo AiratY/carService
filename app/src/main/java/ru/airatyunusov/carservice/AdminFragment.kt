@@ -24,7 +24,7 @@ import ru.airatyunusov.carservice.model.*
 import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
 
-class AdminFragment : Fragment(), AdminCallBack {
+class AdminFragment : BlankFragment(), AdminCallBack {
     private var listBranchRecyclerView: RecyclerView? = null
 
     private val database =
@@ -63,6 +63,10 @@ class AdminFragment : Fragment(), AdminCallBack {
                 MainActivity.SHOW_CATALOG_SERVICES,
                 bundleOf(MainActivity.BUNDLE_KEY to true)
             )
+        }
+
+        view.findViewById<Button>(R.id.signOutButton).setOnClickListener {
+            signOut()
         }
     }
 
@@ -103,7 +107,7 @@ class AdminFragment : Fragment(), AdminCallBack {
 
     private fun getAdminId(): String {
         val sharedPreferences = requireActivity().getSharedPreferences(
-            getString(R.string.admin_data_sharedPreference),
+            getString(R.string.user_data_sharedPreference),
             Context.MODE_PRIVATE
         )
         val userId = getString(R.string.user_id_key_SP)

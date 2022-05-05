@@ -138,7 +138,7 @@ class DetailBranchFragment : Fragment() {
 
     private fun getAdminId(): String {
         val sharedPreferences = requireActivity().getSharedPreferences(
-            getString(R.string.admin_data_sharedPreference),
+            getString(R.string.user_data_sharedPreference),
             Context.MODE_PRIVATE
         )
         val userId = getString(R.string.user_id_key_SP)

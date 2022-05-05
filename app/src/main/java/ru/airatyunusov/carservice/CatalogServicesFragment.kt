@@ -9,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -129,7 +127,7 @@ class CatalogServicesFragment : Fragment(), ServicesCallBack {
 
     private fun getAdminId(): String {
         val sharedPreferences = requireActivity().getSharedPreferences(
-            getString(R.string.admin_data_sharedPreference),
+            getString(R.string.user_data_sharedPreference),
             Context.MODE_PRIVATE
         )
         val userId = getString(R.string.user_id_key_SP)

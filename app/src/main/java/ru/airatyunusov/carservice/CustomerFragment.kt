@@ -29,9 +29,9 @@ class CustomerFragment : BlankFragment(), CustomerCallBack {
 
     private var listCars: List<CarModel>? = null
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_customer, container, false)
@@ -56,7 +56,6 @@ class CustomerFragment : BlankFragment(), CustomerCallBack {
         loadListMyCars(this)
 
         myServiceTV.setOnClickListener {
-
         }
 
         myCarsTv.setOnClickListener {
@@ -83,7 +82,7 @@ class CustomerFragment : BlankFragment(), CustomerCallBack {
     }
 
     /**
-     * Переходим на фрагмент с дктальным описанием записи
+     * Переходим на фрагмент с детальным описанием записи
      * */
 
     private fun openDetailToken(token: TokenFirebaseModel) {
@@ -185,7 +184,6 @@ class CustomerFragment : BlankFragment(), CustomerCallBack {
             }
         })
     }
-
 
     /**
      * Показывает список моих автомобилей

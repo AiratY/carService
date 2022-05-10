@@ -9,4 +9,5 @@
     <dimen name="branch_em_8dp">8dp</dimen>
     <dimen name="branch_mt_8dp">8dp</dimen>
     <dimen name="mt_16dp">16dp</dimen>
+    <dimen name="width_icon_user">120dp</dimen>
 </resources>

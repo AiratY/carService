@@ -60,4 +60,5 @@
     <string name="text_delete_Btn">Удалить</string>
     <string name="text_title_price_tV">Стоимость:</string>
     <string name="text_price_tV">10000 руб.</string>
+    <string name="desc_icon_image_view">icon</string>
 </resources>

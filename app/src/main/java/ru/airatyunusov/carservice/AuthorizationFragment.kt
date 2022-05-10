@@ -11,7 +11,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -19,7 +18,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import ru.airatyunusov.carservice.model.FirebaseHelper
-import ru.airatyunusov.carservice.model.TokenFirebaseModel
 import ru.airatyunusov.carservice.model.User
 
 class AuthorizationFragment : Fragment() {
@@ -84,7 +82,6 @@ class AuthorizationFragment : Fragment() {
         roleSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
         roleSpinner?.adapter = roleSpinnerAdapter
 
-
         createUserBtn?.setOnClickListener {
             if (isCheck) {
                 readEmailAndPassword()
@@ -135,7 +132,6 @@ class AuthorizationFragment : Fragment() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 Log.e("SELECTED", "Ничего не выбранно")
             }
-
         }
     }
 
@@ -213,6 +209,12 @@ class AuthorizationFragment : Fragment() {
                     bundleOf(MainActivity.BUNDLE_KEY to true)
                 )
             }
+            EMPLOYEE -> {
+                setFragmentResult(
+                    MainActivity.SHOW_EMPLOYEE_FRAGMENT,
+                    bundleOf(MainActivity.BUNDLE_KEY to true)
+                )
+            }
         }
     }
 
@@ -240,7 +242,7 @@ class AuthorizationFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
-                    //auth.currentUser?.let { showNextFragment(it) }
+                    // auth.currentUser?.let { showNextFragment(it) }
                     loadDataUser()
                 } else {
                     Log.w(TAG, "createUser:fail", task.exception)
@@ -256,7 +258,6 @@ class AuthorizationFragment : Fragment() {
     private fun loadDataUser() {
         val query =
             reference.child(USERS_FB).orderByChild("id").equalTo(auth.currentUser?.uid)
-
 
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -311,19 +312,19 @@ class AuthorizationFragment : Fragment() {
         val phone = phoneEditText?.text.toString().toLong()
 
         val user = auth.uid?.let { User(it, role, name, phone) } ?: User()
-        reference.child(USERS_FB).push().setValue(user)
+        // reference.child(USERS_FB).push().setValue(user)
+        user.saveUser()
 
         return user
     }
 
     companion object {
-        private const val LOGIN = "user"
-        private const val PASSWORD = "user"
         private const val TAG = "FIREBASE_AUTH"
         private const val USERS_FB = "users"
 
         private const val ADMIN = "Администратор"
         private const val CUSTOMER = "Клиент"
+        private const val EMPLOYEE = MainActivity.ROLE_EMPLOYEE
 
         private val LIST_ROLE: List<String> = listOf(ADMIN, CUSTOMER)
     }

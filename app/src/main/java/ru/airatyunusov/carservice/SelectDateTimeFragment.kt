@@ -187,7 +187,6 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
         }
     }
 
-
     private fun registration(callBack: WeakReference<EnrollCallBack>) {
         listEmployee = loadListEmployee() // список сотрудников
 
@@ -471,6 +470,10 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
         return list
     }*/
 
+    /**
+     * Увеличивыет значения даты и времени начала и окончанияе недели на одну неделю
+     **/
+
     private fun updateStartEndWeekDateTime() {
         startWeek = endWeek.plusDays(1).withHour(timeStart.hour).withMinute(timeStart.minute)
         endWeek = endWeek.plusDays(7).withHour(timeEnd.hour).withMinute(timeEnd.minute)
@@ -498,6 +501,9 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
         val days: Int = Period.between(startWeek.toLocalDate(), endWeek.toLocalDate()).days
         return days > dayExecuteServices || (days == dayExecuteServices && hours > hoursCompleteTemp)
     }
+    /**
+     * Вычисляет начало неделя для записи
+     * */
 
     private fun updateStartWeekDateTime(startWeek: LocalDateTime): LocalDateTime {
         var resultDateTime = startWeek.plusHours(1).withMinute(0).withSecond(0).withNano(0)
@@ -510,6 +516,10 @@ class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
         }
         return resultDateTime
     }
+
+    /**
+     * Вычисляет окончание неделя для записи
+     * */
 
     private fun getDateTimeEndWeek(): LocalDateTime {
         return LocalDateTime.now().let { // apply

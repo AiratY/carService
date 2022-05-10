@@ -8,25 +8,27 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import ru.airatyunusov.carservice.model.Employee
-import ru.airatyunusov.carservice.model.FirebaseHelper
+import ru.airatyunusov.carservice.model.User
 
-class EmployeeFragment : Fragment() {
+class EmployeeFragment : BlankFragment() {
 
     private var branchId = ""
     private var employee: Employee? = null
     private var deleteBtn: Button? = null
+    private var loginEditText: EditText? = null
+    private var passwordEditText: EditText? = null
     private var childName = ""
-    private val reference = FirebaseHelper().getDatabaseReference()
+
+    private var firstName: String = ""
+    private var lastName: String = ""
+    private var patronymic: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_employee, container, false)
     }
 
@@ -37,9 +39,9 @@ class EmployeeFragment : Fragment() {
         val lastNameEditText: EditText = view.findViewById(R.id.lastNameEditText)
         val patronymicEditText: EditText = view.findViewById(R.id.patronymicEditText)
         val saveBtn: Button = view.findViewById(R.id.saveEmployeeButton)
+        loginEditText = view.findViewById(R.id.loginEmployeeEditText)
+        passwordEditText = view.findViewById(R.id.passwordEmployeeEditText)
         deleteBtn = view.findViewById(R.id.deleteEmployeeBtn)
-
-        goneDeleteBtn()
 
         arguments?.let {
             branchId = it.getString(BRANCH_ID) ?: ""
@@ -54,32 +56,62 @@ class EmployeeFragment : Fragment() {
             this@EmployeeFragment.branchId = branchId
         }
 
+        if (employee == null) {
+            visibleLoginAndPasswordEditText()
+        }
+
         deleteBtn?.setOnClickListener {
             removeEmployee()
-            returnOnBranchFragment()
+            returnBack()
         }
 
         saveBtn.setOnClickListener {
-            val firstName = firstNameEditText.text.toString()
-            val lastName = lastNameEditText.text.toString()
-            val patronymic: String = patronymicEditText.text.toString()
+            firstName = firstNameEditText.text.toString()
+            lastName = lastNameEditText.text.toString()
+            patronymic = patronymicEditText.text.toString()
+            val login: String = loginEditText?.text.toString()
+            val password: String = passwordEditText?.text.toString()
 
-            if (firstName.isEmpty() || lastName.isEmpty() || patronymic.isEmpty()) {
+            if (firstName.isEmpty() || lastName.isEmpty() || patronymic.isEmpty() || login.isEmpty() || password.isEmpty()) {
                 Toast.makeText(
                     requireContext(),
                     "Поля для ввода не должны бысь пустыми",
                     Toast.LENGTH_LONG
                 ).show()
+            } else if (password.length < 6) {
+                Toast.makeText(
+                    requireContext(),
+                    "Пароль должен содержать минимум 6 символов",
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
                 if (employee == null) {
-                    saveEmployee(firstName, lastName, patronymic)
+                    firebaseHelper.createAccount(
+                        requireActivity(),
+                        login,
+                        password
+                    ) { id -> saveDataEmployee(id) }
+                    // saveEmployee(firstName, lastName, patronymic, login, password)
                 } else {
                     updateEmployee(firstName, lastName, patronymic)
                 }
-                returnOnBranchFragment()
+                returnBack()
             }
         }
     }
+
+    /**
+     * Показывает поля для ввода логина и пароля
+     * */
+
+    private fun visibleLoginAndPasswordEditText() {
+        loginEditText?.visibility = View.VISIBLE
+        passwordEditText?.visibility = View.VISIBLE
+    }
+
+    /**
+     * Удаление данных о сотруднике из БД
+     * */
 
     private fun removeEmployee() {
         val key = employee?.id
@@ -96,20 +128,43 @@ class EmployeeFragment : Fragment() {
         }
     }
 
-    private fun goneDeleteBtn() {
-        deleteBtn?.visibility = View.GONE
-    }
-
     private fun visibleDeleteBtn() {
         deleteBtn?.visibility = View.VISIBLE
     }
 
-    private fun returnOnBranchFragment() {
+    /*private fun returnOnBranchFragment() {
         setFragmentResult(
             MainActivity.SHOW_ADMIN_FRAGMENT,
             bundleOf(MainActivity.BUNDLE_KEY to true)
         )
+    }*/
+
+    /**
+     * Сохраняет в БД данные об сотрудники
+     */
+
+    private fun saveDataEmployee(id: String) {
+        updateEmployeeInFireBase(id, branchId, firstName, lastName, patronymic)
+        val user = User(id = id, role = MainActivity.ROLE_EMPLOYEE, name = firstName)
+
+        /*user.saveUserDataInSharedPreference(requireActivity(), resources)*/
+
+        user.saveUser()
+
+        /*try {
+            val reference = FirebaseHelper().getDatabaseReference()
+
+            reference.child("users").push().setValue(user)
+        } catch (ex: InvocationTargetException) {
+            Log.e("Check", ex.cause.toString())
+        } catch (ex: Exception) {
+            Log.e("Check", ex.cause?.printStackTrace().toString())
+        }*/
     }
+
+    /**
+     * Обновление данных сотрудника в БД
+     * */
 
     private fun updateEmployeeInFireBase(
         key: String,
@@ -125,10 +180,20 @@ class EmployeeFragment : Fragment() {
         reference.updateChildren(childUpdates)
     }
 
-    private fun saveEmployee(firstName: String, lastName: String, patronymic: String) {
-        val key = reference.child(childName).push().key
+    /**
+     * Сохранение сотрудника в БД
+     * */
+
+    private fun saveEmployee(
+        firstName: String,
+        lastName: String,
+        patronymic: String,
+        login: String,
+        password: String
+    ) {
+
+        val key = reference.child(childName).push().key // получить значение из БД
         key?.let {
-            updateEmployeeInFireBase(it, branchId, firstName, lastName, patronymic)
         }
     }
 

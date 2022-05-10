@@ -36,7 +36,11 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 ROLE_EMPLOYEE -> {
-                    showAuthorizationFragment()
+                    supportFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        add<EmployeePageFragment>(R.id.fragment_container_view)
+                        addToBackStack(NAME_BACK_STACK)
+                    }
                 }
                 ROLE_ADMIN -> {
                     supportFragmentManager.commit {
@@ -130,7 +134,8 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.setFragmentResultListener(SHOW_DETAIL_TOKEN, this) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 val token = bundle.get(TOKEN) as? TokenFirebaseModel ?: TokenFirebaseModel()
-                replaceFragment(TokenDetailFragment.newInstance(token))
+                val isDelete = bundle.getBoolean(IS_DELETE_TOKEN)
+                replaceFragment(TokenDetailFragment.newInstance(token, isDelete))
             }
         }
 
@@ -143,6 +148,12 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.setFragmentResultListener(SHOW_AUTH, this) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 replaceFragment(AuthorizationFragment())
+            }
+        }
+
+        supportFragmentManager.setFragmentResultListener(SHOW_EMPLOYEE_FRAGMENT, this) { _, bundle ->
+            if (bundle.getBoolean(BUNDLE_KEY)) {
+                replaceFragment(EmployeePageFragment())
             }
         }
 
@@ -189,13 +200,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     companion object {
         private const val NAME_BACK_STACK = "fragments"
         const val MESSAGE_USER = "action"
         const val SHOW_ENROLL = "show enroll"
         const val SHOW_ADMIN_FRAGMENT = "show admin"
         const val SHOW_CUSTOMER_FRAGMENT = "show_customer_page"
+        const val SHOW_EMPLOYEE_FRAGMENT = "show_employee_page"
         const val SHOW_SELECT_DATE_TIME = "show_select_date_time"
         const val SHOW_ADD_SERVICE = "show_ADD_SERVICE"
         const val BUNDLE_KEY = "show"
@@ -216,12 +227,12 @@ class MainActivity : AppCompatActivity() {
         const val LIST_SERVICES = "list_services"
         const val AUTH = "is_auth"
         const val TOKEN = "token"
+        const val IS_DELETE_TOKEN = "is delete"
         const val SERVICE = "service"
         const val SHOW_AUTH = "show_auth_page"
 
-
         private const val ROLE_CUSTOMER = "Клиент"
-        private const val ROLE_EMPLOYEE = "employee"
+        const val ROLE_EMPLOYEE = "Сотрудник"
         private const val ROLE_ADMIN = "Администратор"
     }
 }

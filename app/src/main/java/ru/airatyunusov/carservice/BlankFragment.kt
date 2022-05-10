@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import ru.airatyunusov.carservice.model.FirebaseHelper
 
-open class BlankFragment: Fragment() {
-
-    protected val reference = FirebaseHelper().getDatabaseReference()
+open class BlankFragment : Fragment() {
+    protected val firebaseHelper = FirebaseHelper()
+    protected val reference = firebaseHelper.getDatabaseReference()
 
     /**
      * Возвращает назад
@@ -31,6 +31,7 @@ open class BlankFragment: Fragment() {
         val userId = getString(R.string.user_id_key_SP)
         return sharedPreferences.getString(userId, "") ?: ""
     }
+
     /**
      * Выходит из аккаунта
      * */
@@ -50,5 +51,4 @@ open class BlankFragment: Fragment() {
             bundleOf(MainActivity.BUNDLE_KEY to true)
         )
     }
-
 }

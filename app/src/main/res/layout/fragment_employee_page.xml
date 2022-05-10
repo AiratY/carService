@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".EmployeePageFragment">
+
+        <ImageView
+            android:id="@+id/iconEmployeeImageView"
+            android:layout_width="@dimen/width_icon_user"
+            android:layout_height="@dimen/width_icon_user"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:contentDescription="@string/desc_icon_image_view"
+            android:src="@drawable/ic_baseline_engineering_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fullNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:text="Иванов Иван Иванович"
+            android:textSize="24sp"
+            android:theme="@style/valueTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iconEmployeeImageView" />
+
+        <View
+            android:id="@+id/selection"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/purple_500"
+            app:layout_constraintTop_toBottomOf="@id/fullNameTextView" />
+
+        <Button
+            android:id="@+id/prevWeekButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:enabled="false"
+            android:text="Предыдущая \nнеделя"
+            app:layout_constraintEnd_toStartOf="@id/nextWeekButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selection" />
+
+        <Button
+            android:id="@+id/nextWeekButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:text="Следующая \nнеделя"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/prevWeekButton"
+            app:layout_constraintTop_toTopOf="@+id/selection" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tokenRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/nextWeekButton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

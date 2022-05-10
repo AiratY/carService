@@ -12,7 +12,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import org.w3c.dom.Text
 import ru.airatyunusov.carservice.callbacks.TokenCallBack
 import ru.airatyunusov.carservice.model.*
 import java.lang.ref.WeakReference
@@ -30,7 +29,8 @@ class TokenDetailFragment : BlankFragment(), TokenCallBack {
     private var carTextView: TextView? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -48,6 +48,10 @@ class TokenDetailFragment : BlankFragment(), TokenCallBack {
         val priceTextView: TextView = view.findViewById(R.id.priceTextView)
 
         arguments?.let {
+            val isDelete = it.getBoolean(IS_DELETE, true)
+            if (!isDelete) {
+                deleteTokenButton.visibility = View.GONE
+            }
             val token = it.get(TOKEN) as? TokenFirebaseModel ?: TokenFirebaseModel()
             dateTimeTextView.text = token.toString()
             priceTextView.text = "${token.price} руб."
@@ -68,7 +72,6 @@ class TokenDetailFragment : BlankFragment(), TokenCallBack {
             returnBack()
         }
     }
-
 
     private fun removeToken() {
         reference.child(TICKET_FIREBASE_KEY).child(tokenId).removeValue()
@@ -145,9 +148,10 @@ class TokenDetailFragment : BlankFragment(), TokenCallBack {
         private const val TOKEN = "TOKEN"
         private const val CARS = "cars"
         private const val TICKET_FIREBASE_KEY = "tickets"
-        fun newInstance(token: TokenFirebaseModel): TokenDetailFragment {
+        private const val IS_DELETE = "is_delete"
+        fun newInstance(token: TokenFirebaseModel, isDelete: Boolean): TokenDetailFragment {
             return TokenDetailFragment().apply {
-                arguments = bundleOf(TOKEN to token)
+                arguments = bundleOf(TOKEN to token, IS_DELETE to isDelete)
             }
         }
     }

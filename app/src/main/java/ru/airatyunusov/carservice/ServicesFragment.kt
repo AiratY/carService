@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import ru.airatyunusov.carservice.model.ServiceModel
 
-class ServicesFragment : BlankFragment() {
+class ServicesFragment : BaseFragment() {
 
     private var nameEditText: EditText? = null
     private var hoursEditText: EditText? = null
@@ -25,9 +25,9 @@ class ServicesFragment : BlankFragment() {
 
     private var childName = ""
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_services, container, false)

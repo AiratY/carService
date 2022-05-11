@@ -27,7 +27,8 @@
         <entry key="..\:/DevelopApp/app/src/main/res/layout/item_service_rv.xml" value="0.33" />
         <entry key="..\:/DevelopApp/app/src/main/res/layout/item_token.xml" value="0.33" />
         <entry key="..\:/DevelopApp/app/src/main/res/layout/services_item_on_list.xml" value="0.20416666666666666" />
-        <entry key="..\:/DevelopApp/app/src/main/res/layout/token_item_recyler_view.xml" value="0.20416666666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/layout/token_item_recyler_view.xml" value="0.33" />
+        <entry key="..\:/DevelopApp/app/src/main/res/layout/toolbar.xml" value="0.20416666666666666" />
         <entry key="..\:/DevelopApp/app/src/main/res/menu/menu_admin_page.xml" value="0.20416666666666666" />
         <entry key="..\:/DevelopApp/app/src/main/res/menu/menu_edit.xml" value="0.20416666666666666" />
       </map>

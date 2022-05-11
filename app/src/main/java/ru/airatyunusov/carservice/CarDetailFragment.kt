@@ -1,7 +1,6 @@
 package ru.airatyunusov.carservice
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import ru.airatyunusov.carservice.model.CarModel
-import ru.airatyunusov.carservice.model.FirebaseHelper
 
-class CarDetailFragment : BlankFragment() {
+class CarDetailFragment : BaseFragment() {
 
     private var makeCarEditText: EditText? = null
     private var modelCarEditText: EditText? = null
@@ -29,7 +27,8 @@ class CarDetailFragment : BlankFragment() {
     private var carModel: CarModel? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_car_detail, container, false)
@@ -138,7 +137,7 @@ class CarDetailFragment : BlankFragment() {
      * */
 
     private fun checkValuesEditTexts(): Boolean {
-        getValuesEditText()//Обновляем значения
+        getValuesEditText() // Обновляем значения
 
         if (make.isEmpty() || model.isEmpty() || number.isEmpty() || year == 0) {
             Toast.makeText(
@@ -165,7 +164,6 @@ class CarDetailFragment : BlankFragment() {
             return true
         }
     }
-
 
     /**
      * Записывает текузие значение в переменные

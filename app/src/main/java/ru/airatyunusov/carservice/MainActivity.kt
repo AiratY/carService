@@ -15,8 +15,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        /*setSupportActionBar(findViewById(R.id.my_toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)*/
 
         val sharedPreferences = getSharedPreferences(
             getString(R.string.user_data_sharedPreference),
@@ -148,6 +148,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.setFragmentResultListener(SHOW_AUTH, this) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 replaceFragment(AuthorizationFragment())
+                //showAuthorizationFragment()
             }
         }
 

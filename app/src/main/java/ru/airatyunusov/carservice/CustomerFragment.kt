@@ -18,7 +18,7 @@ import ru.airatyunusov.carservice.callbacks.CustomerCallBack
 import ru.airatyunusov.carservice.model.CarModel
 import ru.airatyunusov.carservice.model.TokenFirebaseModel
 
-class CustomerFragment : BlankFragment(), CustomerCallBack {
+class CustomerFragment : BaseFragment(), CustomerCallBack {
 
     private var carsRecyclerView: RecyclerView? = null
     private var carAdapterRecyclerView: CarRecyclerViewAdapter? = null

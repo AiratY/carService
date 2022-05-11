@@ -29,7 +29,7 @@ import java.time.LocalTime
 import java.time.Period
 import java.util.concurrent.Executors
 
-class SelectDateTimeFragment : BlankFragment(), EnrollCallBack {
+class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
 
     private var dateTimeSpinner: Spinner? = null
     private var listEmployeeSpinner: Spinner? = null

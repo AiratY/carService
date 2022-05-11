@@ -61,4 +61,13 @@
     <string name="text_title_price_tV">Стоимость:</string>
     <string name="text_price_tV">10000 руб.</string>
     <string name="desc_icon_image_view">icon</string>
+    <string name="text_message_null_token_TV">Нет записей</string>
+    <string name="text_title_phone_TV">Телефон:</string>
+    <string name="text_phone_tv">89123456789</string>
+    <string name="text_full_name_tv">Иванов Иван Иванович</string>
+    <string name="text_prev_week_btn">Предыдущая \nнеделя</string>
+    <string name="text_next_week_btn">Следующая \nнеделя</string>
+    <string name="text_title_TV">Статус:</string>
+    <string name="text_title_start_date_time_TV">Начало:</string>
+    <string name="text_title_end_date_time_TV">Окончание:</string>
 </resources>

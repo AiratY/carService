@@ -57,13 +57,13 @@ class EnrollFragment : Fragment(), TestCallBack {
         serviceListRecyclerView.adapter = servicesListRecyclerViewAdapter
 
         /* val carList: Array<out String> =
-             resources.getStringArray(R.array.carList) */// arrayListOf("BMW", "LADA", "MERCEDES", "KIA")
+             resources.getStringArray(R.array.carList) */ // arrayListOf("BMW", "LADA", "MERCEDES", "KIA")
         /*val branchList: Array<String> =
             arrayOf("СберСервис", "LADAСервис", "MERCEDESСервис", "KIAСервис")*/
         // val branchList: List<BranchModel> = loadBranchList()
         loadBranchList()
 
-        //Заполняем спинер списком автомобилей
+        // Заполняем спинер списком автомобилей
         listCars?.let {
             val carSpinnerAdapter: ArrayAdapter<CarModel> = ArrayAdapter(
                 requireContext(),
@@ -88,11 +88,10 @@ class EnrollFragment : Fragment(), TestCallBack {
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 Log.e("SELECTED", "Ничего не выбранно")
             }
-
         }
 
         sendBtn.setOnClickListener {
-            //Поменять на callBack вместо метода RecyclerViewAdapter
+            // Поменять на callBack вместо метода RecyclerViewAdapter
             val list: List<ServiceModel> =
                 servicesListRecyclerViewAdapter?.getCheckedServices() ?: emptyList()
             val chooseBranchId: BranchModel =

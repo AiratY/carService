@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
@@ -20,7 +21,7 @@ import ru.airatyunusov.carservice.model.TokenFirebaseModel
 import java.lang.ref.WeakReference
 import java.time.LocalDateTime
 
-class EmployeePageFragment : BlankFragment(), EmployeePageCallBack {
+class EmployeePageFragment : BaseFragment(), EmployeePageCallBack {
 
     private var prevWeekBtn: Button? = null
     private var nextWeekBtn: Button? = null
@@ -30,6 +31,9 @@ class EmployeePageFragment : BlankFragment(), EmployeePageCallBack {
     private var startWeek: LocalDateTime? = null
     private var endWeek: LocalDateTime? = null
     private var startWeekCash: LocalDateTime? = null
+    private var progressBar: ProgressBar? = null
+    private var messageTextView: TextView? = null
+    private var phoneTextView: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,12 +44,19 @@ class EmployeePageFragment : BlankFragment(), EmployeePageCallBack {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setTitle(TITLE_TOOLBAR)
+
+        progressBar = view.findViewById(R.id.employeeProgressBar)
         fullNameTextView = view.findViewById(R.id.fullNameTextView)
         val tokenRecyclerView: RecyclerView = view.findViewById(R.id.tokenRecyclerView)
         prevWeekBtn = view.findViewById(R.id.prevWeekButton)
         nextWeekBtn = view.findViewById(R.id.nextWeekButton)
         tokenRecyclerViewAdapter = TokenRecyclerViewAdapter { token -> openDetailToken(token) }
         tokenRecyclerView.adapter = tokenRecyclerViewAdapter
+        messageTextView = view.findViewById(R.id.messageNullTokenTextView)
+        phoneTextView = view.findViewById(R.id.phoneTextView)
 
         startWeek = getDateTimeStartWeek()
         startWeekCash = startWeek
@@ -134,6 +145,8 @@ class EmployeePageFragment : BlankFragment(), EmployeePageCallBack {
 
     private fun loadListToken(employeePageCallBack: EmployeePageCallBack) {
 
+        visibleProgressBar()
+
         val callBack: WeakReference<EmployeePageCallBack> = WeakReference(employeePageCallBack)
 
         val tokenQuery =
@@ -199,6 +212,7 @@ class EmployeePageFragment : BlankFragment(), EmployeePageCallBack {
 
     companion object {
         private const val TOKEN_MODEL_FIREBASE_KEY = "tickets"
+        private const val TITLE_TOOLBAR = "Профиль сотрудника"
     }
 
     /**
@@ -206,7 +220,46 @@ class EmployeePageFragment : BlankFragment(), EmployeePageCallBack {
      * */
 
     override fun setListTokenFirebaseModel(list: List<TokenFirebaseModel>) {
+        goneProgressBar()
+        if (list.isEmpty()) {
+            visibleNullMessage()
+        } else {
+            goneNullMessage()
+        }
+
         tokenRecyclerViewAdapter?.setDateSet(list)
+    }
+
+    /**
+     * Показывает сообщение о том что нет записей на текущей недели
+     * */
+
+    private fun visibleNullMessage() {
+        messageTextView?.visibility = View.VISIBLE
+    }
+
+    /**
+     * Скрывает сообщение о том что нет записей на текущей недели
+     * */
+
+    private fun goneNullMessage() {
+        messageTextView?.visibility = View.GONE
+    }
+
+    /**
+     * Показывает ProgressBar
+     * */
+
+    private fun visibleProgressBar() {
+        progressBar?.visibility = View.VISIBLE
+    }
+
+    /**
+     * Скрывает ProgressBar
+     * */
+
+    private fun goneProgressBar() {
+        progressBar?.visibility = View.GONE
     }
 
     /**
@@ -214,6 +267,8 @@ class EmployeePageFragment : BlankFragment(), EmployeePageCallBack {
      * */
 
     override fun setDataEmployee(employee: Employee) {
-        fullNameTextView?.text = "${employee.lastName} ${employee.firstName} ${employee.patronymic}"
+        val fullName = "${employee.lastName} ${employee.firstName} ${employee.patronymic}"
+        fullNameTextView?.text = fullName
+        phoneTextView?.text = employee.phone.toString()
     }
 }

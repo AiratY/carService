@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import com.google.firebase.database.DataSnapshot
@@ -16,47 +17,72 @@ import ru.airatyunusov.carservice.callbacks.TokenCallBack
 import ru.airatyunusov.carservice.model.*
 import java.lang.ref.WeakReference
 
-class TokenDetailFragment : BlankFragment(), TokenCallBack {
+class TokenDetailFragment : BaseFragment(), TokenCallBack {
 
     private var carId = ""
     private var branchId = ""
     private var employeeId = ""
     private var tokenId = ""
+    private var isDelete = true
     private var callBack: WeakReference<TokenCallBack>? = null
+
+    private var progressBar: ProgressBar? = null
+    private var deleteTokenButton: Button? = null
 
     private var branchTextView: TextView? = null
     private var employeeTextView: TextView? = null
     private var carTextView: TextView? = null
+    private var servicesTextView: TextView? = null
+    private var priceTextView: TextView? = null
+    private var dateTimeTextView: TextView? = null
+
+    private var titleBranchTextView: TextView? = null
+    private var titleEmployeeTextView: TextView? = null
+    private var titleCarTextView: TextView? = null
+    private var titleServicesTextView: TextView? = null
+    private var titlePriceTextView: TextView? = null
+    private var titleDateTimeTextView: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_token_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setTitle(TITLE_TOOLBAR)
+        showButtonBack()
+
         callBack = WeakReference(this)
-        val dateTimeTextView: TextView = view.findViewById(R.id.dateTimeTextView)
+        dateTimeTextView = view.findViewById(R.id.startDateTimeTextView)
         branchTextView = view.findViewById(R.id.branchTextView)
         employeeTextView = view.findViewById(R.id.employeeTextView)
         carTextView = view.findViewById(R.id.carTextView)
-        val servicesTextView: TextView = view.findViewById(R.id.servicesTextView)
-        val deleteTokenButton: Button = view.findViewById(R.id.deleteTokenButton)
-        val priceTextView: TextView = view.findViewById(R.id.priceTextView)
+        servicesTextView = view.findViewById(R.id.servicesTextView)
+        deleteTokenButton = view.findViewById(R.id.deleteTokenButton)
+        priceTextView = view.findViewById(R.id.priceTextView)
+        progressBar = view.findViewById(R.id.descTokenProgressBar)
+
+        titleBranchTextView = view.findViewById(R.id.titleBranchTextView)
+        titleEmployeeTextView = view.findViewById(R.id.titleEmployeeTextView)
+        titleCarTextView = view.findViewById(R.id.titleCarTextView)
+        titleServicesTextView = view.findViewById(R.id.titleServicesTextView)
+        titlePriceTextView = view.findViewById(R.id.titlePriceTextView)
+        titleDateTimeTextView = view.findViewById(R.id.titleStartDateTimeTextView)
 
         arguments?.let {
-            val isDelete = it.getBoolean(IS_DELETE, true)
-            if (!isDelete) {
-                deleteTokenButton.visibility = View.GONE
-            }
+            isDelete = it.getBoolean(IS_DELETE, true)
+
             val token = it.get(TOKEN) as? TokenFirebaseModel ?: TokenFirebaseModel()
-            dateTimeTextView.text = token.toString()
-            priceTextView.text = "${token.price} руб."
+            dateTimeTextView?.text = token.toString()
+            val priceText = "${token.price} руб."
+            priceTextView?.text = priceText
             for (services in token.listServices) {
-                servicesTextView.append(services.name + ",\n")
+                servicesTextView?.append(services.name + ",\n")
             }
             branchId = token.branchId
             carId = token.carId
@@ -67,7 +93,7 @@ class TokenDetailFragment : BlankFragment(), TokenCallBack {
             loadEmployee()
         }
 
-        deleteTokenButton.setOnClickListener {
+        deleteTokenButton?.setOnClickListener {
             removeToken()
             returnBack()
         }
@@ -144,7 +170,16 @@ class TokenDetailFragment : BlankFragment(), TokenCallBack {
         })
     }
 
+    /**
+     * Скрывает ProgressBar
+     * */
+
+    private fun goneProgressBar() {
+        progressBar?.visibility = View.GONE
+    }
+
     companion object {
+        private const val TITLE_TOOLBAR = "Описание записи"
         private const val TOKEN = "TOKEN"
         private const val CARS = "cars"
         private const val TICKET_FIREBASE_KEY = "tickets"
@@ -162,6 +197,8 @@ class TokenDetailFragment : BlankFragment(), TokenCallBack {
 
     override fun setCar(car: CarModel) {
         carTextView?.text = car.toString()
+        visibleAllTextView()
+        goneProgressBar()
     }
 
     /**
@@ -170,6 +207,30 @@ class TokenDetailFragment : BlankFragment(), TokenCallBack {
 
     override fun setEmployee(employee: Employee) {
         employeeTextView?.text = employee.toString()
+    }
+
+    /**
+     * Показывает все TextView
+     * */
+
+    private fun visibleAllTextView() {
+        titleBranchTextView?.visibility = View.VISIBLE
+        titleEmployeeTextView?.visibility = View.VISIBLE
+        titleCarTextView?.visibility = View.VISIBLE
+        titleServicesTextView?.visibility = View.VISIBLE
+        titlePriceTextView?.visibility = View.VISIBLE
+        titleDateTimeTextView?.visibility = View.VISIBLE
+
+        branchTextView?.visibility = View.VISIBLE
+        employeeTextView?.visibility = View.VISIBLE
+        carTextView?.visibility = View.VISIBLE
+        servicesTextView?.visibility = View.VISIBLE
+        priceTextView?.visibility = View.VISIBLE
+        dateTimeTextView?.visibility = View.VISIBLE
+
+        if (isDelete) {
+            deleteTokenButton?.visibility = View.VISIBLE
+        }
     }
 
     /**

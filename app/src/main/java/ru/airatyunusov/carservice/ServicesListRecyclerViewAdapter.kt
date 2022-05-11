@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import ru.airatyunusov.carservice.model.CarModel
 import ru.airatyunusov.carservice.model.ServiceModel
 
 class ServicesListRecyclerViewAdapter(private val onClick: (Int) -> Unit) :

@@ -134,7 +134,6 @@ class CatalogServicesFragment : Fragment(), ServicesCallBack {
         return sharedPreferences.getString(userId, "") ?: ""
     }
 
-
     companion object {
     }
 

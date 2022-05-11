@@ -6,7 +6,7 @@ import android.os.Parcelable
 data class CarModel(
     var id: String = "",
     val userId: String = "",
-    val make: String = "",//марка
+    val make: String = "", // марка
     val model: String = "",
     val numberCar: String = "",
     val year: Int = 0

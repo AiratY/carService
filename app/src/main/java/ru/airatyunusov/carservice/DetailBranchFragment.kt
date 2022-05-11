@@ -76,8 +76,8 @@ class DetailBranchFragment : Fragment() {
             val name = nameBranchEditText.text.toString()
             val address = addressEditText.text.toString()
             val phone: Long = phoneBranchEditText.text.toString().toLong()
-            val startTime: LocalTime =LocalTime.of(startTimeTimePicker.hour, startTimeTimePicker.minute)
-            val endTime: LocalTime =LocalTime.of(endTimeTimePicker.hour, endTimeTimePicker.minute)
+            val startTime: LocalTime = LocalTime.of(startTimeTimePicker.hour, startTimeTimePicker.minute)
+            val endTime: LocalTime = LocalTime.of(endTimeTimePicker.hour, endTimeTimePicker.minute)
 
             if (name.isEmpty() || address.isEmpty() || (phone == 0L)) {
                 Toast.makeText(

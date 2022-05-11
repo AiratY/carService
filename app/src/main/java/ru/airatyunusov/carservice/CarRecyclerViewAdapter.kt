@@ -32,7 +32,6 @@ class CarRecyclerViewAdapter(private val onClick: (CarModel) -> Unit) :
             numberCatTextView.text = carModel.numberCar
             yearCarTextView.text = carModel.year.toString()
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

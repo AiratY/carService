@@ -11,7 +11,7 @@ import androidx.core.os.bundleOf
 import ru.airatyunusov.carservice.model.Employee
 import ru.airatyunusov.carservice.model.User
 
-class EmployeeFragment : BlankFragment() {
+class EmployeeFragment : BaseFragment() {
 
     private var branchId = ""
     private var employee: Employee? = null

@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -24,7 +23,7 @@ import ru.airatyunusov.carservice.model.*
 import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
 
-class AdminFragment : BlankFragment(), AdminCallBack {
+class AdminFragment : BaseFragment(), AdminCallBack {
     private var listBranchRecyclerView: RecyclerView? = null
 
     private val database =

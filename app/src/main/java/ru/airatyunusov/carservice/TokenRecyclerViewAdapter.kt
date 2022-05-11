@@ -7,18 +7,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.airatyunusov.carservice.model.TokenFirebaseModel
+import java.time.LocalDateTime
 
-class TokenRecyclerViewAdapter(private val onClick: (TokenFirebaseModel) -> Unit): RecyclerView.Adapter<TokenRecyclerViewAdapter.ViewHolder>() {
+class TokenRecyclerViewAdapter(private val onClick: (TokenFirebaseModel) -> Unit) :
+    RecyclerView.Adapter<TokenRecyclerViewAdapter.ViewHolder>() {
 
     private var dataset: List<TokenFirebaseModel> = emptyList()
+    private val nowDate = LocalDateTime.now()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val dateTimeTextView: TextView = view.findViewById(R.id.dateTimeTextView)
+        private val startDateTimeTextView: TextView = view.findViewById(R.id.startDateTimeTextView)
+        private val endDateTimeTextView: TextView = view.findViewById(R.id.endDateTimeTextView)
+        private val statusTextView: TextView = view.findViewById(R.id.statusTextView)
         private var currentToken: TokenFirebaseModel? = null
 
         init {
             view.setOnClickListener {
-                currentToken?.let{
+                currentToken?.let {
                     onClick(it)
                 }
             }
@@ -26,14 +31,26 @@ class TokenRecyclerViewAdapter(private val onClick: (TokenFirebaseModel) -> Unit
 
         fun bind(tokenFirebaseModel: TokenFirebaseModel) {
             currentToken = tokenFirebaseModel
-            dateTimeTextView.text = tokenFirebaseModel.toString()
-        }
+            val startDateTime: LocalDateTime =
+                LocalDateTime.parse(tokenFirebaseModel.startRecordDateTime)
+            startDateTimeTextView.text = DateTimeHelper.convertToStringMyPattern(startDateTime)
 
+            val endDateTime: LocalDateTime =
+                LocalDateTime.parse(tokenFirebaseModel.endRecordDateTime)
+            endDateTimeTextView.text = DateTimeHelper.convertToStringMyPattern(endDateTime)
+
+            if (endDateTime < nowDate) {
+                statusTextView.text = COMPLETE
+            } else {
+                statusTextView.text = NO_COMPLETE
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_token, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.token_item_recyler_view, parent, false)
         )
     }
 
@@ -49,5 +66,10 @@ class TokenRecyclerViewAdapter(private val onClick: (TokenFirebaseModel) -> Unit
     fun setDateSet(dataSet: List<TokenFirebaseModel>) {
         dataset = dataSet
         notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val COMPLETE = "Завершён"
+        private const val NO_COMPLETE = "Ожидается"
     }
 }

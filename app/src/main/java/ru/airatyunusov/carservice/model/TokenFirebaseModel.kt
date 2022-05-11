@@ -13,7 +13,7 @@ data class TokenFirebaseModel(
     val idEmployee: String = "",
     var price: Long = 0,
     var listServices: List<ServiceModel> = emptyList()
-) :Parcelable {
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
         parcel.readString().toString(),
@@ -58,5 +58,4 @@ data class TokenFirebaseModel(
             return arrayOfNulls(size)
         }
     }
-
 }

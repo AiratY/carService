@@ -47,6 +47,9 @@ class EmployeePageFragment : BaseFragment(), EmployeePageCallBack {
         super.onViewCreated(view, savedInstanceState)
 
         setTitle(TITLE_TOOLBAR)
+        showButtonBack()
+        setListenerArrowBack()
+        setMenuWithExit()
 
         progressBar = view.findViewById(R.id.employeeProgressBar)
         fullNameTextView = view.findViewById(R.id.fullNameTextView)

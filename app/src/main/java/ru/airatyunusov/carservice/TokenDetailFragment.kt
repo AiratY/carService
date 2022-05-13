@@ -56,6 +56,9 @@ class TokenDetailFragment : BaseFragment(), TokenCallBack {
 
         setTitle(TITLE_TOOLBAR)
         showButtonBack()
+        showButtonBack()
+        setListenerArrowBack()
+        setMenuWithExit()
 
         callBack = WeakReference(this)
         dateTimeTextView = view.findViewById(R.id.startDateTimeTextView)

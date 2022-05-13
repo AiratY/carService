@@ -2,9 +2,13 @@ package ru.airatyunusov.carservice
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -23,6 +27,13 @@ open class BaseFragment : Fragment() {
         titleToolbar = view.findViewById(R.id.titleToolbar)
         toolbar = view.findViewById(R.id.toolbar)
 
+    }
+
+    /**
+     * Меню с выходом
+     * */
+
+    protected fun setMenuWithExit() {
         setMenu(R.menu.menu_admin_page)
 
         toolbar?.setOnMenuItemClickListener {
@@ -43,7 +54,12 @@ open class BaseFragment : Fragment() {
      * */
 
     fun showButtonBack() {
-        toolbar?.navigationIcon = resources.getDrawable(R.drawable.ic_baseline_arrow_back_24)
+        toolbar?.navigationIcon = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_baseline_arrow_back_24)
+    }
+    /**
+     * Устанавливает listener на возвращение назад
+     * */
+    fun setListenerArrowBack(){
         toolbar?.setNavigationOnClickListener {
             returnBack()
             // (requireActivity() as? AppCompatActivity)?.onBackPressed()
@@ -71,7 +87,8 @@ open class BaseFragment : Fragment() {
      * */
 
     protected fun returnBack() {
-        requireActivity().supportFragmentManager.popBackStack()
+        (requireActivity() as? AppCompatActivity)?.onBackPressed()
+        //requireActivity().supportFragmentManager.popBackStack()
     }
 
     /**
@@ -86,6 +103,19 @@ open class BaseFragment : Fragment() {
         )
         val userId = getString(R.string.user_id_key_SP)
         return sharedPreferences.getString(userId, "") ?: ""
+    }
+
+    /**
+     * ВОзвращает Name пользователя из SP
+     * */
+
+    protected fun getNameUser(): String {
+        val sharedPreferences = requireActivity().getSharedPreferences(
+            getString(R.string.user_data_sharedPreference),
+            Context.MODE_PRIVATE
+        )
+        val name = getString(R.string.user_name_key_SP)
+        return sharedPreferences.getString(name, "") ?: ""
     }
 
     /**
@@ -106,5 +136,12 @@ open class BaseFragment : Fragment() {
             MainActivity.SHOW_AUTH,
             bundleOf(MainActivity.BUNDLE_KEY to true)
         )
+    }
+    /**
+     * Указывает нужно ли показывать BottomNavigationView
+     * */
+
+    open fun isShowBottomNavigationView(): Boolean {
+        return false
     }
 }

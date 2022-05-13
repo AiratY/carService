@@ -4,19 +4,43 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.setFragmentResult
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.airatyunusov.carservice.model.*
 
 class MainActivity : AppCompatActivity() {
+    private var bottomNavigationView: BottomNavigationView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        /*setSupportActionBar(findViewById(R.id.my_toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)*/
+
+        bottomNavigationView = findViewById(R.id.adminBottomNavigationView)
+        //ADMIN
+        bottomNavigationView?.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.listServices -> {
+                    replaceFragment(CatalogServicesFragment())
+                    true
+                }
+                R.id.profile -> {
+                    replaceFragment(AdminFragment())
+                    true
+                }
+                R.id.listToken -> {
+                    replaceFragment(ListTokenAdminFragment())
+                    true
+                }
+                else -> false
+            }
+        }
 
         val sharedPreferences = getSharedPreferences(
             getString(R.string.user_data_sharedPreference),
@@ -139,7 +163,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        supportFragmentManager.setFragmentResultListener(SHOW_CUSTOMER_FRAGMENT, this) { _, bundle ->
+        supportFragmentManager.setFragmentResultListener(
+            SHOW_CUSTOMER_FRAGMENT,
+            this
+        ) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 replaceFragment(CustomerFragment())
             }
@@ -152,7 +179,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        supportFragmentManager.setFragmentResultListener(SHOW_EMPLOYEE_FRAGMENT, this) { _, bundle ->
+        supportFragmentManager.setFragmentResultListener(
+            SHOW_EMPLOYEE_FRAGMENT,
+            this
+        ) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 replaceFragment(EmployeePageFragment())
             }
@@ -193,12 +223,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val topFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view)
+        topFragment?.let { checkFragmentInBottomBar(it) }
+    }
+
+    /**
+     * Проверяет фрагмент на необходимость BottomNavigationView
+     * */
+    private fun checkFragmentInBottomBar(fragment: Fragment) {
+        if ((fragment as? BaseFragment)?.isShowBottomNavigationView() == true) {
+            visibleBottomNavigationView()
+        } else {
+            goneBottomNavigationView()
+        }
+    }
+
     private fun replaceFragment(fragment: Fragment) {
+        checkFragmentInBottomBar(fragment)
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace(R.id.fragment_container_view, fragment)
             addToBackStack(NAME_BACK_STACK)
         }
+    }
+
+    /**
+     * Показывает BottomNavigationView
+     * */
+    private fun visibleBottomNavigationView() {
+        bottomNavigationView?.visibility = View.VISIBLE
+    }
+
+    /**
+     * Скрывает BottomNavigationView
+     * */
+    private fun goneBottomNavigationView() {
+        bottomNavigationView?.visibility = View.GONE
     }
 
     companion object {

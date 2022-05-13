@@ -6,35 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".AuthorizationFragment">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/loginEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:autofillHints="emailAddress"
         android:ems="10"
-        android:hint="@string/hint_login_edit_text"
-        android:visibility="gone"
+        android:hint="@string/hint_email_edit_text"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/include"
         tools:layout_editor_absoluteX="0dp" />
 
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:autofillHints="password"
         android:ems="10"
         android:hint="@string/hint_password_edit_text"
         android:inputType="textPassword"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/loginEditText" />
 
     <Button
         android:id="@+id/signInButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mt_20dp"
         android:text="@string/text_sign_in_btn"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phoneEditText" />
@@ -43,42 +54,44 @@
         android:id="@+id/createUserButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="84dp"
-        android:text="Зарегистрироваться"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:text="@string/text_registration_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInButton" />
+        app:layout_constraintTop_toBottomOf="@+id/titleOrTextView" />
 
     <EditText
         android:id="@+id/nameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:autofillHints="name"
         android:ems="10"
-        android:layout_margin="10dp"
         android:inputType="text"
-        android:hint="Название/ Имя"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerRole" />
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerRole"
+        tools:hint="@string/text_hint_name_ed_auth" />
 
     <EditText
         android:id="@+id/phoneEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:autofillHints="phone"
         android:ems="10"
-        android:layout_margin="10dp"
-        android:inputType="number"
-        android:hint="Телефон"
+        android:hint="@string/text_title_phone_TV"
+        android:inputType="phone"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
 
     <TextView
         android:id="@+id/titleOrTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Или"
-        app:layout_constraintBottom_toTopOf="@+id/createUserButton"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:text="@string/text_title_or_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signInButton" />
@@ -87,8 +100,9 @@
         android:id="@+id/spinnerRole"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
         android:visibility="gone"
-        android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />

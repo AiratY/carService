@@ -8,16 +8,24 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import ru.airatyunusov.carservice.model.Employee
 import ru.airatyunusov.carservice.model.User
 
 class EmployeeFragment : BaseFragment() {
 
+    private var auth: FirebaseAuth? = null
     private var branchId = ""
     private var employee: Employee? = null
     private var deleteBtn: Button? = null
     private var loginEditText: EditText? = null
     private var passwordEditText: EditText? = null
+    private var firstNameEditText: EditText? = null
+    private var lastNameEditText: EditText? = null
+    private var patronymicEditText: EditText? = null
     private var childName = ""
 
     private var firstName: String = ""
@@ -33,15 +41,43 @@ class EmployeeFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        auth = Firebase.auth
+
+        setTitle("Сотрудник")
+        showButtonBack()
+        setListenerArrowBack()
+
+        toolbar?.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.actionExit -> {
+                    signOut()
+                    true
+                }
+                R.id.actionDelete -> {
+                    removeEmployee()
+                    returnBack()
+                    true
+                }
+                R.id.actionOk -> {
+                    prepareToSaveEmployees()
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+
         childName = getString(R.string.employees_firebase_key)
 
-        val firstNameEditText: EditText = view.findViewById(R.id.nameEmployeeEditText)
-        val lastNameEditText: EditText = view.findViewById(R.id.lastNameEditText)
-        val patronymicEditText: EditText = view.findViewById(R.id.patronymicEditText)
-        val saveBtn: Button = view.findViewById(R.id.saveEmployeeButton)
+        firstNameEditText = view.findViewById(R.id.nameEmployeeEditText)
+        lastNameEditText = view.findViewById(R.id.lastNameEditText)
+        patronymicEditText = view.findViewById(R.id.patronymicEditText)
+
         loginEditText = view.findViewById(R.id.loginEmployeeEditText)
         passwordEditText = view.findViewById(R.id.passwordEmployeeEditText)
-        deleteBtn = view.findViewById(R.id.deleteEmployeeBtn)
 
         arguments?.let {
             branchId = it.getString(BRANCH_ID) ?: ""
@@ -49,55 +85,72 @@ class EmployeeFragment : BaseFragment() {
         }
 
         employee?.apply {
-            firstNameEditText.setText(firstName)
-            lastNameEditText.setText(lastName)
-            patronymicEditText.setText(patronymic)
+            firstNameEditText?.setText(firstName)
+            lastNameEditText?.setText(lastName)
+            patronymicEditText?.setText(patronymic)
+            val textNull = "null"
+            loginEditText?.setText(textNull)
+            passwordEditText?.setText(textNull)
             visibleDeleteBtn()
             this@EmployeeFragment.branchId = branchId
         }
 
         if (employee == null) {
+            setMenu(R.menu.menu_save)
             visibleLoginAndPasswordEditText()
+        } else {
+            setMenu(R.menu.menu_save_delete)
         }
 
-        deleteBtn?.setOnClickListener {
-            removeEmployee()
-            returnBack()
-        }
+    }
 
-        saveBtn.setOnClickListener {
-            firstName = firstNameEditText.text.toString()
-            lastName = lastNameEditText.text.toString()
-            patronymic = patronymicEditText.text.toString()
-            val login: String = loginEditText?.text.toString()
-            val password: String = passwordEditText?.text.toString()
+    private fun prepareToSaveEmployees() {
+        firstName = firstNameEditText?.text.toString()
+        lastName = lastNameEditText?.text.toString()
+        patronymic = patronymicEditText?.text.toString()
+        val login: String = loginEditText?.text.toString()
+        val password: String = passwordEditText?.text.toString()
 
-            if (firstName.isEmpty() || lastName.isEmpty() || patronymic.isEmpty() || login.isEmpty() || password.isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    "Поля для ввода не должны бысь пустыми",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else if (password.length < 6) {
-                Toast.makeText(
-                    requireContext(),
-                    "Пароль должен содержать минимум 6 символов",
-                    Toast.LENGTH_LONG
-                ).show()
+        if (firstName.isEmpty() || lastName.isEmpty() || patronymic.isEmpty() || login.isEmpty() || password.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                MESSAGE_EDIT_TEXT_NOT_NULL,
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
+            if (employee == null) {
+
+                createAccount(login, password)
+
             } else {
-                if (employee == null) {
-                    firebaseHelper.createAccount(
-                        requireActivity(),
-                        login,
-                        password
-                    ) { id -> saveDataEmployee(id) }
-                    // saveEmployee(firstName, lastName, patronymic, login, password)
-                } else {
-                    updateEmployee(firstName, lastName, patronymic)
-                }
-                returnBack()
+                updateEmployee(firstName, lastName, patronymic)
             }
+            //returnBack()
         }
+    }
+
+    /**
+     * Регистрирует новый акаунт
+     * */
+
+    private fun createAccount(email: String, password: String) {
+        auth?.createUserWithEmailAndPassword(email, password)
+            ?.addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    val id = auth?.currentUser?.uid ?: ""
+                    updateEmployeeInFireBase(id, branchId, firstName, lastName, patronymic)
+                    val user = User(id = id, role = MainActivity.ROLE_EMPLOYEE, name = firstName)
+                    user.saveUser()
+                } else {
+                    val message = when ((task.exception as? FirebaseAuthException)?.errorCode) {
+                        ERROR_INVALID_EMAIL -> MESSAGE_ERROR_INVALID_EMAIL
+                        ERROR_WEAK_PASSWORD -> MESSAGE_ERROR_WEAK_PASSWORD
+                        ERROR_EMAIL_ALREADY_IN_USE -> MESSAGE_ERROR_EMAIL_ALREADY_IN_USE
+                        else -> task.exception?.message
+                    }
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     /**
@@ -132,35 +185,6 @@ class EmployeeFragment : BaseFragment() {
         deleteBtn?.visibility = View.VISIBLE
     }
 
-    /*private fun returnOnBranchFragment() {
-        setFragmentResult(
-            MainActivity.SHOW_ADMIN_FRAGMENT,
-            bundleOf(MainActivity.BUNDLE_KEY to true)
-        )
-    }*/
-
-    /**
-     * Сохраняет в БД данные об сотрудники
-     */
-
-    private fun saveDataEmployee(id: String) {
-        updateEmployeeInFireBase(id, branchId, firstName, lastName, patronymic)
-        val user = User(id = id, role = MainActivity.ROLE_EMPLOYEE, name = firstName)
-
-        /*user.saveUserDataInSharedPreference(requireActivity(), resources)*/
-
-        user.saveUser()
-
-        /*try {
-            val reference = FirebaseHelper().getDatabaseReference()
-
-            reference.child("users").push().setValue(user)
-        } catch (ex: InvocationTargetException) {
-            Log.e("Check", ex.cause.toString())
-        } catch (ex: Exception) {
-            Log.e("Check", ex.cause?.printStackTrace().toString())
-        }*/
-    }
 
     /**
      * Обновление данных сотрудника в БД
@@ -178,28 +202,26 @@ class EmployeeFragment : BaseFragment() {
             "/$childName/$key" to employee
         )
         reference.updateChildren(childUpdates)
+
+        returnBack()
     }
 
-    /**
-     * Сохранение сотрудника в БД
-     * */
-
-    private fun saveEmployee(
-        firstName: String,
-        lastName: String,
-        patronymic: String,
-        login: String,
-        password: String
-    ) {
-
-        val key = reference.child(childName).push().key // получить значение из БД
-        key?.let {
-        }
-    }
 
     companion object {
         private const val BRANCH_ID = "branch_id"
         private const val EMPLOYEE = "employee"
+
+        private const val ERROR_INVALID_EMAIL = "ERROR_INVALID_EMAIL"
+        private const val ERROR_WEAK_PASSWORD = "ERROR_WEAK_PASSWORD"
+        private const val ERROR_EMAIL_ALREADY_IN_USE = "ERROR_EMAIL_ALREADY_IN_USE"
+
+        private const val MESSAGE_ERROR_INVALID_EMAIL =
+            "Адрес электронной почты имеет неправильный формат"
+        private const val MESSAGE_ERROR_WEAK_PASSWORD = "Пароль должен содержать минимум 6 символов"
+        private const val MESSAGE_ERROR_EMAIL_ALREADY_IN_USE =
+            "Адрес электронной почты уже используется другим аккаунтом."
+
+        private const val MESSAGE_EDIT_TEXT_NOT_NULL = "Поля не должны быть пустыми"
 
         fun newInstance(branchId: String): EmployeeFragment {
             return EmployeeFragment().apply {

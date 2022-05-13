@@ -1,82 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/branch_em_8dp"
-    android:layout_marginEnd="@dimen/branch_em_8dp"
-    tools:context=".AdminFragment">
-
-
-    <ImageView
-        android:id="@+id/profileImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_launcher_background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/adminIdTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Название:Сигнал"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profileImageView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-
-    <Button
-        android:id="@+id/addBranchButton"
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="+ добавить филиал"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listBranchRecyclerView" />
+        android:layout_height="match_parent"
+        tools:context=".AdminFragment">
 
-    <TextView
-        android:id="@+id/titleBranchTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Филиалы:"
-        android:layout_margin="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileImageView" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listBranchRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/titleBranchTextView"
-        tools:layout_editor_absoluteX="8dp" />
+            <include
+                android:id="@+id/include"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/myServiceListButton"
-        android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/branch_mt_8dp"
-        android:layout_height="wrap_content"
-        android:text="Каталог услуг"
-        app:layout_constraintTop_toBottomOf="@+id/addBranchButton"
-        tools:layout_editor_absoluteX="122dp" />
+            <TextView
+                android:id="@+id/titleNameServiceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mt_16dp"
+                android:layout_marginTop="@dimen/branch_mt_8dp"
+                android:text="@string/text_title_name_service_tv"
+                android:theme="@style/titleTheme"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/include" />
 
-    <Button
-        android:id="@+id/signOutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Выйти"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myServiceListButton" />
+            <TextView
+                android:id="@+id/nameCarServiceTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/branch_em_8dp"
+                android:layout_marginTop="@dimen/branch_mt_8dp"
+                android:layout_marginEnd="@dimen/branch_em_8dp"
+                android:gravity="center"
+                android:theme="@style/valueTheme"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleNameServiceTextView"
+                tools:text="Сигнал" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/titleBranchTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mt_16dp"
+                android:layout_marginTop="@dimen/branch_mt_8dp"
+                android:layout_marginEnd="@dimen/branch_em_8dp"
+                android:text="@string/text_title_branch_text_view"
+                android:theme="@style/valueTheme"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nameCarServiceTextView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listBranchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/branch_em_8dp"
+                android:layout_marginTop="@dimen/branch_mt_8dp"
+                android:layout_marginEnd="@dimen/branch_em_8dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/titleBranchTextView" />
+
+
+            <TextView
+                android:id="@+id/addNewBranchTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/branch_mt_8dp"
+                android:layout_marginEnd="@dimen/mt_16dp"
+                android:text="@string/text_add_textView"
+                android:theme="@style/actionTextView"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nameCarServiceTextView" />
+
+            <ProgressBar
+                android:id="@+id/adminProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/include" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+

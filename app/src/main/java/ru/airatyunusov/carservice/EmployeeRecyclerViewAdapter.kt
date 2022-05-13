@@ -1,5 +1,6 @@
 package ru.airatyunusov.carservice
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,9 @@ class EmployeeRecyclerViewAdapter(private val onClick: (Employee) -> Unit) : Rec
         return dataset.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setDateSet(dataSet: List<Employee>) {
         dataset = dataSet
+        notifyDataSetChanged()
     }
 }

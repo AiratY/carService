@@ -4,7 +4,7 @@
     <string name="text_employee_btn">Сотрудник</string>
     <string name="text_admin_btn">Администратор</string>
     <string name="text_splash_screen_tv">Автосервисы</string>
-    <string name="hint_login_edit_text">Логин</string>
+    <string name="hint_email_edit_text">Email</string>
     <string name="hint_password_edit_text">Пароль</string>
     <string name="text_sign_in_btn">Войти</string>
     <string name="hint_brand_ET">Марка</string>
@@ -70,4 +70,21 @@
     <string name="text_title_TV">Статус:</string>
     <string name="text_title_start_date_time_TV">Начало:</string>
     <string name="text_title_end_date_time_TV">Окончание:</string>
+    <string name="text_registration_btn">Зарегистрироваться</string>
+    <string name="text_hint_name_ed_auth">Название</string>
+    <string name="text_title_or_tv">Или</string>
+    <string name="text_title_name_service_tv">Название:</string>
+    <string name="text_add_textView">Добавить</string>
+    <string name="text_title_branch_text_view">Филиалы</string>
+    <string name="text_titleEmployees_text_view">Сотрудники:</string>
+    <string name="text_title_services_text_view">Услуги</string>
+    <string name="text_menu_item_profile">Профиль</string>
+    <string name="text_menu_item_list_services">Услуги</string>
+    <string name="text_title_start_time">Начало рабочего дня:</string>
+    <string name="text_title_end_time_text_view">Окончание рабочего дня:</string>
+    <string name="text_menu_save">Сохранить</string>
+    <string name="text_menu_delete">delete</string>
+    <string name="text_hint_employee_edit_text">Email</string>
+    <string name="text_hint_emplyee_edit_text">Пароль</string>
+    <string name="text_item_menu_list_token">Записи</string>
 </resources>

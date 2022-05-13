@@ -1,22 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/branch_sm_8dp"
+    android:layout_marginEnd="@dimen/branch_em_8dp"
+    android:layout_marginBottom="16dp"
+    android:layout_marginTop="4dp"
+    android:theme="@style/CardViewTheme">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/titleStartTextView"
+            android:id="@+id/titleStatusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Начало:"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:text="@string/text_title_TV"
             android:theme="@style/titleTheme"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
+            android:theme="@style/valueTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Завершён" />
 
+        <TextView
+            android:id="@+id/titleStartDateTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:text="@string/text_title_start_date_time_TV"
+            android:theme="@style/titleTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/statusTextView" />
+
+        <TextView
+            android:id="@+id/startDateTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginBottom="8dp"
+            android:theme="@style/valueTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleStartDateTimeTextView"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="27.04.2022 13:00" />
+
+        <TextView
+            android:id="@+id/titleEndDateTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:text="@string/text_title_end_date_time_TV"
+            android:theme="@style/titleTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/startDateTimeTextView" />
+
+        <TextView
+            android:id="@+id/endDateTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginBottom="8dp"
+            android:theme="@style/valueTheme"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleEndDateTimeTextView"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="28.04.2022 17:00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

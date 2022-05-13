@@ -1,5 +1,6 @@
 package ru.airatyunusov.carservice.model
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,7 @@ class BranchRecyclerViewAdapter(val callback: AdminCallBack) : RecyclerView.Adap
             icon.setImageResource(R.drawable.ic_baseline_business_24)
             view.setOnClickListener {
                 currentBranch?.let {
-                    callback.onClickBranchs(it)
+                    callback.transferOnDetailDescriptionBranchs(it)
                 }
             }
         }
@@ -30,7 +31,8 @@ class BranchRecyclerViewAdapter(val callback: AdminCallBack) : RecyclerView.Adap
         fun bind(branchModel: BranchModel) {
             currentBranch = branchModel
             name.text = branchModel.name
-            desc.text = "${branchModel.address}\nТел: ${branchModel.phone}"
+            val description = "${branchModel.address}\nТел: ${branchModel.phone}"
+            desc.text = description
         }
     }
 
@@ -48,7 +50,9 @@ class BranchRecyclerViewAdapter(val callback: AdminCallBack) : RecyclerView.Adap
         return dataset.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setDateSet(dataSet: List<BranchModel>) {
         dataset = dataSet
+        notifyDataSetChanged()
     }
 }

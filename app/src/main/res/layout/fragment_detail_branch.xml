@@ -8,28 +8,36 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/branch_sm_8dp"
-        android:layout_marginEnd="@dimen/branch_em_8dp"
         tools:context=".DetailBranchFragment">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <EditText
             android:id="@+id/nameBranchEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
             android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
             android:autofillHints="name"
             android:ems="10"
             android:hint="@string/text_hint_name_branch"
             android:inputType="textPersonName"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="230dp" />
+            app:layout_constraintTop_toBottomOf="@id/include" />
 
         <EditText
             android:id="@+id/addressEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
             android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
             android:autofillHints="postalAddress"
             android:ems="10"
             android:hint="@string/text_address_name_branch"
@@ -42,38 +50,21 @@
             android:id="@+id/phoneBranchEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
             android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
             android:autofillHints="phone"
             android:ems="10"
             android:hint="@string/text_phone_name_branch"
             android:inputType="phone"
-            app:layout_constraintTop_toBottomOf="@+id/addressEditText"
-            tools:layout_editor_absoluteX="57dp" />
-
-        <Button
-            android:id="@+id/saveBranchButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/branch_mt_8dp"
-            android:text="@string/text_save_branch_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/endTimeTimePicker" />
-
-        <Button
-            android:id="@+id/deleteBranchBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/branch_mt_8dp"
-            android:text="@string/text_delete_branch_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saveBranchButton" />
+            app:layout_constraintTop_toBottomOf="@+id/addressEditText" />
 
         <TimePicker
             android:id="@+id/startTimeTimePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
             android:timePickerMode="spinner"
 
             app:layout_constraintTop_toBottomOf="@+id/titleStartTimeTextView" />
@@ -82,7 +73,9 @@
             android:id="@+id/titleStartTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Начало рабочего дня:"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
+            android:text="@string/text_title_start_time"
             android:theme="@style/titleTheme"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/phoneBranchEditText" />
@@ -91,6 +84,8 @@
             android:id="@+id/endTimeTimePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
             android:timePickerMode="spinner"
             app:layout_constraintTop_toBottomOf="@+id/titleEndTimeTextView" />
 
@@ -98,7 +93,9 @@
             android:id="@+id/titleEndTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Окончание рабочего дня:"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
+            android:text="@string/text_title_end_time_text_view"
             android:theme="@style/titleTheme"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/startTimeTimePicker" />

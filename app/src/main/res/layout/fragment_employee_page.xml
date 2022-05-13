@@ -47,7 +47,7 @@
             android:background="@color/purple_500"
             app:layout_constraintTop_toBottomOf="@id/phoneTextView" />
 
-        <Button
+        <!--<Button
             android:id="@+id/prevWeekButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,9 +56,9 @@
             android:text="@string/text_prev_week_btn"
             app:layout_constraintEnd_toStartOf="@id/nextWeekButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/selection" />
+            app:layout_constraintTop_toBottomOf="@+id/selection" />-->
 
-        <Button
+        <!--<Button
             android:id="@+id/nextWeekButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,9 +66,9 @@
             android:text="@string/text_next_week_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/prevWeekButton"
-            app:layout_constraintTop_toBottomOf="@+id/selection" />
+            app:layout_constraintTop_toBottomOf="@+id/selection" />-->
 
-        <androidx.recyclerview.widget.RecyclerView
+        <!--<androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tokenRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,7 +77,14 @@
             android:layout_marginEnd="@dimen/branch_em_8dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/nextWeekButton" />
+            app:layout_constraintTop_toBottomOf="@+id/nextWeekButton" />-->
+
+        <include
+            android:id="@+id/includeLisToken"
+            layout="@layout/list_token"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/selection" />
 
         <ProgressBar
             android:id="@+id/employeeProgressBar"
@@ -88,9 +95,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/prevWeekButton" />
+            app:layout_constraintTop_toBottomOf="@+id/selection" />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/messageNullTokenTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,7 +108,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nextWeekButton" />
+            app:layout_constraintTop_toBottomOf="@id/nextWeekButton" />-->
 
         <TextView
             android:id="@+id/phoneTextView"

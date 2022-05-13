@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import ru.airatyunusov.carservice.model.ServiceModel
@@ -13,9 +14,8 @@ import ru.airatyunusov.carservice.model.ServiceModel
 class ServicesFragment : BaseFragment() {
 
     private var nameEditText: EditText? = null
-    private var hoursEditText: EditText? = null
     private var priceEditText: EditText? = null
-    private var deleteBtn: Button? = null
+    private var hoursNumberPicker: NumberPicker? = null
 
     private var services: ServiceModel? = null
 
@@ -34,33 +34,56 @@ class ServicesFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setTitle("Услуга")
+        showButtonBack()
+        setListenerArrowBack()
+
+        toolbar?.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.actionExit -> {
+                    signOut()
+                    true
+                }
+                R.id.actionDelete -> {
+                    removeService()
+                    returnBack()
+                    true
+                }
+                R.id.actionOk -> {
+                    updateValueEditText()
+                    if (checkValueEditTexts()) {
+                        saveService()
+                        returnBack()
+                    }
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+
         childName = getString(R.string.services_firebase_key)
         nameEditText = view.findViewById(R.id.nameServiceEditText)
-        hoursEditText = view.findViewById(R.id.countHoursServiceEditText)
         priceEditText = view.findViewById(R.id.priceServiceEditText)
-        val saveBtn: Button = view.findViewById(R.id.saveServiceButton)
-        deleteBtn = view.findViewById(R.id.deleteServicesButton)
+        hoursNumberPicker = view.findViewById(R.id.hoursServiceNumberPicker)
+        hoursNumberPicker?.minValue = 1
+        hoursNumberPicker?.maxValue = 24
 
         arguments?.let {
             services = it.get(SERVICE) as? ServiceModel
         }
 
         services?.let {
-            visibleDeleteBtn()
             setEditText(it)
         }
 
-        deleteBtn?.setOnClickListener {
-            removeService()
-            returnBack()
-        }
-
-        saveBtn.setOnClickListener {
-            updateValueEditText()
-            if (checkValueEditTexts()) {
-                saveService()
-                returnBack()
-            }
+        if (services == null) {
+            setMenu(R.menu.menu_save)
+        } else {
+            setMenu(R.menu.menu_save_delete)
         }
     }
 
@@ -70,12 +93,8 @@ class ServicesFragment : BaseFragment() {
 
     private fun setEditText(serviceModel: ServiceModel) {
         nameEditText?.setText(serviceModel.name)
-        hoursEditText?.setText(serviceModel.hours.toString())
         priceEditText?.setText(serviceModel.price.toString())
-    }
-
-    private fun visibleDeleteBtn() {
-        deleteBtn?.visibility = View.VISIBLE
+        hoursNumberPicker?.value = serviceModel.hours
     }
 
     /**
@@ -113,7 +132,7 @@ class ServicesFragment : BaseFragment() {
 
     private fun updateValueEditText() {
         name = nameEditText?.text.toString()
-        hours = if (hoursEditText?.text.toString().isEmpty()) 0 else hoursEditText?.text.toString().toInt()
+        hours = if (hoursNumberPicker?.value.toString().isEmpty()) 0 else hoursNumberPicker?.value.toString().toInt()
         price = if (priceEditText?.text.toString().isEmpty()) 0 else priceEditText?.text.toString().toInt()
     }
 

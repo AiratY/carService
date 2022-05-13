@@ -8,21 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import ru.airatyunusov.carservice.model.FirebaseHelper
 import ru.airatyunusov.carservice.model.User
 
-class AuthorizationFragment : Fragment() {
+class AuthorizationFragment : BaseFragment() {
 
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth? = null
     private var loginEditText: EditText? = null
     private var passwordEditText: EditText? = null
     private var nameEditText: EditText? = null
@@ -35,9 +34,9 @@ class AuthorizationFragment : Fragment() {
     private var email: String = ""
     private var password: String = ""
     private var role = ""
-    private var isCheck = false
+    private var isSignIn = false
+    private var isRegistr = false
 
-    private val reference = FirebaseHelper().getDatabaseReference()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,22 +48,11 @@ class AuthorizationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_authorization, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        // Check if user is signed in (non-null) and update UI accordingly.
-        /*val currentUser = auth.currentUser
-        if (currentUser != null) {
-            reload()
-        }*/
-    }
-
-    private fun reload() {
-        TODO("Not yet implemented")
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setTitle(TITLE_AUTH)
 
         signInBtn = view.findViewById(R.id.signInButton)
         createUserBtn = view.findViewById(R.id.createUserButton)
@@ -83,31 +71,36 @@ class AuthorizationFragment : Fragment() {
         roleSpinner?.adapter = roleSpinnerAdapter
 
         createUserBtn?.setOnClickListener {
-            if (isCheck) {
+            if (isRegistr) {
                 readEmailAndPassword()
-                if (checkEmailAndPassword()) {
+                if (checkEmailAndPassword() && checkNameAndPhone()) {
                     createAccount(email, password)
                 }
             } else {
-                isCheck = true
+                isRegistr = true
                 visibleLoginAndPasswordEditText()
                 visibleRoleSpinner()
                 goneSignInBtn()
                 goneTitleOr()
+                setTitle(TITLE_REGISTRATION)
+                showAuthButtonBack()
+                showRegistrationView()
             }
         }
 
         signInBtn?.setOnClickListener {
-            if (isCheck) {
+            if (isSignIn) {
                 readEmailAndPassword()
                 if (checkEmailAndPassword()) {
                     signInAccount()
                 }
             } else {
-                isCheck = true
+                isSignIn = true
                 visibleLoginAndPasswordEditText()
                 goneCreateUserBtn()
                 goneTitleOr()
+                setTitle(TITLE_SIGN_IN)
+                showAuthButtonBack()
             }
         }
 
@@ -130,9 +123,68 @@ class AuthorizationFragment : Fragment() {
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                Log.e("SELECTED", "Ничего не выбранно")
+                Log.e(TAG_NO_SELECTED, MESSAGE_ERROR_NO_SELECTED)
             }
         }
+    }
+
+    /**
+     * Осуществляет валидацию полей ИМя/Название и Телефон
+     * */
+
+    private fun checkNameAndPhone(): Boolean {
+        return when {
+            nameEditText?.text.toString().isEmpty() -> {
+                Toast.makeText(requireContext(), MESSAGE_NAME_NOT_NULL, Toast.LENGTH_SHORT)
+                    .show()
+                false
+            }
+            phoneEditText?.text.toString().length != 11 -> {
+                Toast.makeText(
+                    requireContext(),
+                    MESSAGE_INVALID_NUMBER,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                false
+            }
+            else -> {
+                true
+            }
+        }
+    }
+
+    /**
+     * Показывает кнопку назад и устанавливает listener
+     * */
+
+    private fun showAuthButtonBack() {
+        showButtonBack()
+        toolbar?.setNavigationOnClickListener {
+            goneAuthButtonBack()
+
+            setTitle(TITLE_AUTH)
+            isRegistr = false
+            isSignIn = false
+
+            signInBtn?.visibility = View.VISIBLE
+            createUserBtn?.visibility = View.VISIBLE
+            titleOrTextView?.visibility = View.VISIBLE
+
+            loginEditText?.visibility = View.GONE
+            passwordEditText?.visibility = View.GONE
+            nameEditText?.visibility = View.GONE
+            phoneEditText?.visibility = View.GONE
+            roleSpinner?.visibility = View.GONE
+        }
+    }
+
+    /**
+     * Скрывает кнопку назад
+     * */
+
+    private fun goneAuthButtonBack() {
+        toolbar?.navigationIcon = null
     }
 
     /**
@@ -140,8 +192,15 @@ class AuthorizationFragment : Fragment() {
      * */
 
     private fun showCustomerView() {
+        nameEditText?.hint = CUSTOMER_VALUE_NAME_ET
+    }
+
+    /**
+     * Показывает необходимые поля для регистрации
+     * */
+
+    private fun showRegistrationView() {
         nameEditText?.visibility = View.VISIBLE
-        nameEditText?.hint = "Имя"
         phoneEditText?.visibility = View.VISIBLE
     }
 
@@ -150,8 +209,7 @@ class AuthorizationFragment : Fragment() {
      * */
 
     private fun showAdminView() {
-        nameEditText?.visibility = View.VISIBLE
-        nameEditText?.hint = "Название"
+        nameEditText?.hint = ADMIN_VALUE_NAME_ET
     }
 
     /**
@@ -194,6 +252,9 @@ class AuthorizationFragment : Fragment() {
         loginEditText?.visibility = View.VISIBLE
         passwordEditText?.visibility = View.VISIBLE
     }
+    /**
+     * Осуществляет переход на новый фрагмент
+     * */
 
     private fun showNextFragment(role: String) {
         when (role) {
@@ -236,17 +297,22 @@ class AuthorizationFragment : Fragment() {
             apply()
         }
     }
+    /**
+     * Осуществляет вход в акаунт
+     * */
 
     private fun signInAccount() {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
+        auth?.signInWithEmailAndPassword(email, password)
+            ?.addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                     // auth.currentUser?.let { showNextFragment(it) }
                     loadDataUser()
                 } else {
-                    Log.w(TAG, "createUser:fail", task.exception)
-                    Toast.makeText(requireContext(), "Неверный логи или пароль", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        MESSAGE_INCORRECT_LOGIN_AND_PASSWORD,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -257,7 +323,7 @@ class AuthorizationFragment : Fragment() {
      * */
     private fun loadDataUser() {
         val query =
-            reference.child(USERS_FB).orderByChild("id").equalTo(auth.currentUser?.uid)
+            reference.child(USERS_FB).orderByChild("id").equalTo(auth?.currentUser?.uid)
 
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -273,32 +339,47 @@ class AuthorizationFragment : Fragment() {
             }
         })
     }
+    /**
+     * Проверяет валидацию Email и пароля
+     * */
 
     private fun checkEmailAndPassword(): Boolean {
         return if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(requireContext(), "Пустые", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), MESSAGE_EDIT_TEXT_NOT_NULL, Toast.LENGTH_SHORT)
+                .show()
             false
         } else {
             true
         }
     }
+    /**
+     * Обновляет данные почты и пароля в перменных
+     * */
 
     private fun readEmailAndPassword() {
         email = loginEditText?.text.toString()
         password = passwordEditText?.text.toString()
     }
 
+    /**
+     * Регистрирует новый акаунт
+     * */
+
     private fun createAccount(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
+        auth?.createUserWithEmailAndPassword(email, password)
+            ?.addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     val user = saveUser()
                     showNextFragment(user.role)
                     saveUserDataInSharedPreference(user)
-                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.w(TAG, "createUser:fail", task.exception)
-                    Toast.makeText(requireContext(), "Что пошло не так", Toast.LENGTH_SHORT).show()
+                    val message = when ((task.exception as? FirebaseAuthException)?.errorCode) {
+                        ERROR_INVALID_EMAIL -> MESSAGE_ERROR_INVALID_EMAIL
+                        ERROR_WEAK_PASSWORD -> MESSAGE_ERROR_WEAK_PASSWORD
+                        ERROR_EMAIL_ALREADY_IN_USE -> MESSAGE_ERROR_EMAIL_ALREADY_IN_USE
+                        else -> task.exception?.message
+                    }
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -311,21 +392,42 @@ class AuthorizationFragment : Fragment() {
         val name = nameEditText?.text.toString()
         val phone = phoneEditText?.text.toString().toLong()
 
-        val user = auth.uid?.let { User(it, role, name, phone) } ?: User()
-        // reference.child(USERS_FB).push().setValue(user)
+        val user = auth?.uid?.let { User(it, role, name, phone) } ?: User()
         user.saveUser()
 
         return user
     }
 
     companion object {
-        private const val TAG = "FIREBASE_AUTH"
         private const val USERS_FB = "users"
+        private const val TITLE_SIGN_IN = "Вход в ЛК"
+        private const val TITLE_REGISTRATION = "Регистрация"
+        private const val TITLE_AUTH = "Авторизация"
+
+        private const val ADMIN_VALUE_NAME_ET = "Название"
+        private const val CUSTOMER_VALUE_NAME_ET = "Имя"
 
         private const val ADMIN = "Администратор"
         private const val CUSTOMER = "Клиент"
         private const val EMPLOYEE = MainActivity.ROLE_EMPLOYEE
 
         private val LIST_ROLE: List<String> = listOf(ADMIN, CUSTOMER)
+
+
+        private const val ERROR_INVALID_EMAIL = "ERROR_INVALID_EMAIL"
+        private const val ERROR_WEAK_PASSWORD = "ERROR_WEAK_PASSWORD"
+        private const val ERROR_EMAIL_ALREADY_IN_USE = "ERROR_EMAIL_ALREADY_IN_USE"
+
+        private const val MESSAGE_ERROR_INVALID_EMAIL =
+            "Адрес электронной почты имеет неправильный формат"
+        private const val MESSAGE_ERROR_WEAK_PASSWORD = "Пароль должен содержать минимум 6 символов"
+        private const val MESSAGE_ERROR_EMAIL_ALREADY_IN_USE =
+            "Адрес электронной почты уже используется другим аккаунтом."
+        private const val MESSAGE_EDIT_TEXT_NOT_NULL = "Поля не должны быть пустыми"
+        private const val MESSAGE_INCORRECT_LOGIN_AND_PASSWORD = "Неверный логи или пароль"
+        private const val MESSAGE_INVALID_NUMBER = "Номер телефона должен содержать 11 цифр"
+        private const val MESSAGE_NAME_NOT_NULL = "Поле не должно быть пустым"
+        private const val MESSAGE_ERROR_NO_SELECTED = "Ничего не выбранно"
+        private const val TAG_NO_SELECTED = "NO_SELECTED"
     }
 }

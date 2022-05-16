@@ -1,13 +1,14 @@
-package ru.airatyunusov.carservice.model
+package ru.airatyunusov.carservice
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import ru.airatyunusov.carservice.R
 import ru.airatyunusov.carservice.callbacks.AdminCallBack
+import ru.airatyunusov.carservice.model.BranchModel
 
 class BranchRecyclerViewAdapter(val callback: AdminCallBack) : RecyclerView.Adapter<BranchRecyclerViewAdapter.ViewHolder>() {
     private var dataset: List<BranchModel> = emptyList()
@@ -22,7 +23,7 @@ class BranchRecyclerViewAdapter(val callback: AdminCallBack) : RecyclerView.Adap
             icon.setImageResource(R.drawable.ic_baseline_business_24)
             view.setOnClickListener {
                 currentBranch?.let {
-                    callback.onClickBranchs(it)
+                    callback.transferOnDetailDescriptionBranchs(it)
                 }
             }
         }
@@ -30,7 +31,8 @@ class BranchRecyclerViewAdapter(val callback: AdminCallBack) : RecyclerView.Adap
         fun bind(branchModel: BranchModel) {
             currentBranch = branchModel
             name.text = branchModel.name
-            desc.text = "${branchModel.address}\nТел: ${branchModel.phone}"
+            val description = "${branchModel.address}\nТел: ${branchModel.phone}"
+            desc.text = description
         }
     }
 
@@ -48,7 +50,9 @@ class BranchRecyclerViewAdapter(val callback: AdminCallBack) : RecyclerView.Adap
         return dataset.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setDateSet(dataSet: List<BranchModel>) {
         dataset = dataSet
+        notifyDataSetChanged()
     }
 }

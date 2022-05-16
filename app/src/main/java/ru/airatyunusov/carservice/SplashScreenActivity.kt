@@ -3,7 +3,8 @@ package ru.airatyunusov.carservice
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 
 @SuppressLint("CustomSplashScreen")
@@ -12,7 +13,12 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
-        findViewById<TextView>(R.id.customerButton).setOnClickListener {
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }, TIME_PAUSE)
+
+        /*findViewById<TextView>(R.id.customerButton).setOnClickListener {
             startActivityWithBundle(CUSTOMER)
         }
 
@@ -22,7 +28,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.adminButton).setOnClickListener {
             startActivityWithBundle(ADMIN)
-        }
+        }*/
     }
 
     private fun startActivityWithBundle(user: String) {
@@ -30,13 +36,18 @@ class SplashScreenActivity : AppCompatActivity() {
             Intent(
                 this,
                 MainActivity::class.java
-            ).apply { putExtra(MainActivity.MESSAGE_USER, user) }
+            )
         )
-    }
 
+        /*startActivity(
+            Intent(
+                this,
+                MainActivity::class.java
+            ).apply { putExtra(MainActivity.MESSAGE_USER, user) }
+        )*/
+    }
     companion object {
-        const val CUSTOMER = "customer"
-        const val EMPLOYEE = "employee"
-        const val ADMIN = "admin"
+
+        private const val TIME_PAUSE: Long = 3000
     }
 }

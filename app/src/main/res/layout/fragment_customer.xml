@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".CustomerFragment">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/titleCarsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:gravity="center"
+            android:text="@string/text_title_cars"
+            android:theme="@style/valueTheme"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listCarsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/titleCarsTextView" />
+
+        <TextView
+            android:id="@+id/addNewCarTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/mt_16dp"
+            android:text="@string/text_add_textView"
+            android:theme="@style/actionTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/titleCarsTextView" />
+
+        <Button
+            android:id="@+id/enrollButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Записаться"
+            app:layout_constraintTop_toBottomOf="@+id/listCarsRecyclerView"
+            tools:layout_editor_absoluteX="89dp" />
+
+        <TextView
+            android:id="@+id/nameCustomerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/mt_16dp"
+            android:textSize="26sp"
+            android:theme="@style/valueTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iconProfileImageView"
+            tools:text="@string/text_name_text_view" />
+
+        <ImageView
+            android:id="@+id/iconProfileImageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_icon_profile_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/include"
+            app:srcCompat="@drawable/ic_icon_profile" />
+
+        <TextView
+            android:id="@+id/titlePhoneTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:text="@string/text_title_phone_TV"
+            android:theme="@style/titleTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameCustomerTextView" />
+
+        <TextView
+            android:id="@+id/phoneTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/valueTheme"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            tools:text="89123456456"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titlePhoneTextView" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/mt_16dp"
+            android:background="@color/grey"
+            app:layout_constraintTop_toBottomOf="@id/phoneTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

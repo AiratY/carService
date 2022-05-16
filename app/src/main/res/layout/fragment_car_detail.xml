@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CarDetailFragment">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/makeCarEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
+        android:ems="10"
+        android:hint="@string/text_hint_make_car"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <EditText
+        android:id="@+id/modelCarEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
+        android:ems="10"
+        android:hint="@string/text_hint_model_car"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/makeCarEditText" />
+
+    <EditText
+        android:id="@+id/numberCarEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="creditCardNumber"
+        android:ems="10"
+        android:hint="@string/text_number_car"
+        android:inputType="textCapWords"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:maxLength="6"
+        app:layout_constraintEnd_toStartOf="@+id/numberRegionEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modelCarEditText" />
+
+    <EditText
+        android:id="@+id/yearCarEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
+        android:ems="10"
+        android:hint="@string/text_hint_year_car"
+        android:inputType="number"
+        android:maxLength="4"
+        app:layout_constraintTop_toBottomOf="@+id/numberCarEditText"
+        android:autofillHints="creditCardExpirationYear" />
+
+    <EditText
+        android:id="@+id/numberRegionEditText"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
+        android:maxLength="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modelCarEditText"
+        android:autofillHints="creditCardNumber" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

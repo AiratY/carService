@@ -7,19 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.Spinner
+import android.widget.*
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import ru.airatyunusov.carservice.callbacks.EnrollCallBack
 import ru.airatyunusov.carservice.model.*
 import java.lang.ref.WeakReference
@@ -29,17 +23,19 @@ import java.time.LocalTime
 import java.time.Period
 import java.util.concurrent.Executors
 
-class SelectDateTimeFragment : Fragment(), EnrollCallBack {
+class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
 
     private var dateTimeSpinner: Spinner? = null
     private var listEmployeeSpinner: Spinner? = null
-    private var enrollButton: Button? = null
     private var nextWeekBtn: Button? = null
     private var prevWeekBtn: Button? = null
     private var progressBar: ProgressBar? = null
+    private var titleSelectEmployeeTextView: TextView? = null
+    private var titleSelectDateTimeTextView: TextView? = null
+    private var messageTextView: TextView? = null
 
-    private val timeStart: LocalTime = LocalTime.of(8, 0)
-    private val timeEnd: LocalTime = LocalTime.of(20, 0)
+    private var timeStart: LocalTime = LocalTime.of(8, 0)
+    private var timeEnd: LocalTime = LocalTime.of(20, 0)
     private val diffTimeWork: Int = timeEnd.hour - timeStart.hour
     private var listServiceModel: List<ServiceModel> = emptyList()
     private var listEmployee: List<Employee> = emptyList()
@@ -54,8 +50,9 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
     private var selectedEmployee: Employee? = null
     private var selectedToken: TokenModel? = null
 
-    private val database =
-        Firebase.database("https://carservice-93ef9-default-rtdb.europe-west1.firebasedatabase.app/")
+    private var carId = ""
+    private var branchId = ""
+    private var price = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,12 +65,20 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setTitle(TITLE_TOOLBAR)
+        setMenu(R.menu.menu_save)
+        showButtonBack()
+        setListenerArrowBack()
+
         dateTimeSpinner = view.findViewById(R.id.dateTimeSpinner)
         listEmployeeSpinner = view.findViewById(R.id.listEmployeeSpinner)
-        enrollButton = view.findViewById(R.id.enrollButton)
         nextWeekBtn = view.findViewById(R.id.nextWeekButton)
         prevWeekBtn = view.findViewById(R.id.prevWeekButton)
         progressBar = view.findViewById(R.id.progressBar)
+        titleSelectDateTimeTextView = view.findViewById(R.id.selectDateTimeTextView)
+        titleSelectEmployeeTextView = view.findViewById(R.id.titleSelectEmployeeTextView)
+
+        messageTextView = view.findViewById(R.id.messageTextView)
 
         goneViews()
 
@@ -84,16 +89,17 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
 
         arguments?.let {
             listServiceModel = it.get(LIST_SERVICE) as? List<ServiceModel> ?: emptyList()
+            carId = it.getString(CAR_ID, "")
+            val branchModel = it.get(BRANCH) as? BranchModel ?: BranchModel()
+            branchId = branchModel.id
+            price = it.getLong(PRICE, 0)
+
+            timeStart = LocalTime.parse(branchModel.startTime)
+            timeEnd = LocalTime.parse(branchModel.endTime)
 
             disablePrevBtn()
-            // myExecutor = EnrollExecutor(this)
-            myExecutor.executeOnThisWeek()
 
-            enrollButton?.setOnClickListener {
-                selectedToken?.let { token ->
-                    registryNewTokenInDB(token, listServiceModel)
-                }
-            }
+            myExecutor.executeOnThisWeek()
 
             nextWeekBtn?.setOnClickListener {
                 goneViews()
@@ -108,11 +114,46 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
                 myExecutor.executeOnNextWeek()
             }
         }
+
+        toolbar?.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.actionOk -> {
+                    selectedToken?.let { token ->
+                        registryNewTokenInDB(token, listServiceModel)
+                        showCustomerPage()
+                    }
+                    true
+                }
+                R.id.actionExit -> {
+                    signOut()
+                    true
+                }
+                else -> false
+            }
+        }
     }
+
+    /**
+     * Переходит на страницу Клиента
+     * */
+
+    private fun showCustomerPage() {
+        setFragmentResult(
+            MainActivity.SHOW_CUSTOMER_FRAGMENT,
+            bundleOf(MainActivity.BUNDLE_KEY to true)
+        )
+    }
+    /**
+     * Отключает кнопку предыдущая неделя
+     * */
 
     private fun disablePrevBtn() {
         prevWeekBtn?.isEnabled = false
     }
+
+    /**
+     * Включает кнопку предыдущая неделя
+     * */
 
     private fun enablePrevBtn() {
         prevWeekBtn?.isEnabled = true
@@ -122,6 +163,9 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         super.onDestroyView()
         myExecutor.closeExecutor()
     }
+    /**
+     * Осуществляет загрузку, генерацию и установку талонов
+     * */
 
     private fun workWithTokens(callBack: WeakReference<EnrollCallBack>) {
         val listTokenModel: List<TokenModel> = loadListToken() // уже существующие записи в БД
@@ -145,15 +189,19 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
      * */
 
     private fun registryNewTokenInDB(token: TokenModel, listServiceModel: List<ServiceModel>) {
-        val myRef = database.getReference(TOKEN_MODEL_FIREBASE_KEY)
+        val myRef = reference.child(TOKEN_MODEL_FIREBASE_KEY) // database.getReference()
 
         val key = myRef.push().key
         key?.let {
             val tokenFirebase = TokenFirebaseModel(
                 id = key,
+                userId = getUserId(),
+                branchId = branchId,
+                carId = carId,
                 startRecordDateTime = DateTimeHelper.convertToStringDateTime(token.startRecordDateTime),
                 endRecordDateTime = DateTimeHelper.convertToStringDateTime(token.endRecordDateTime),
                 idEmployee = token.idEmployee,
+                price = price,
                 listServices = listServiceModel
             )
 
@@ -163,9 +211,13 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
             myRef.updateChildren(childUpdates)
         }
     }
+    /**
+     * Процесс регистрации
+     * */
 
     private fun registration(callBack: WeakReference<EnrollCallBack>) {
-        /**Проверка на пустоту**/
+        loadStartAndEndTime()
+
         listEmployee = loadListEmployee() // список сотрудников
 
         if (listEmployee.isNotEmpty()) {
@@ -183,20 +235,27 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
                 updateStartEndWeekDateTime()
             }
 
-            /*updateStartEndWeekDateTime()
-            updateStartEndWeekDateTime()*/
-
             workWithTokens(callBack)
         } else {
-            showMessage()
+            Handler(Looper.getMainLooper()).post {
+                callBack.get()?.showMessage()
+            }
         }
+    }
+    /**
+     * Загружает время начала и окончания рабочего дня из БД
+     * */
+
+    private fun loadStartAndEndTime() {
     }
 
     /**
      * Показывает сообщение об отстсвие сотрудников
      * */
-    private fun showMessage() {
-        TODO("Not yet implemented")
+    override fun showMessage() {
+        messageTextView?.visibility = View.VISIBLE
+        progressBar?.visibility = View.GONE
+        messageTextView?.text = "Ведуться технические работы, попробуйте в другой раз снова"
     }
 
     /**
@@ -309,7 +368,13 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         return listNewTokenModel
     }
 
-    // createToken
+    /**
+     * Создает талона на запись
+     * @param daysExecute кол-во полных рабочих дней необходимых для выполнение услуги
+     * @param hoursExecute кол-во часов в псоледний рабочий дней необходимых на выполнение услуги
+     * @param startWeek дата и время начало диапозона для генерации талонов
+     * @param endWeek дата и время окончания диапозона
+     * */
     private fun createTicket(
         daysExecute: Int,
         hoursExecute: Int,
@@ -351,11 +416,15 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         return listTicket
     }
 
+    /**
+     * Загружает список записей из БД для текущей недели
+     * */
+
     private fun loadListToken(): List<TokenModel> {
         val listToken: MutableList<TokenModel> = mutableListOf()
 
         val tokenQuery =
-            database.reference.child(TOKEN_MODEL_FIREBASE_KEY).orderByChild("startRecordDateTime")
+            reference.child(TOKEN_MODEL_FIREBASE_KEY).orderByChild("startRecordDateTime")
                 .startAt(DateTimeHelper.convertToStringDateTime(startWeek))
                 .endAt(DateTimeHelper.convertToStringDateTime(endWeek))
 
@@ -396,23 +465,47 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         return listToken
     }
 
-    private fun loadListEmployee(): List<Employee> {
-        val list: MutableList<Employee> = mutableListOf()
-        val employeesRef = database.getReference(EMPLOYEES_FIREBASE_KEY)
-        val taskDataSnapshot = employeesRef.get()
+    /**
+     * Загружает список сотрудников
+     * */
 
-        while (!taskDataSnapshot.isComplete) {
+    private fun loadListEmployee(): List<Employee> {
+        val childName = getString(R.string.employees_firebase_key)
+
+        val lisEmployee: MutableList<Employee> = mutableListOf()
+
+        var allCount = 0L
+        var count = 1L
+
+        val query =
+            reference.child(childName).orderByChild("branchId").equalTo(branchId)
+
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                allCount = snapshot.childrenCount
+                for (child in snapshot.children) {
+                    val employee = child.getValue<Employee>()
+                    employee?.let { lisEmployee.add(it) }
+                    count++
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(getString(R.string.FIREBASE_LOG_TAG), error.message)
+            }
+        })
+
+        val dataSnapshot = query.get()
+        while (count < allCount || !dataSnapshot.isComplete) {
             Thread.sleep(500)
         }
-        val hashMap = taskDataSnapshot.result.getValue<HashMap<String, Employee>>()
-        if (hashMap != null) {
-            for (hash in hashMap) {
-                list.add(hash.value)
-            }
-        }
 
-        return list
+        return lisEmployee
     }
+
+    /**
+     * Увеличивыет значения даты и времени начала и окончанияе недели на одну неделю
+     **/
 
     private fun updateStartEndWeekDateTime() {
         startWeek = endWeek.plusDays(1).withHour(timeStart.hour).withMinute(timeStart.minute)
@@ -424,12 +517,20 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
      * */
     private fun minusWeekStartAndEndDateTime() {
         startWeek = startWeek.minusWeeks(1)
-        if (startWeek < startWeekCash) {
+        if (startWeek <= startWeekCash) {
             startWeek = startWeekCash
             disablePrevBtn() // Дальше уже неделя прошла
         }
         endWeek = endWeek.minusWeeks(1)
     }
+
+    /**
+     * Проверят диапазон даты и времеми на возможность сгенерировать талоны
+     * @param dayExecuteServices кол-во полных рабочих дней необходимых для выполнение услуги
+     * @param hoursCompleteTemp кол-во часов в псоледний рабочий дней необходимых на выполнение услуги
+     * @param startWeek дата и время начало диапозона для генерации талонов
+     * @param endWeek дата и время окончания диапозона
+     * */
 
     private fun checkDate(
         hoursCompleteTemp: Int,
@@ -441,6 +542,10 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         val days: Int = Period.between(startWeek.toLocalDate(), endWeek.toLocalDate()).days
         return days > dayExecuteServices || (days == dayExecuteServices && hours > hoursCompleteTemp)
     }
+
+    /**
+     * Вычисляет начало неделя для записи
+     * */
 
     private fun updateStartWeekDateTime(startWeek: LocalDateTime): LocalDateTime {
         var resultDateTime = startWeek.plusHours(1).withMinute(0).withSecond(0).withNano(0)
@@ -454,6 +559,10 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         return resultDateTime
     }
 
+    /**
+     * Вычисляет окончание неделя для записи
+     * */
+
     private fun getDateTimeEndWeek(): LocalDateTime {
         return LocalDateTime.now().let { // apply
             val diffDayOfWeek = 6 - it.dayOfWeek.ordinal
@@ -461,6 +570,9 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
                 .withSecond(0).withNano(0)
         }
     }
+    /**
+     * Вычисляет общее время на выполнение услуг
+     * */
 
     private fun getHoursAllServices(listServiceModel: List<ServiceModel>): Int {
         var countHours = 0
@@ -472,79 +584,105 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
 
     companion object {
         private const val LIST_SERVICE = "list_services"
+        private const val BRANCH = "branch"
+        private const val CAR_ID = "car_id"
+        private const val PRICE = "price"
         private const val FIREBASE_LOG_TAG = "Firebase"
 
-        private const val TOKEN_MODEL_FIREBASE_KEY = "test"
-        private const val EMPLOYEES_FIREBASE_KEY = "employees"
+        private const val TOKEN_MODEL_FIREBASE_KEY = "tickets"
 
-        fun newInstance(list: List<ServiceModel>): SelectDateTimeFragment {
+        private const val TITLE_TOOLBAR = "Запись"
+
+        fun newInstance(
+            list: List<ServiceModel>,
+            branchModel: BranchModel,
+            carId: String,
+            price: Long
+        ): SelectDateTimeFragment {
             return SelectDateTimeFragment().apply {
-                arguments = bundleOf(LIST_SERVICE to list)
+                arguments = bundleOf(
+                    LIST_SERVICE to list,
+                    BRANCH to branchModel,
+                    CAR_ID to carId,
+                    PRICE to price
+                )
             }
         }
     }
+    /**
+     * Устанавливает значения во View
+     * */
 
     override fun setListEmployeeAndNewToken(
         listEmployee: List<Employee>,
         listNewToken: List<TokenModel>
     ) {
-        showViews()
+        if (listNewToken.isEmpty()) {
+            updateStartEndWeekDateTime()
+            myExecutor.executeOnNextWeek()
+            startWeekCash = startWeek
+        } else {
+            showViews()
 
-        // список талонов только для одного сотрудника
-        var listNewTokenFilterByIdEmployee =
-            filterListTokenByIdEmployee(listNewToken, listEmployee[0].id)
+            // список талонов только для одного сотрудника
+            var listNewTokenFilterByIdEmployee =
+                filterListTokenByIdEmployee(listNewToken, listEmployee[0].id)
 
-        val listEmployeeSpinnerAdapter: ArrayAdapter<Employee> =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listEmployee)
-        listEmployeeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
-        listEmployeeSpinner?.adapter = listEmployeeSpinnerAdapter
+            val listEmployeeSpinnerAdapter: ArrayAdapter<Employee> =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listEmployee)
+            listEmployeeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+            listEmployeeSpinner?.adapter = listEmployeeSpinnerAdapter
 
-        // Заполняем спинор талонами
-        val spinnerAdapter: ArrayAdapter<TokenModel> = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            listNewTokenFilterByIdEmployee
-        )
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
-        dateTimeSpinner?.adapter = spinnerAdapter
+            // Заполняем спинор талонами
+            val spinnerAdapter: ArrayAdapter<TokenModel> = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                listNewTokenFilterByIdEmployee
+            )
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+            dateTimeSpinner?.adapter = spinnerAdapter
 
-        listEmployeeSpinner?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
+            listEmployeeSpinner?.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        itemSelected: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        selectedEmployee = parent?.getItemAtPosition(position) as? Employee
+                        selectedEmployee?.let {
+                            listNewTokenFilterByIdEmployee =
+                                filterListTokenByIdEmployee(listNewToken, it.id)
+                        }
+                        spinnerAdapter.clear()
+                        spinnerAdapter.addAll(listNewTokenFilterByIdEmployee)
+                    }
+
+                    override fun onNothingSelected(p0: AdapterView<*>?) {
+                        TODO("Not yet implemented")
+                    }
+                }
+
+            dateTimeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
                     itemSelected: View?,
                     position: Int,
                     id: Long
                 ) {
-                    selectedEmployee = parent?.getItemAtPosition(position) as? Employee
-                    selectedEmployee?.let {
-                        listNewTokenFilterByIdEmployee =
-                            filterListTokenByIdEmployee(listNewToken, it.id)
-                    }
-                    spinnerAdapter.clear()
-                    spinnerAdapter.addAll(listNewTokenFilterByIdEmployee)
+                    selectedToken = parent?.getItemAtPosition(position) as? TokenModel
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                     TODO("Not yet implemented")
                 }
             }
-
-        dateTimeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                itemSelected: View?,
-                position: Int,
-                id: Long
-            ) {
-                selectedToken = parent?.getItemAtPosition(position) as? TokenModel
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
         }
     }
+    /**
+     * Показать все виджеты
+     * */
 
     private fun showViews() {
         progressBar?.visibility = View.GONE
@@ -552,8 +690,12 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         prevWeekBtn?.visibility = View.VISIBLE
         dateTimeSpinner?.visibility = View.VISIBLE
         listEmployeeSpinner?.visibility = View.VISIBLE
-        enrollButton?.visibility = View.VISIBLE
+        titleSelectEmployeeTextView?.visibility = View.VISIBLE
+        titleSelectDateTimeTextView?.visibility = View.VISIBLE
     }
+    /**
+     * Скрывать все виджеты
+     * */
 
     private fun goneViews() {
         progressBar?.visibility = View.VISIBLE
@@ -561,7 +703,8 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
         prevWeekBtn?.visibility = View.GONE
         dateTimeSpinner?.visibility = View.GONE
         listEmployeeSpinner?.visibility = View.GONE
-        enrollButton?.visibility = View.GONE
+        titleSelectEmployeeTextView?.visibility = View.GONE
+        titleSelectDateTimeTextView?.visibility = View.GONE
     }
 
     inner class EnrollExecutor(callBack: EnrollCallBack) {
@@ -570,14 +713,12 @@ class SelectDateTimeFragment : Fragment(), EnrollCallBack {
 
         fun executeOnThisWeek() {
             executor.execute {
-                Thread.sleep(2000)
                 registration(callBack)
             }
         }
 
         fun executeOnNextWeek() {
             executor.execute {
-                Thread.sleep(2000)
                 workWithTokens(callBack)
             }
         }

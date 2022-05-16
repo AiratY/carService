@@ -5,4 +5,5 @@ import ru.airatyunusov.carservice.model.TokenModel
 
 interface EnrollCallBack {
     fun setListEmployeeAndNewToken(listEmployee: List<Employee>, listNewToken: List<TokenModel>)
+    fun showMessage()
 }

@@ -9,13 +9,16 @@ data class Employee(
     var firstName: String = "",
     var lastName: String = "",
     var patronymic: String = "",
+    var phone: Long = 89123456123L,
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
-        parcel.readString().toString()
+        parcel.readString().toString(),
+        parcel.readLong()
     ) {
     }
 
@@ -29,6 +32,7 @@ data class Employee(
         parcel.writeString(firstName)
         parcel.writeString(lastName)
         parcel.writeString(patronymic)
+        parcel.writeLong(phone)
     }
 
     override fun describeContents(): Int {

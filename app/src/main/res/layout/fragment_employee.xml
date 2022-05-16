@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginStart="@dimen/branch_sm_8dp"
-    android:layout_marginEnd="@dimen/branch_em_8dp"
     tools:context=".EmployeeFragment">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/nameEmployeeEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
         android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
         android:autofillHints="name"
         android:ems="10"
         android:hint="@string/text_hint_name_employee"
         android:inputType="textPersonName"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/include" />
 
     <EditText
         android:id="@+id/lastNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
         android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
         android:autofillHints="name"
         android:ems="10"
         android:hint="@string/text_hint_lastname_employee"
@@ -36,7 +45,9 @@
         android:id="@+id/patronymicEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
         android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
         android:autofillHints="name"
         android:ems="10"
         android:hint="@string/text_hint_patronymic_employee"
@@ -45,24 +56,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lastNameEditText" />
 
-    <Button
+    <!--<Button
         android:id="@+id/saveEmployeeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
         android:text="@string/text_save_branch_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patronymicEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordEmployeeEditText" />
 
     <Button
         android:id="@+id/deleteEmployeeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
         android:layout_marginTop="@dimen/branch_mt_8dp"
         android:text="@string/text_delete_branch_btn"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveEmployeeButton" />
+        app:layout_constraintTop_toBottomOf="@+id/saveEmployeeButton" />-->
+
+    <EditText
+        android:id="@+id/loginEmployeeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="emailAddress"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
+        android:ems="10"
+        android:hint="@string/text_hint_employee_edit_text"
+        android:inputType="textEmailAddress"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patronymicEditText" />
+
+    <EditText
+        android:id="@+id/passwordEmployeeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="password"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
+        android:ems="10"
+        android:hint="@string/text_hint_emplyee_edit_text"
+        android:inputType="textPassword"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/loginEmployeeEditText"
+        tools:layout_editor_absoluteX="42dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,44 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".SelectDateTimeFragment">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <Button
         android:id="@+id/prevWeekButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="предыдущая\nнеделя "
         android:enabled="false"
+        android:text="@string/text_prev_week_btn"
         app:layout_constraintEnd_toStartOf="@+id/nextWeekButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/include" />
 
     <Button
         android:id="@+id/nextWeekButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Следущая\nнеделя"
+        android:text="@string/text_next_week_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/prevWeekButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/include" />
 
     <Spinner
         android:id="@+id/dateTimeSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/listEmployeeSpinner" />
-
-    <Button
-        android:id="@+id/enrollButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Записаться"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateTimeSpinner" />
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
+        app:layout_constraintTop_toBottomOf="@+id/selectDateTimeTextView" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -58,6 +57,40 @@
         android:id="@+id/listEmployeeSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/nextWeekButton" />
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginEnd="@dimen/branch_em_8dp"
+        app:layout_constraintTop_toBottomOf="@+id/titleSelectEmployeeTextView" />
+
+    <TextView
+        android:id="@+id/titleSelectEmployeeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:layout_marginTop="@dimen/mt_16dp"
+        android:text="@string/text_title_select_employee_text_view"
+        android:theme="@style/valueTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prevWeekButton" />
+
+    <TextView
+        android:id="@+id/selectDateTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/branch_sm_8dp"
+        android:text="@string/text_select_text_view"
+        android:theme="@style/valueTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listEmployeeSpinner" />
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:theme="@style/valueTheme"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 </androidx.constraintlayout.widget.ConstraintLayout>

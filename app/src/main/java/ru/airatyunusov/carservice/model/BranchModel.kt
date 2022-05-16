@@ -8,15 +8,24 @@ data class BranchModel(
     val adminId: String = "",
     val name: String = "",
     val address: String = "",
-    val phone: String = ""
+    val phone: String = "",
+    val startTime: String = "",
+    val endTime: String = "",
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readString() ?: ""
+        parcel.readString() ?: "",
+        parcel.readString().toString(),
+        parcel.readString().toString()
     ) {
+    }
+
+    override fun toString(): String {
+        return "$name \n$address \nТел: $phone"
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -25,6 +34,8 @@ data class BranchModel(
         parcel.writeString(name)
         parcel.writeString(address)
         parcel.writeString(phone)
+        parcel.writeString(startTime)
+        parcel.writeString(endTime)
     }
 
     override fun describeContents(): Int {
@@ -39,9 +50,5 @@ data class BranchModel(
         override fun newArray(size: Int): Array<BranchModel?> {
             return arrayOfNulls(size)
         }
-    }
-
-    override fun toString(): String {
-        return "$name $address"
     }
 }

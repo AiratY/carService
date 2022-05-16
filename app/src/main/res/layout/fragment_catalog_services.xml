@@ -8,52 +8,61 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/branch_sm_8dp"
-        android:layout_marginEnd="@dimen/branch_em_8dp">
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listServicesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
             android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/titleListServicesTextView" />
 
-        <Button
-            android:id="@+id/addServicesButton"
+        <TextView
+            android:id="@+id/titleListServicesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:theme="@style/valueTheme"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/mt_16dp"
             android:layout_marginTop="@dimen/branch_mt_8dp"
-            android:text="Добавить услугу"
+            android:text="@string/text_title_services_text_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
+
+        <TextView
+            android:id="@+id/addServicesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/mt_16dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:theme="@style/actionTextView"
+            android:visibility="gone"
+            android:text="@string/text_add_textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
+
+        <ProgressBar
+            android:id="@+id/catalogServicesProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameServiceEditText" />
+            app:layout_constraintTop_toBottomOf="@+id/include" />
 
-        <EditText
-            android:id="@+id/nameServiceEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/branch_mt_8dp"
-            android:ems="10"
-            android:hint="Название"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toStartOf="@+id/countHoursServiceEditText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listServicesRecyclerView" />
 
-        <EditText
-            android:id="@+id/countHoursServiceEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/branch_mt_8dp"
-            android:ems="10"
-            android:hint="Кол-во часов"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/nameServiceEditText"
-            app:layout_constraintTop_toBottomOf="@+id/listServicesRecyclerView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

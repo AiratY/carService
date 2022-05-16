@@ -6,4 +6,10 @@
         android:icon="@drawable/ic_baseline_edit_24"
         app:showAsAction="always"
         android:title="@string/textedit"/>
+
+    <item
+        android:id="@+id/actionExit"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        app:showAsAction="ifRoom"
+        android:title="@string/text_exit"/>
 </menu>

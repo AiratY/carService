@@ -8,4 +8,12 @@
     <dimen name="branch_sm_8dp">8dp</dimen>
     <dimen name="branch_em_8dp">8dp</dimen>
     <dimen name="branch_mt_8dp">8dp</dimen>
+    <dimen name="mt_16dp">16dp</dimen>
+    <dimen name="width_icon_user">120dp</dimen>
+    <dimen name="corner_radius_8dp">8dp</dimen>
+    <dimen name="card_elevation_8dp">8dp</dimen>
+    <dimen name="mt_20dp">20dp</dimen>
+    <dimen name="width_icon_branch">100dp</dimen>
+    <dimen name="width_icon_car">150dp</dimen>
+    <dimen name="height_icon_profile_image_view">200dp</dimen>
 </resources>

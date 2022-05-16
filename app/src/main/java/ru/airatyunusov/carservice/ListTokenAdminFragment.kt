@@ -18,7 +18,8 @@ class ListTokenAdminFragment : ListTokenFragment(), ListBranchCallBack {
     private var spinner: Spinner? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_list_token_admin, container, false)
@@ -51,7 +52,6 @@ class ListTokenAdminFragment : ListTokenFragment(), ListBranchCallBack {
                 Log.e("SELECTED", "Ничего не выбранно")
             }
         }
-
     }
 
     /**
@@ -80,7 +80,6 @@ class ListTokenAdminFragment : ListTokenFragment(), ListBranchCallBack {
             }
         })
     }
-
 
     override fun setListBranch(list: List<BranchModel>) {
         val branchSpinnerAdapter: ArrayAdapter<BranchModel> = ArrayAdapter(

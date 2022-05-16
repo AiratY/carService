@@ -12,9 +12,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import ru.airatyunusov.carservice.callbacks.ListBranchCallBack
 import ru.airatyunusov.carservice.callbacks.ListTokenCallBack
-import ru.airatyunusov.carservice.model.BranchModel
 import ru.airatyunusov.carservice.model.TokenFirebaseModel
 import java.lang.ref.WeakReference
 import java.time.LocalDateTime
@@ -187,5 +185,4 @@ open class ListTokenFragment : BaseFragment(), ListTokenCallBack {
     companion object {
         private const val TOKEN_MODEL_FIREBASE_KEY = "tickets"
     }
-
 }

@@ -87,4 +87,14 @@
     <string name="text_hint_employee_edit_text">Email</string>
     <string name="text_hint_emplyee_edit_text">Пароль</string>
     <string name="text_item_menu_list_token">Записи</string>
+    <string name="text_title_cars">Автомобили</string>
+    <string name="text_title_select_car_title">Выберите автомобиль</string>
+    <string name="text_title_select_branch">Выберите автосервис</string>
+    <string name="text_title_select_service_text_view">Выберите услуги</string>
+    <string name="text_select_text_view">Выберите время записи</string>
+    <string name="text_title_select_employee_text_view">Выберите сотрудника</string>
+    <string name="text_hint_make_car">Марка</string>
+    <string name="text_hint_model_car">Модель</string>
+    <string name="text_number_car">Номер</string>
+    <string name="text_hint_year_car">Год выпуска</string>
 </resources>

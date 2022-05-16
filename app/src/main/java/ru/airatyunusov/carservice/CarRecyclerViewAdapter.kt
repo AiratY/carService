@@ -30,7 +30,8 @@ class CarRecyclerViewAdapter(private val onClick: (CarModel) -> Unit) :
             makeCarTextView.text = carModel.make
             modelCarTextView.text = carModel.model
             numberCatTextView.text = carModel.numberCar
-            yearCarTextView.text = carModel.year.toString()
+            val textYear = "Год выпуска: ${carModel.year} г."
+            yearCarTextView.text = textYear
         }
     }
 

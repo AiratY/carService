@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
@@ -16,16 +17,15 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import ru.airatyunusov.carservice.callbacks.CustomerCallBack
 import ru.airatyunusov.carservice.model.CarModel
-import ru.airatyunusov.carservice.model.TokenFirebaseModel
+import ru.airatyunusov.carservice.model.User
+import java.lang.ref.WeakReference
 
 class CustomerFragment : BaseFragment(), CustomerCallBack {
 
     private var carsRecyclerView: RecyclerView? = null
     private var carAdapterRecyclerView: CarRecyclerViewAdapter? = null
-    private var tokenRecyclerViewAdapter: TokenRecyclerViewAdapter? = null
-    private var addButton: Button? = null
-
-    private var isVisibleMyCars = false
+    private var addTextView: TextView? = null
+    private var phoneTextView: TextView? = null
 
     private var listCars: List<CarModel>? = null
 
@@ -38,80 +38,50 @@ class CustomerFragment : BaseFragment(), CustomerCallBack {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val myServiceTV: TextView = view.findViewById(R.id.myServicesTextView)
-        val myCarsTv: TextView = view.findViewById(R.id.myCarsTextView)
+        super.onViewCreated(view, savedInstanceState)
+
+        setTitle(TITLE_TOOLBAR)
+        setMenuWithExit()
+
+        val myCarsTv: TextView = view.findViewById(R.id.titleCarsTextView)
         carsRecyclerView = view.findViewById(R.id.listCarsRecyclerView)
-        val tokenRecyclerView: RecyclerView = view.findViewById(R.id.listCustomersTokenRecyclerView)
-        tokenRecyclerViewAdapter = TokenRecyclerViewAdapter { token -> openDetailToken(token) }
-        addButton = view.findViewById(R.id.addCarButton)
-        val enrollBtn: Button = view.findViewById(R.id.enrollNewButton)
+
+        addTextView = view.findViewById(R.id.addNewCarTextView)
         carAdapterRecyclerView = CarRecyclerViewAdapter { carModel -> editCarModel(carModel) }
         carsRecyclerView?.adapter = carAdapterRecyclerView
+        phoneTextView = view.findViewById(R.id.phoneTextView)
 
-        tokenRecyclerView.adapter = tokenRecyclerViewAdapter
+        val nameTextView: TextView = view.findViewById(R.id.nameCustomerTextView)
+        nameTextView.text = getNameUser()
 
-        goneListMyCars()
-
-        loadListCustomerServices(this)
         loadListMyCars(this)
+        loadDataUser(this)
 
-        myServiceTV.setOnClickListener {
-        }
-
-        myCarsTv.setOnClickListener {
-            isVisibleMyCars = if (isVisibleMyCars) {
-                goneListMyCars()
-                false
+        view.findViewById<Button>(R.id.enrollButton).setOnClickListener {
+            if (listCars?.isEmpty() == true) {
+                Toast.makeText(requireContext(), "Нужно добавить автомобиль", Toast.LENGTH_SHORT)
+                    .show()
             } else {
-                visibleListMyCars()
-                true
+                openEnrollPage()
             }
         }
 
-        addButton?.setOnClickListener {
+        addTextView?.setOnClickListener {
             addCarModel()
         }
-
-        enrollBtn.setOnClickListener {
-            openEnrollPage()
-        }
-
-        view.findViewById<Button>(R.id.signOutButton).setOnClickListener {
-            signOut()
-        }
     }
 
-    /**
-     * Переходим на фрагмент с детальным описанием записи
-     * */
+    private fun loadDataUser(callback: CustomerCallBack) {
+        val weakReference = WeakReference(callback)
+        val userId = getUserId()
+        val query = reference.child("users").orderByChild("id").equalTo(userId)
 
-    private fun openDetailToken(token: TokenFirebaseModel) {
-        setFragmentResult(
-            MainActivity.SHOW_DETAIL_TOKEN,
-            bundleOf(
-                MainActivity.BUNDLE_KEY to true,
-                MainActivity.TOKEN to token
-            )
-        )
-    }
-
-    /**
-     * Загружает список записей клиента
-     * */
-
-    private fun loadListCustomerServices(callback: CustomerCallBack) {
-        val listToken: MutableList<TokenFirebaseModel> = mutableListOf()
-
-        val tokenQuery =
-            reference.child(TOKEN_MODEL_FIREBASE_KEY).orderByChild("userId").equalTo(getUserId())
-
-        tokenQuery.addValueEventListener(object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (data in snapshot.children) {
-                    val tokenFirebase = data.getValue<TokenFirebaseModel>() ?: TokenFirebaseModel()
-                    listToken.add(tokenFirebase)
+                for (child in snapshot.children) {
+                    val user = child.getValue<User>()
+                    user?.let { weakReference.get()?.setUser(it) }
                 }
-                callback.setListToken(listToken)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -166,6 +136,7 @@ class CustomerFragment : BaseFragment(), CustomerCallBack {
      * */
 
     private fun loadListMyCars(callBack: CustomerCallBack) {
+        val weakReference = WeakReference(callBack)
         val userId = getUserId()
         val query = reference.child(CARS).orderByChild("userId").equalTo(userId)
 
@@ -176,7 +147,7 @@ class CustomerFragment : BaseFragment(), CustomerCallBack {
                     val car = child.getValue<CarModel>()
                     car?.let { listCars.add(it) }
                 }
-                callBack.setListCars(listCars)
+                weakReference.get()?.setListCars(listCars)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -185,27 +156,9 @@ class CustomerFragment : BaseFragment(), CustomerCallBack {
         })
     }
 
-    /**
-     * Показывает список моих автомобилей
-     * */
-
-    private fun visibleListMyCars() {
-        carsRecyclerView?.visibility = View.VISIBLE
-        addButton?.visibility = View.VISIBLE
-    }
-
-    /**
-     * Скрывает список моих автомобилей
-     * */
-
-    private fun goneListMyCars() {
-        carsRecyclerView?.visibility = View.GONE
-        addButton?.visibility = View.GONE
-    }
-
     companion object {
         const val CARS = "cars"
-        private const val TOKEN_MODEL_FIREBASE_KEY = "tickets"
+        private const val TITLE_TOOLBAR = "Профиль"
     }
 
     /**
@@ -217,7 +170,11 @@ class CustomerFragment : BaseFragment(), CustomerCallBack {
         this.listCars = listCars
     }
 
-    override fun setListToken(listToken: List<TokenFirebaseModel>) {
-        tokenRecyclerViewAdapter?.setDateSet(listToken)
+    override fun setUser(user: User) {
+        phoneTextView?.text = user.phone.toString()
+    }
+
+    override fun isShowBottomNavigationView(): Boolean {
+        return true
     }
 }

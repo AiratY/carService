@@ -7,11 +7,9 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.airatyunusov.carservice.model.*
 
@@ -23,24 +21,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         bottomNavigationView = findViewById(R.id.adminBottomNavigationView)
-        //ADMIN
-        bottomNavigationView?.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.listServices -> {
-                    replaceFragment(CatalogServicesFragment())
-                    true
-                }
-                R.id.profile -> {
-                    replaceFragment(AdminFragment())
-                    true
-                }
-                R.id.listToken -> {
-                    replaceFragment(ListTokenAdminFragment())
-                    true
-                }
-                else -> false
-            }
-        }
 
         val sharedPreferences = getSharedPreferences(
             getString(R.string.user_data_sharedPreference),
@@ -58,6 +38,7 @@ class MainActivity : AppCompatActivity() {
                         add<CustomerFragment>(R.id.fragment_container_view)
                         addToBackStack(NAME_BACK_STACK)
                     }
+                    setCustomerListener()
                 }
                 ROLE_EMPLOYEE -> {
                     supportFragmentManager.commit {
@@ -72,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                         add<AdminFragment>(R.id.fragment_container_view)
                         addToBackStack(NAME_BACK_STACK)
                     }
+                    setAdminListener()
                 }
                 else -> {
                     showAuthorizationFragment()
@@ -90,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 val listServicesModel: List<ServiceModel> =
                     bundle.get(LIST_SERVICES) as? List<ServiceModel> ?: emptyList()
-                val branchId = bundle.getString(BRANCH_ID, "")
+                val branchId = bundle.get(BRANCH) as? BranchModel ?: BranchModel()
                 val carID = bundle.getString(CAR_ID, "")
                 val price = bundle.getLong(PRICE, 0)
                 replaceFragment(
@@ -107,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.setFragmentResultListener(SHOW_ADMIN_FRAGMENT, this) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 replaceFragment(AdminFragment())
+                setAdminListener()
             }
         }
 
@@ -169,13 +152,14 @@ class MainActivity : AppCompatActivity() {
         ) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 replaceFragment(CustomerFragment())
+                setCustomerListener()
             }
         }
 
         supportFragmentManager.setFragmentResultListener(SHOW_AUTH, this) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 replaceFragment(AuthorizationFragment())
-                //showAuthorizationFragment()
+                // showAuthorizationFragment()
             }
         }
 
@@ -261,6 +245,52 @@ class MainActivity : AppCompatActivity() {
      * */
     private fun goneBottomNavigationView() {
         bottomNavigationView?.visibility = View.GONE
+    }
+
+    private fun setCustomerListener() {
+
+        bottomNavigationView?.menu?.findItem(R.id.listServices)?.isVisible = false
+        // User
+
+        bottomNavigationView?.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.profile -> {
+                    replaceFragment(CustomerFragment())
+                    true
+                }
+                R.id.listToken -> {
+                    replaceFragment(ListTokenCustomerFragment())
+                    true
+                }
+                else -> false
+            }
+        }
+        visibleBottomNavigationView()
+    }
+
+    private fun setAdminListener() {
+
+        bottomNavigationView?.menu?.findItem(R.id.listServices)?.isVisible = true
+        // ADMIN
+        bottomNavigationView?.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.listServices -> {
+                    replaceFragment(CatalogServicesFragment())
+                    true
+                }
+                R.id.profile -> {
+                    replaceFragment(AdminFragment())
+                    true
+                }
+                R.id.listToken -> {
+                    replaceFragment(ListTokenAdminFragment())
+                    true
+                }
+                else -> false
+            }
+        }
+
+        visibleBottomNavigationView()
     }
 
     companion object {

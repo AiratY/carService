@@ -100,7 +100,6 @@ class CatalogServicesFragment : BaseFragment(), ServicesCallBack {
                 for (child in snapshot.children) {
                     val serviceModel = child.getValue<ServiceModel>()
                     serviceModel?.let { listServices.add(it) }
-
                 }
                 weakReferenceCallBack.get()?.setListServices(listServices)
             }

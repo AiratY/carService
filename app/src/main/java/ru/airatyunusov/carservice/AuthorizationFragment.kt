@@ -37,7 +37,6 @@ class AuthorizationFragment : BaseFragment() {
     private var isSignIn = false
     private var isRegistr = false
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,7 +46,6 @@ class AuthorizationFragment : BaseFragment() {
 
         return inflater.inflate(R.layout.fragment_authorization, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -412,7 +410,6 @@ class AuthorizationFragment : BaseFragment() {
         private const val EMPLOYEE = MainActivity.ROLE_EMPLOYEE
 
         private val LIST_ROLE: List<String> = listOf(ADMIN, CUSTOMER)
-
 
         private const val ERROR_INVALID_EMAIL = "ERROR_INVALID_EMAIL"
         private const val ERROR_WEAK_PASSWORD = "ERROR_WEAK_PASSWORD"

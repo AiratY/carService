@@ -1,4 +1,4 @@
-package ru.airatyunusov.carservice.model
+package ru.airatyunusov.carservice
 
 import android.app.Activity
 import android.util.Log

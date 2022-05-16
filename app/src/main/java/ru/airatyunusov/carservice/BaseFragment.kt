@@ -2,8 +2,6 @@ package ru.airatyunusov.carservice
 
 import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import ru.airatyunusov.carservice.model.FirebaseHelper
 
 open class BaseFragment : Fragment() {
     protected val firebaseHelper = FirebaseHelper()
@@ -26,7 +23,6 @@ open class BaseFragment : Fragment() {
 
         titleToolbar = view.findViewById(R.id.titleToolbar)
         toolbar = view.findViewById(R.id.toolbar)
-
     }
 
     /**
@@ -59,7 +55,7 @@ open class BaseFragment : Fragment() {
     /**
      * Устанавливает listener на возвращение назад
      * */
-    fun setListenerArrowBack(){
+    fun setListenerArrowBack() {
         toolbar?.setNavigationOnClickListener {
             returnBack()
             // (requireActivity() as? AppCompatActivity)?.onBackPressed()
@@ -88,7 +84,7 @@ open class BaseFragment : Fragment() {
 
     protected fun returnBack() {
         (requireActivity() as? AppCompatActivity)?.onBackPressed()
-        //requireActivity().supportFragmentManager.popBackStack()
+        // requireActivity().supportFragmentManager.popBackStack()
     }
 
     /**

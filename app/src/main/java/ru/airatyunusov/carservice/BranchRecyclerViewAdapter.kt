@@ -1,4 +1,4 @@
-package ru.airatyunusov.carservice.model
+package ru.airatyunusov.carservice
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import ru.airatyunusov.carservice.R
 import ru.airatyunusov.carservice.callbacks.AdminCallBack
+import ru.airatyunusov.carservice.model.BranchModel
 
 class BranchRecyclerViewAdapter(val callback: AdminCallBack) : RecyclerView.Adapter<BranchRecyclerViewAdapter.ViewHolder>() {
     private var dataset: List<BranchModel> = emptyList()

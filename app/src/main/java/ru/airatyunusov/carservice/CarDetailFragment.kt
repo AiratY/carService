@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -16,13 +15,13 @@ class CarDetailFragment : BaseFragment() {
     private var modelCarEditText: EditText? = null
     private var numberCarEditText: EditText? = null
     private var yearCarEditText: EditText? = null
-    private var saveButton: Button? = null
-    private var deleteButton: Button? = null
+    private var regionCarEditText: EditText? = null
 
     private var make: String = ""
     private var model: String = ""
     private var number: String = ""
     private var year: Int = 0
+    private var region: String = ""
 
     private var carModel: CarModel? = null
 
@@ -35,62 +34,67 @@ class CarDetailFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setTitle(TITLE_TOOLBAR)
+        showButtonBack()
+        setListenerArrowBack()
+
         makeCarEditText = view.findViewById(R.id.makeCarEditText)
         modelCarEditText = view.findViewById(R.id.modelCarEditText)
         numberCarEditText = view.findViewById(R.id.numberCarEditText)
         yearCarEditText = view.findViewById(R.id.yearCarEditText)
-        saveButton = view.findViewById(R.id.saveCarButton)
-        deleteButton = view.findViewById(R.id.deleteCarButton)
-
-        goneDeleteBtn()
+        regionCarEditText = view.findViewById(R.id.numberRegionEditText)
 
         arguments?.let { arguments ->
             carModel = arguments.get(CAR) as? CarModel
 
             carModel?.let { car ->
                 fillEditTexts(car)
-                visibleDeleteBtn()
             }
         }
 
-        saveButton?.setOnClickListener {
+        if (carModel == null) {
+            setMenu(R.menu.menu_save)
+        } else {
+            setMenu(R.menu.menu_save_delete)
+        }
 
-            if (checkValuesEditTexts()) {
-                val car = CarModel(
-                    userId = getUserId(),
-                    make = make,
-                    model = model,
-                    numberCar = number,
-                    year = year
-                )
-                carModel?.let {
-                    car.id = it.id
+        toolbar?.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.actionExit -> {
+                    signOut()
+                    true
                 }
-                saveCar(car)
-                returnBack()
+                R.id.actionDelete -> {
+                    removeCarModel()
+                    returnBack()
+                    true
+                }
+                R.id.actionOk -> {
+                    if (checkValuesEditTexts()) {
+                        val fullNumber = "$number $region"
+
+                        val car = CarModel(
+                            userId = getUserId(),
+                            make = make,
+                            model = model,
+                            numberCar = fullNumber,
+                            year = year
+                        )
+                        carModel?.let {
+                            car.id = it.id
+                        }
+                        saveCar(car)
+                        returnBack()
+                    }
+                    true
+                }
+                else -> {
+                    false
+                }
             }
         }
-
-        deleteButton?.setOnClickListener {
-            removeCarModel()
-            returnBack()
-        }
-    }
-
-    /**
-     * Отображает кнопку удаления автомобиля
-     * */
-
-    private fun visibleDeleteBtn() {
-        deleteButton?.visibility = View.VISIBLE
-    }
-
-    /**
-     * Скрывает кнопку удаления автомобиля
-     * */
-
-    private fun goneDeleteBtn() {
-        deleteButton?.visibility = View.GONE
     }
 
     /**
@@ -110,7 +114,10 @@ class CarDetailFragment : BaseFragment() {
     private fun fillEditTexts(car: CarModel) {
         makeCarEditText?.setText(car.make)
         modelCarEditText?.setText(car.model)
-        numberCarEditText?.setText(car.numberCar)
+
+        val arr = car.numberCar.split(" ")
+        numberCarEditText?.setText(arr[0])
+        regionCarEditText?.setText(arr[1])
         yearCarEditText?.setText(car.year.toString())
     }
 
@@ -139,7 +146,7 @@ class CarDetailFragment : BaseFragment() {
     private fun checkValuesEditTexts(): Boolean {
         getValuesEditText() // Обновляем значения
 
-        if (make.isEmpty() || model.isEmpty() || number.isEmpty() || year == 0) {
+        if (make.isEmpty() || model.isEmpty() || number.isEmpty() || year == 0 || region.isEmpty()) {
             Toast.makeText(
                 requireContext(),
                 "Поля не должны быть пустыми",
@@ -178,11 +185,13 @@ class CarDetailFragment : BaseFragment() {
         } else {
             yearCarEditText?.text.toString().toInt()
         }
+        region = regionCarEditText?.text.toString()
     }
 
     companion object {
         private const val CAR = "CAR"
         private const val CHILD_CARS = "cars"
+        private const val TITLE_TOOLBAR = "Автомобиль"
 
         fun newInstance(carModel: CarModel): CarDetailFragment {
             return CarDetailFragment().apply {

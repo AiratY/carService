@@ -44,7 +44,6 @@ class DetailBranchFragment : BaseFragment() {
         showButtonBack()
         setListenerArrowBack()
 
-
         toolbar?.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.actionExit -> {
@@ -149,7 +148,7 @@ class DetailBranchFragment : BaseFragment() {
                 )
             }
             returnBack()
-            //returnOnAdminFragment()
+            // returnOnAdminFragment()
         }
     }
     /**

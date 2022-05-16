@@ -1,8 +1,6 @@
 package ru.airatyunusov.carservice
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
@@ -19,7 +17,6 @@ import ru.airatyunusov.carservice.callbacks.BranchCallBack
 import ru.airatyunusov.carservice.model.BranchModel
 import ru.airatyunusov.carservice.model.Employee
 import java.lang.ref.WeakReference
-import java.util.concurrent.Executors
 
 class BranchFragment : BaseFragment(), BranchCallBack {
     private var listEmployeeRecyclerView: RecyclerView? = null
@@ -31,10 +28,8 @@ class BranchFragment : BaseFragment(), BranchCallBack {
     private var addressTextView: TextView? = null
     private var phoneTextView: TextView? = null
     private var titleEmployeeTextView: TextView? = null
-    private var addEmployeeTextView: TextView? =null
+    private var addEmployeeTextView: TextView? = null
     private var progressBar: ProgressBar? = null
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,7 +90,6 @@ class BranchFragment : BaseFragment(), BranchCallBack {
                 val textPhone = "Тел: ${it.phone}"
                 phoneTextView?.text = textPhone
             }
-
         }
 
         loadListEmployee(this)
@@ -106,7 +100,6 @@ class BranchFragment : BaseFragment(), BranchCallBack {
                 bundleOf(MainActivity.BUNDLE_KEY to true, MainActivity.BRANCH_ID to branchId)
             )
         }
-
     }
     /**
      * Загружает список сотрудников работающих в этом филиалле

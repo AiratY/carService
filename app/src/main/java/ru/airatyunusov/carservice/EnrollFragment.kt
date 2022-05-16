@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -19,11 +18,10 @@ import com.google.firebase.database.ktx.getValue
 import ru.airatyunusov.carservice.callbacks.TestCallBack
 import ru.airatyunusov.carservice.model.BranchModel
 import ru.airatyunusov.carservice.model.CarModel
-import ru.airatyunusov.carservice.model.FirebaseHelper
 import ru.airatyunusov.carservice.model.ServiceModel
 
-class EnrollFragment : Fragment(), TestCallBack {
-    private val reference = FirebaseHelper().getDatabaseReference()
+class EnrollFragment : BaseFragment(), TestCallBack {
+
     private val callBack: TestCallBack = this
     private var branchSpinner: Spinner? = null
     private var servicesListRecyclerViewAdapter: ServicesListRecyclerViewAdapter? = null
@@ -42,6 +40,11 @@ class EnrollFragment : Fragment(), TestCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setTitle(TITLE_TOOLBAR)
+        setMenu(R.menu.menu_save)
+        showButtonBack()
+        setListenerArrowBack()
+
         arguments?.let {
             listCars = it.get(LIST_CARS) as? List<CarModel>
         }
@@ -52,15 +55,9 @@ class EnrollFragment : Fragment(), TestCallBack {
             ServicesListRecyclerViewAdapter { sum -> setSumPriceService(sum) }
         branchSpinner = view.findViewById(R.id.branchSpinner)
         val serviceListRecyclerView: RecyclerView = view.findViewById(R.id.servicesListRecyclerView)
-        val sendBtn: Button = view.findViewById(R.id.sendButton)
 
         serviceListRecyclerView.adapter = servicesListRecyclerViewAdapter
 
-        /* val carList: Array<out String> =
-             resources.getStringArray(R.array.carList) */ // arrayListOf("BMW", "LADA", "MERCEDES", "KIA")
-        /*val branchList: Array<String> =
-            arrayOf("СберСервис", "LADAСервис", "MERCEDESСервис", "KIAСервис")*/
-        // val branchList: List<BranchModel> = loadBranchList()
         loadBranchList()
 
         // Заполняем спинер списком автомобилей
@@ -90,14 +87,35 @@ class EnrollFragment : Fragment(), TestCallBack {
             }
         }
 
-        sendBtn.setOnClickListener {
-            // Поменять на callBack вместо метода RecyclerViewAdapter
-            val list: List<ServiceModel> =
-                servicesListRecyclerViewAdapter?.getCheckedServices() ?: emptyList()
-            val chooseBranchId: BranchModel =
-                branchSpinner?.selectedItem as? BranchModel ?: BranchModel()
-            val chooseCar = carSpinner.selectedItem as? CarModel ?: CarModel()
-            transferDataOfEnroll(list, chooseBranchId.id, chooseCar.id)
+        toolbar?.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.actionOk -> {
+                    // Поменять на callBack вместо метода RecyclerViewAdapter
+                    val list: List<ServiceModel> =
+                        servicesListRecyclerViewAdapter?.getCheckedServices() ?: emptyList()
+                    if (list.isEmpty()) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Выберити хотя бы одну услугу",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        false
+                    } else {
+                        val chooseBranch: BranchModel =
+                            branchSpinner?.selectedItem as? BranchModel ?: BranchModel()
+                        val chooseCar = carSpinner.selectedItem as? CarModel ?: CarModel()
+
+                        transferDataOfEnroll(list, chooseBranch, chooseCar.id)
+
+                        true
+                    }
+                }
+                R.id.actionExit -> {
+                    signOut()
+                    true
+                }
+                else -> false
+            }
         }
     }
 
@@ -106,7 +124,8 @@ class EnrollFragment : Fragment(), TestCallBack {
      * */
 
     private fun setSumPriceService(sum: Int) {
-        sumPriceTV?.text = "Итого:" + sum.toString() + "руб."
+        val sumText = "Итого: " + sum.toString() + "руб."
+        sumPriceTV?.text = sumText
         price = sum.toLong()
     }
 
@@ -169,7 +188,7 @@ class EnrollFragment : Fragment(), TestCallBack {
 
     private fun transferDataOfEnroll(
         listService: List<ServiceModel>,
-        branchId: String,
+        branch: BranchModel,
         carID: String
     ) {
         setFragmentResult(
@@ -177,7 +196,7 @@ class EnrollFragment : Fragment(), TestCallBack {
             bundleOf(
                 MainActivity.BUNDLE_KEY to true,
                 MainActivity.LIST_SERVICES to listService,
-                MainActivity.BRANCH_ID to branchId,
+                MainActivity.BRANCH to branch,
                 MainActivity.CAR_ID to carID,
                 MainActivity.PRICE to price
             )
@@ -190,24 +209,13 @@ class EnrollFragment : Fragment(), TestCallBack {
         private const val ORDER_KEY_ADMIN_ID = "adminId"
         private const val LIST_CARS = "list_cars"
 
+        private const val TITLE_TOOLBAR = "Запись"
+
         fun newInstance(listCars: List<CarModel>): EnrollFragment {
             return EnrollFragment().apply {
                 arguments = bundleOf(LIST_CARS to listCars)
             }
         }
-
-        /*val LIST_SERVICES: List<ServiceModel> =
-            listOf(
-                ServiceModel(1, "Замена масла в ДВС", 1),
-                ServiceModel(2, "Замена масляного фильтра", 4),
-                ServiceModel(3, "Замена воздушного фильтра", 8),
-                ServiceModel(4, "Замена топливного фильтра", 10),
-                ServiceModel(5, "Сброс межсервисных интервалов", 2),
-                ServiceModel(6, "Замена тормозной жидкости", 1),
-                ServiceModel(7, "Замена патрубков системы охлаждения", 3),
-                ServiceModel(8, "Замена жидкости ГУР", 7),
-                ServiceModel(9, "Диагностика форсунок (диагностика инжектора)", 6),
-            )*/
     }
 
     override fun setListBranch(list: List<BranchModel>) {
@@ -224,11 +232,4 @@ class EnrollFragment : Fragment(), TestCallBack {
     override fun setListServices(listServices: List<ServiceModel>) {
         servicesListRecyclerViewAdapter?.setDataSet(listServices)
     }
-
-    /*"Промывка инжектора",
-    "Промывка форсунок",
-    "Диагностика свечей зажигания",
-    "Замена свечей зажигания",
-    "Замена масла",
-    "Чистка инжектора",*/
 }

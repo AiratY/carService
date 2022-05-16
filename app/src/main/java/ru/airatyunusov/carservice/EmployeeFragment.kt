@@ -101,7 +101,6 @@ class EmployeeFragment : BaseFragment() {
         } else {
             setMenu(R.menu.menu_save_delete)
         }
-
     }
 
     private fun prepareToSaveEmployees() {
@@ -121,11 +120,10 @@ class EmployeeFragment : BaseFragment() {
             if (employee == null) {
 
                 createAccount(login, password)
-
             } else {
                 updateEmployee(firstName, lastName, patronymic)
             }
-            //returnBack()
+            // returnBack()
         }
     }
 
@@ -185,7 +183,6 @@ class EmployeeFragment : BaseFragment() {
         deleteBtn?.visibility = View.VISIBLE
     }
 
-
     /**
      * Обновление данных сотрудника в БД
      * */
@@ -205,7 +202,6 @@ class EmployeeFragment : BaseFragment() {
 
         returnBack()
     }
-
 
     companion object {
         private const val BRANCH_ID = "branch_id"

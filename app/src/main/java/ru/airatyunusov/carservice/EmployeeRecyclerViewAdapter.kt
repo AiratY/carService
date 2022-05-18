@@ -30,6 +30,8 @@ class EmployeeRecyclerViewAdapter(private val onClick: (Employee) -> Unit) : Rec
         fun bind(employee: Employee) {
             currentEmployee = employee
             name.text = employee.toString()
+            val textCategory = "Категория:\n${employee.category}"
+            desc.text = textCategory
         }
     }
 

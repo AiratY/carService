@@ -1,21 +1,27 @@
 package ru.airatyunusov.carservice
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.core.os.bundleOf
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import ru.airatyunusov.carservice.callbacks.CategoryCallBack
+import ru.airatyunusov.carservice.model.CategoryServices
 import ru.airatyunusov.carservice.model.Employee
 import ru.airatyunusov.carservice.model.User
+import java.lang.ref.WeakReference
 
-class EmployeeFragment : BaseFragment() {
+class EmployeeFragment : BaseFragment(), CategoryCallBack {
 
     private var auth: FirebaseAuth? = null
     private var branchId = ""
@@ -27,10 +33,12 @@ class EmployeeFragment : BaseFragment() {
     private var lastNameEditText: EditText? = null
     private var patronymicEditText: EditText? = null
     private var childName = ""
+    private var spinnerCategoriesServices: Spinner? = null
 
     private var firstName: String = ""
     private var lastName: String = ""
     private var patronymic: String = ""
+    private var category = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,7 +83,7 @@ class EmployeeFragment : BaseFragment() {
         firstNameEditText = view.findViewById(R.id.nameEmployeeEditText)
         lastNameEditText = view.findViewById(R.id.lastNameEditText)
         patronymicEditText = view.findViewById(R.id.patronymicEditText)
-
+        spinnerCategoriesServices = view.findViewById(R.id.spinnerCategoriesServices)
         loginEditText = view.findViewById(R.id.loginEmployeeEditText)
         passwordEditText = view.findViewById(R.id.passwordEmployeeEditText)
 
@@ -101,6 +109,8 @@ class EmployeeFragment : BaseFragment() {
         } else {
             setMenu(R.menu.menu_save_delete)
         }
+
+        loadListCategoriesServices(this)
     }
 
     private fun prepareToSaveEmployees() {
@@ -109,6 +119,7 @@ class EmployeeFragment : BaseFragment() {
         patronymic = patronymicEditText?.text.toString()
         val login: String = loginEditText?.text.toString()
         val password: String = passwordEditText?.text.toString()
+        category = spinnerCategoriesServices?.selectedItem.toString()
 
         if (firstName.isEmpty() || lastName.isEmpty() || patronymic.isEmpty() || login.isEmpty() || password.isEmpty()) {
             Toast.makeText(
@@ -121,7 +132,7 @@ class EmployeeFragment : BaseFragment() {
 
                 createAccount(login, password)
             } else {
-                updateEmployee(firstName, lastName, patronymic)
+                updateEmployee(firstName, lastName, patronymic, category)
             }
             // returnBack()
         }
@@ -136,7 +147,7 @@ class EmployeeFragment : BaseFragment() {
             ?.addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     val id = auth?.currentUser?.uid ?: ""
-                    updateEmployeeInFireBase(id, branchId, firstName, lastName, patronymic)
+                    updateEmployeeInFireBase(id, branchId, firstName, lastName, patronymic, category)
                     val user = User(id = id, role = MainActivity.ROLE_EMPLOYEE, name = firstName)
                     user.saveUser()
                 } else {
@@ -171,11 +182,40 @@ class EmployeeFragment : BaseFragment() {
         }
     }
 
-    private fun updateEmployee(firstName: String, lastName: String, patronymic: String) {
+    /**
+     * Загружает список категорий услуг
+     * */
+
+    private fun loadListCategoriesServices(callBack: CategoryCallBack) {
+        val weakReferenceCallBack = WeakReference(callBack)
+        val childName = "categories"
+        val adminId = getUserId()
+
+        val query = reference.child(childName).orderByChild(CHILD_NAME_ADMIN_ID).equalTo(adminId)
+
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val listCategories: MutableList<CategoryServices> = mutableListOf()
+                for (child in snapshot.children) {
+                    val serviceModel = child.getValue<CategoryServices>()
+                    serviceModel?.let {
+                        listCategories.add(it)
+                    }
+                }
+                weakReferenceCallBack.get()?.setListCategories(listCategories)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(getString(R.string.FIREBASE_LOG_TAG), error.message)
+            }
+        })
+    }
+
+    private fun updateEmployee(firstName: String, lastName: String, patronymic: String, category: String) {
         val key = employee?.id
         val branchId = employee?.branchId ?: ""
         key?.let {
-            updateEmployeeInFireBase(it, branchId, firstName, lastName, patronymic)
+            updateEmployeeInFireBase(it, branchId, firstName, lastName, patronymic, category)
         }
     }
 
@@ -192,9 +232,10 @@ class EmployeeFragment : BaseFragment() {
         branchId: String,
         firstName: String,
         lastName: String,
-        patronymic: String
+        patronymic: String,
+        category: String
     ) {
-        val employee = Employee(key, branchId, firstName, lastName, patronymic)
+        val employee = Employee(key, branchId, firstName, lastName, patronymic, category = category)
         val childUpdates = hashMapOf<String, Any>(
             "/$childName/$key" to employee
         )
@@ -206,6 +247,7 @@ class EmployeeFragment : BaseFragment() {
     companion object {
         private const val BRANCH_ID = "branch_id"
         private const val EMPLOYEE = "employee"
+        private const val CHILD_NAME_ADMIN_ID = "adminId"
 
         private const val ERROR_INVALID_EMAIL = "ERROR_INVALID_EMAIL"
         private const val ERROR_WEAK_PASSWORD = "ERROR_WEAK_PASSWORD"
@@ -228,6 +270,26 @@ class EmployeeFragment : BaseFragment() {
         fun newInstance(employee: Employee): EmployeeFragment {
             return EmployeeFragment().apply {
                 arguments = bundleOf(EMPLOYEE to employee)
+            }
+        }
+    }
+
+    override fun setListCategories(list: List<CategoryServices>) {
+        val spinnerAdapter: ArrayAdapter<CategoryServices> = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item, list
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+        spinnerCategoriesServices?.adapter = spinnerAdapter
+
+        employee?.let {
+            var i = 0
+            for (category in list) {
+                if (category.name == it.category) {
+                    spinnerCategoriesServices?.setSelection(i)
+                    break
+                }
+                i++
             }
         }
     }

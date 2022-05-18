@@ -8,14 +8,16 @@ data class ServiceModel(
     val adminId: String = "",
     val name: String = "",
     val hours: Int = 0,
-    val price: Int = 0
+    val price: Int = 0,
+    val category: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readInt(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readString().toString(),
     ) {
     }
 
@@ -25,6 +27,7 @@ data class ServiceModel(
         parcel.writeString(name)
         parcel.writeInt(hours)
         parcel.writeInt(price)
+        parcel.writeString(category)
     }
 
     override fun describeContents(): Int {

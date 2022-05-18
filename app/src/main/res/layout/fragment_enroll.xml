@@ -61,12 +61,12 @@
             android:id="@+id/sumPriceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/branch_mt_8dp"
             android:layout_marginStart="@dimen/branch_sm_8dp"
-            tools:text="Итого: 0 руб."
+            android:layout_marginTop="@dimen/branch_mt_8dp"
             android:theme="@style/valueTheme"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/servicesListRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/servicesListRecyclerView"
+            tools:text="Итого: 0 руб." />
 
         <TextView
             android:id="@+id/titleSelectBranchTextView"
@@ -88,7 +88,27 @@
             android:text="@string/text_title_select_service_text_view"
             android:theme="@style/valueTheme"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategoriesServices" />
+
+        <TextView
+            android:id="@+id/selectCategoriesServicesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/valueTheme"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:text="@string/text_title_select_category"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/branchSpinner" />
+
+        <Spinner
+            android:id="@+id/spinnerCategoriesServices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
+            app:layout_constraintTop_toBottomOf="@id/selectCategoriesServicesTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

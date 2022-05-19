@@ -1,8 +1,6 @@
 package ru.airatyunusov.carservice
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,19 +13,24 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import ru.airatyunusov.carservice.callbacks.TestCallBack
+import ru.airatyunusov.carservice.callbacks.EnrollCustomerCallBack
 import ru.airatyunusov.carservice.model.BranchModel
 import ru.airatyunusov.carservice.model.CarModel
+import ru.airatyunusov.carservice.model.CategoryServices
 import ru.airatyunusov.carservice.model.ServiceModel
+import java.lang.ref.WeakReference
 
-class EnrollFragment : BaseFragment(), TestCallBack {
+class EnrollFragment : BaseFragment(), EnrollCustomerCallBack {
 
-    private val callBack: TestCallBack = this
+    private val callBack: EnrollCustomerCallBack = this
     private var branchSpinner: Spinner? = null
     private var servicesListRecyclerViewAdapter: ServicesListRecyclerViewAdapter? = null
     private var listCars: List<CarModel>? = null
     private var sumPriceTV: TextView? = null
+    private var spinnerCategoriesServices: Spinner? = null
     private var price: Long = 0
+    private var listCategoriesServices: List<CategoryServices> = emptyList()
+    private var branchAdminId = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,9 +58,9 @@ class EnrollFragment : BaseFragment(), TestCallBack {
             ServicesListRecyclerViewAdapter { sum -> setSumPriceService(sum) }
         branchSpinner = view.findViewById(R.id.branchSpinner)
         val serviceListRecyclerView: RecyclerView = view.findViewById(R.id.servicesListRecyclerView)
+        spinnerCategoriesServices = view.findViewById(R.id.spinnerCategoriesServices)
 
         serviceListRecyclerView.adapter = servicesListRecyclerViewAdapter
-
         loadBranchList()
 
         // Заполняем спинер списком автомобилей
@@ -79,7 +82,9 @@ class EnrollFragment : BaseFragment(), TestCallBack {
             ) {
                 val branch: BranchModel =
                     parent?.getItemAtPosition(position) as? BranchModel ?: BranchModel()
-                loadListService(branch.adminId)
+
+                branchAdminId = branch.adminId
+                loadListCategoriesServices(this@EnrollFragment)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -120,6 +125,35 @@ class EnrollFragment : BaseFragment(), TestCallBack {
     }
 
     /**
+     * Загружает список категорий услуг
+     * */
+
+    private fun loadListCategoriesServices(callBack: EnrollFragment) {
+        val weakReferenceCallBack = WeakReference(callBack)
+        val childName = "categories"
+        val adminId = branchAdminId
+
+        val query = reference.child(childName).orderByChild(CHILD_NAME_ADMIN_ID).equalTo(adminId)
+
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val listCategories: MutableList<CategoryServices> = mutableListOf()
+                for (child in snapshot.children) {
+                    val serviceModel = child.getValue<CategoryServices>()
+                    serviceModel?.let {
+                        listCategories.add(it)
+                    }
+                }
+                weakReferenceCallBack.get()?.setListCategories(listCategories)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(getString(R.string.FIREBASE_LOG_TAG), error.message)
+            }
+        })
+    }
+
+    /**
      * Обновляем значение итоговой суммы
      * */
 
@@ -144,9 +178,9 @@ class EnrollFragment : BaseFragment(), TestCallBack {
                 for (child in snapshot.children) {
                     val serviceModel = child.getValue<ServiceModel>()
                     serviceModel?.let { listServices.add(it) }
-                    Handler(Looper.getMainLooper()).post {
-                        callBack.setListServices(listServices)
-                    }
+                    // Handler(Looper.getMainLooper()).post {
+                    callBack.setListServices(listServices)
+                    // }
                 }
             }
 
@@ -170,9 +204,11 @@ class EnrollFragment : BaseFragment(), TestCallBack {
                 for (child in snapshot.children) {
                     val branch = child.getValue<BranchModel>()
                     branch?.let { listBranch.add(it) }
-                    Handler(Looper.getMainLooper()).post {
-                        callBack.setListBranch(listBranch)
-                    }
+                    /*Handler(Looper.getMainLooper()).post {
+
+                    }*/
+
+                    callBack.setListBranch(listBranch)
                 }
             }
 
@@ -208,6 +244,7 @@ class EnrollFragment : BaseFragment(), TestCallBack {
         private const val CHILD_SERVICES = "services"
         private const val ORDER_KEY_ADMIN_ID = "adminId"
         private const val LIST_CARS = "list_cars"
+        private const val CHILD_NAME_ADMIN_ID = "adminId"
 
         private const val TITLE_TOOLBAR = "Запись"
 
@@ -230,6 +267,43 @@ class EnrollFragment : BaseFragment(), TestCallBack {
     }
 
     override fun setListServices(listServices: List<ServiceModel>) {
-        servicesListRecyclerViewAdapter?.setDataSet(listServices)
+
+        val spinnerAdapter: ArrayAdapter<CategoryServices> = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item, listCategoriesServices
+        )
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+
+        spinnerCategoriesServices?.adapter = spinnerAdapter
+
+        spinnerCategoriesServices?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val category = parent?.getItemAtPosition(position) as? CategoryServices
+                        ?: CategoryServices()
+                    val listServiceOrderByCategory = mutableListOf<ServiceModel>()
+                    for (services in listServices) {
+                        if (services.category == category.name) {
+                            listServiceOrderByCategory.add(services)
+                        }
+                    }
+                    servicesListRecyclerViewAdapter?.setDataSet(listServiceOrderByCategory)
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    Log.e("SELECTED", "Ничего не выбранно")
+                }
+            }
+    }
+
+    override fun setListCategories(list: List<CategoryServices>) {
+        listCategoriesServices = list
+        loadListService(branchAdminId)
     }
 }

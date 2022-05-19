@@ -182,6 +182,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        supportFragmentManager.setFragmentResultListener(SHOW_ADD_CATEGORY_SERVICE, this) { _, bundle ->
+            if (bundle.getBoolean(BUNDLE_KEY)) {
+                val categoryServices = bundle.get(CATEGORY) as? CategoryServices
+                if (categoryServices == null) {
+                    replaceFragment(CategoryServicesFragment())
+                } else {
+                    replaceFragment(CategoryServicesFragment.newInstance(categoryServices))
+                }
+            }
+        }
     }
 
     private fun showAuthorizationFragment() {
@@ -302,6 +313,7 @@ class MainActivity : AppCompatActivity() {
         const val SHOW_EMPLOYEE_FRAGMENT = "show_employee_page"
         const val SHOW_SELECT_DATE_TIME = "show_select_date_time"
         const val SHOW_ADD_SERVICE = "show_ADD_SERVICE"
+        const val SHOW_ADD_CATEGORY_SERVICE = "show_ADD_category_SERVICE"
         const val BUNDLE_KEY = "show"
         const val SHOW_DETAIL_BRANCH = "show_detail_branch"
         const val SHOW_DETAIL_TOKEN = "show_detail_token"
@@ -323,6 +335,8 @@ class MainActivity : AppCompatActivity() {
         const val IS_DELETE_TOKEN = "is delete"
         const val SERVICE = "service"
         const val SHOW_AUTH = "show_auth_page"
+
+        const val CATEGORY = "category"
 
         private const val ROLE_CUSTOMER = "Клиент"
         const val ROLE_EMPLOYEE = "Сотрудник"

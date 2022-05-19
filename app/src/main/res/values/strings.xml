@@ -97,4 +97,10 @@
     <string name="text_hint_model_car">Модель</string>
     <string name="text_number_car">Номер</string>
     <string name="text_hint_year_car">Год выпуска</string>
+    <string name="text_title_category_services">Категория услуг</string>
+    <string name="text_title_categories_services">Категории услуг</string>
+    <string name="text_name_category_TEXT_view">Название категории</string>
+    <string name="text_title_category_employee">Категория оказываемых услуг</string>
+    <string name="text_title_select_category">Выберите категорию услуг</string>
+    <string name="text_change_categories">Изменить</string>
 </resources>

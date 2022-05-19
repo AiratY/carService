@@ -17,6 +17,39 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/titleCategoryServiceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:text="@string/text_title_categories_services"
+            android:theme="@style/valueTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include" />
+
+        <TextView
+            android:id="@+id/addCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:text="@string/text_add_textView"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:theme="@style/actionTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleCategoryServiceTextView" />
+
+        <TextView
+            android:id="@+id/changeCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginStart="@dimen/mt_16dp"
+            android:text="@string/text_change_categories"
+            android:theme="@style/actionTextView"
+            app:layout_constraintStart_toEndOf="@+id/addCategories"
+            app:layout_constraintTop_toBottomOf="@+id/titleCategoryServiceTextView" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listServicesRecyclerView"
@@ -33,25 +66,25 @@
             android:id="@+id/titleListServicesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/valueTheme"
-            android:visibility="gone"
-            android:layout_marginStart="@dimen/mt_16dp"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
             android:layout_marginTop="@dimen/branch_mt_8dp"
             android:text="@string/text_title_services_text_view"
+            android:theme="@style/valueTheme"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategoriesServices" />
 
         <TextView
             android:id="@+id/addServicesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/mt_16dp"
             android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginEnd="@dimen/mt_16dp"
+            android:text="@string/text_add_textView"
             android:theme="@style/actionTextView"
             android:visibility="gone"
-            android:text="@string/text_add_textView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategoriesServices" />
 
         <ProgressBar
             android:id="@+id/catalogServicesProgressBar"
@@ -62,6 +95,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include" />
+
+        <Spinner
+            android:id="@+id/spinnerCategoriesServices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/branch_sm_8dp"
+            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginEnd="@dimen/branch_em_8dp"
+            app:layout_constraintTop_toBottomOf="@id/addCategories" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

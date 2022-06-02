@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:layout_marginStart="@dimen/branch_sm_8dp"
-    android:layout_marginEnd="@dimen/branch_em_8dp"
+    android:layout_marginStart="@dimen/main_start_margin"
+    android:layout_marginEnd="@dimen/main_end_margin"
     android:layout_marginBottom="@dimen/mt_16dp"
     android:theme="@style/CardViewTheme">
 
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/mt_16dp"
-            android:layout_marginTop="@dimen/branch_mt_8dp"
+            android:layout_marginTop="@dimen/main_margin_top"
             android:layout_marginEnd="@dimen/mt_16dp"
             android:layout_marginBottom="@dimen/mt_16dp"
             android:text="@string/text_desc_text_view"

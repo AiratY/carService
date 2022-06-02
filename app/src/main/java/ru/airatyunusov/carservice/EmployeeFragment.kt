@@ -96,6 +96,7 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
             firstNameEditText?.setText(firstName)
             lastNameEditText?.setText(lastName)
             patronymicEditText?.setText(patronymic)
+            //Todo val убрать впеременную isEmptu сзделать true
             val textNull = "null"
             loginEditText?.setText(textNull)
             passwordEditText?.setText(textNull)
@@ -129,7 +130,6 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
             ).show()
         } else {
             if (employee == null) {
-
                 createAccount(login, password)
             } else {
                 updateEmployee(firstName, lastName, patronymic, category)

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -25,7 +26,6 @@ import java.util.concurrent.Executors
 
 class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
 
-    private var dateTimeSpinner: Spinner? = null
     private var listEmployeeSpinner: Spinner? = null
     private var nextWeekBtn: Button? = null
     private var prevWeekBtn: Button? = null
@@ -33,10 +33,12 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
     private var titleSelectEmployeeTextView: TextView? = null
     private var titleSelectDateTimeTextView: TextView? = null
     private var messageTextView: TextView? = null
+    private var timeCompleteTextView: TextView? = null
+    private var listTokenRecyclerView: RecyclerView? = null
 
     private var timeStart: LocalTime = LocalTime.of(8, 0)
     private var timeEnd: LocalTime = LocalTime.of(20, 0)
-    private val diffTimeWork: Int = timeEnd.hour - timeStart.hour
+    private var diffTimeWork: Int = 0
     private var listServiceModel: List<ServiceModel> = emptyList()
     private var listEmployee: List<Employee> = emptyList()
     private var dayExecuteServices = 0
@@ -49,6 +51,8 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
 
     private var selectedEmployee: Employee? = null
     private var selectedToken: TokenModel? = null
+
+    private var listTokenRecyclerAdapter: SelectTokenRecyclerView? = null
 
     private var carId = ""
     private var branchId = ""
@@ -70,13 +74,18 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         showButtonBack()
         setListenerArrowBack()
 
-        dateTimeSpinner = view.findViewById(R.id.dateTimeSpinner)
         listEmployeeSpinner = view.findViewById(R.id.listEmployeeSpinner)
         nextWeekBtn = view.findViewById(R.id.nextWeekButton)
         prevWeekBtn = view.findViewById(R.id.prevWeekButton)
         progressBar = view.findViewById(R.id.progressBar)
         titleSelectDateTimeTextView = view.findViewById(R.id.selectDateTimeTextView)
         titleSelectEmployeeTextView = view.findViewById(R.id.titleSelectEmployeeTextView)
+        timeCompleteTextView = view.findViewById(R.id.timeCompleteTextView)
+
+        listTokenRecyclerView = view.findViewById(R.id.listTokenRecyclerView)
+        listTokenRecyclerAdapter =
+            SelectTokenRecyclerView { tokenModel -> setTokenModel(tokenModel) }
+        listTokenRecyclerView?.adapter = listTokenRecyclerAdapter
 
         messageTextView = view.findViewById(R.id.messageTextView)
 
@@ -96,6 +105,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
 
             timeStart = LocalTime.parse(branchModel.startTime)
             timeEnd = LocalTime.parse(branchModel.endTime)
+            diffTimeWork = timeEnd.hour - timeStart.hour
 
             disablePrevBtn()
 
@@ -134,6 +144,14 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
     }
 
     /**
+     * Устанавливает в качестве выбрранного токена
+     * */
+
+    private fun setTokenModel(token: TokenModel) {
+        selectedToken = token
+    }
+
+    /**
      * Переходит на страницу Клиента
      * */
 
@@ -143,6 +161,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             bundleOf(MainActivity.BUNDLE_KEY to true)
         )
     }
+
     /**
      * Отключает кнопку предыдущая неделя
      * */
@@ -163,6 +182,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         super.onDestroyView()
         myExecutor.closeExecutor()
     }
+
     /**
      * Осуществляет загрузку, генерацию и установку талонов
      * */
@@ -211,6 +231,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             myRef.updateChildren(childUpdates)
         }
     }
+
     /**
      * Процесс регистрации
      * */
@@ -231,6 +252,8 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             dayExecuteServices = hoursCompleteTemp / diffTimeWork
             hoursCompleteTemp %= diffTimeWork
 
+
+
             if (!checkDate(hoursCompleteTemp, dayExecuteServices, startWeek, endWeek)) {
                 updateStartEndWeekDateTime()
             }
@@ -242,6 +265,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             }
         }
     }
+
     /**
      * Загружает время начала и окончания рабочего дня из БД
      * */
@@ -570,6 +594,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
                 .withSecond(0).withNano(0)
         }
     }
+
     /**
      * Вычисляет общее время на выполнение услуг
      * */
@@ -609,6 +634,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             }
         }
     }
+
     /**
      * Устанавливает значения во View
      * */
@@ -624,6 +650,9 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         } else {
             showViews()
 
+            timeCompleteTextView?.text =
+                if (dayExecuteServices == 0) "$hoursCompleteTemp ч." else "$dayExecuteServices д. $hoursCompleteTemp ч."
+
             // список талонов только для одного сотрудника
             var listNewTokenFilterByIdEmployee =
                 filterListTokenByIdEmployee(listNewToken, listEmployee[0].id)
@@ -633,14 +662,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             listEmployeeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
             listEmployeeSpinner?.adapter = listEmployeeSpinnerAdapter
 
-            // Заполняем спинор талонами
-            val spinnerAdapter: ArrayAdapter<TokenModel> = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                listNewTokenFilterByIdEmployee
-            )
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
-            dateTimeSpinner?.adapter = spinnerAdapter
+            listTokenRecyclerAdapter?.setDataSet(listNewTokenFilterByIdEmployee)
 
             listEmployeeSpinner?.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
@@ -655,31 +677,16 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
                             listNewTokenFilterByIdEmployee =
                                 filterListTokenByIdEmployee(listNewToken, it.id)
                         }
-                        spinnerAdapter.clear()
-                        spinnerAdapter.addAll(listNewTokenFilterByIdEmployee)
+                        listTokenRecyclerAdapter?.setDataSet(listNewTokenFilterByIdEmployee)
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                         TODO("Not yet implemented")
                     }
                 }
-
-            dateTimeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    itemSelected: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    selectedToken = parent?.getItemAtPosition(position) as? TokenModel
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                    TODO("Not yet implemented")
-                }
-            }
         }
     }
+
     /**
      * Показать все виджеты
      * */
@@ -688,11 +695,12 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         progressBar?.visibility = View.GONE
         nextWeekBtn?.visibility = View.VISIBLE
         prevWeekBtn?.visibility = View.VISIBLE
-        dateTimeSpinner?.visibility = View.VISIBLE
         listEmployeeSpinner?.visibility = View.VISIBLE
         titleSelectEmployeeTextView?.visibility = View.VISIBLE
         titleSelectDateTimeTextView?.visibility = View.VISIBLE
+        listTokenRecyclerView?.visibility = View.VISIBLE
     }
+
     /**
      * Скрывать все виджеты
      * */
@@ -701,10 +709,10 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         progressBar?.visibility = View.VISIBLE
         nextWeekBtn?.visibility = View.GONE
         prevWeekBtn?.visibility = View.GONE
-        dateTimeSpinner?.visibility = View.GONE
         listEmployeeSpinner?.visibility = View.GONE
         titleSelectEmployeeTextView?.visibility = View.GONE
         titleSelectDateTimeTextView?.visibility = View.GONE
+        listTokenRecyclerView?.visibility = View.GONE
     }
 
     inner class EnrollExecutor(callBack: EnrollCallBack) {

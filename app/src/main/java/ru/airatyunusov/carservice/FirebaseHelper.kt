@@ -11,14 +11,9 @@ import com.google.firebase.ktx.Firebase
 
 class FirebaseHelper {
 
-    private val database: FirebaseDatabase
-    private var auth: FirebaseAuth
-
-    init {
-        database =
-            Firebase.database("https://carservice-93ef9-default-rtdb.europe-west1.firebasedatabase.app/")
-        auth = Firebase.auth
-    }
+    private val database: FirebaseDatabase =
+        Firebase.database("https://carservice-93ef9-default-rtdb.europe-west1.firebasedatabase.app/")
+    private var auth: FirebaseAuth = Firebase.auth
 
     fun getDatabaseReference(): DatabaseReference {
         return database.reference

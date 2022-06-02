@@ -103,4 +103,5 @@
     <string name="text_title_category_employee">Категория оказываемых услуг</string>
     <string name="text_title_select_category">Выберите категорию услуг</string>
     <string name="text_change_categories">Изменить</string>
+    <string name="title_complete_text_view">Выполнение:</string>
 </resources>

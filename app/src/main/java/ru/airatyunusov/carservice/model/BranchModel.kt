@@ -9,7 +9,7 @@ data class BranchModel(
     val name: String = "",
     val address: String = "",
     val phone: String = "",
-    val startTime: String = "",
+    val startTime: String = "", // Todo Сделать только часы
     val endTime: String = "",
 ) : Parcelable {
 

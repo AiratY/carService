@@ -17,8 +17,8 @@
         android:id="@+id/titleNameCategoryTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/branch_sm_8dp"
-        android:layout_marginTop="@dimen/branch_mt_8dp"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
         android:text="@string/text_name_category_TEXT_view"
         android:theme="@style/valueTheme"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,9 +29,9 @@
         android:id="@+id/nameCategoryEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/branch_sm_8dp"
-        android:layout_marginTop="@dimen/branch_mt_8dp"
-        android:layout_marginEnd="@dimen/branch_em_8dp"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
         android:inputType="text"
         app:layout_constraintTop_toBottomOf="@+id/titleNameCategoryTextView" />
 

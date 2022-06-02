@@ -5,37 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/main_start_margin"
+    android:layout_marginTop="4dp"
     android:layout_marginEnd="@dimen/main_end_margin"
     android:layout_marginBottom="16dp"
-    android:layout_marginTop="4dp"
     android:theme="@style/CardViewTheme">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/titleStatusTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/main_start_margin"
-            android:layout_marginTop="@dimen/main_margin_top"
-            android:text="@string/text_title_TV"
-            android:theme="@style/titleTheme"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/statusTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/main_start_margin"
-            android:layout_marginTop="@dimen/main_margin_top"
-            android:layout_marginEnd="@dimen/main_end_margin"
-            android:theme="@style/valueTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Завершён" />
 
         <TextView
             android:id="@+id/titleStartDateTimeTextView"
@@ -46,7 +23,7 @@
             android:text="@string/text_title_start_date_time_TV"
             android:theme="@style/titleTheme"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/statusTextView" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/startDateTimeTextView"

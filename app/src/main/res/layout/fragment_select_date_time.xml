@@ -23,7 +23,7 @@
         android:text="@string/text_prev_week_btn"
         app:layout_constraintEnd_toStartOf="@+id/nextWeekButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include" />
+        app:layout_constraintTop_toBottomOf="@id/titleCompleteTextView" />
 
     <Button
         android:id="@+id/nextWeekButton"
@@ -33,7 +33,7 @@
         android:text="@string/text_next_week_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/prevWeekButton"
-        app:layout_constraintTop_toBottomOf="@id/include" />
+        app:layout_constraintTop_toBottomOf="@id/titleCompleteTextView" />
 
 
     <ProgressBar
@@ -70,11 +70,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginTop="@dimen/main_margin_top"
         android:text="@string/text_select_text_view"
         android:theme="@style/valueTheme"
+        android:layout_marginTop="@dimen/main_margin_top"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleCompleteTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/listEmployeeSpinner" />
 
     <TextView
         android:id="@+id/messageTextView"
@@ -98,27 +98,27 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectDateTimeTextView"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/titleCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="@style/valueTheme"
-        android:text="Выполнение:"
         android:layout_marginStart="@dimen/main_start_margin"
         android:layout_marginTop="@dimen/main_margin_top"
+        android:text="@string/title_complete_services"
+        android:theme="@style/valueTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listEmployeeSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <TextView
         android:id="@+id/timeCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/main_margin_top"
         android:layout_marginEnd="@dimen/main_end_margin"
-        tools:text="4 д. 3 ч."
         android:theme="@style/valueTheme"
+        android:layout_marginTop="@dimen/main_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listEmployeeSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        tools:text="4 д. 3 ч." />
 </androidx.constraintlayout.widget.ConstraintLayout>

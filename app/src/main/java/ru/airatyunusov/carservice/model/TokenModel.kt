@@ -1,6 +1,6 @@
 package ru.airatyunusov.carservice.model
 
-import ru.airatyunusov.carservice.DateTimeHelper
+import ru.airatyunusov.carservice.utils.DateTimeHelper
 import java.time.LocalDateTime
 
 data class TokenModel(

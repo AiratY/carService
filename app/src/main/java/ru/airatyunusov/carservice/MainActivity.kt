@@ -11,7 +11,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import ru.airatyunusov.carservice.admin.AdminFragment
+import ru.airatyunusov.carservice.admin.CatalogServicesFragment
+import ru.airatyunusov.carservice.admin.branchs.BranchFragment
+import ru.airatyunusov.carservice.admin.branchs.DetailBranchFragment
+import ru.airatyunusov.carservice.admin.categoryServices.CategoryServicesFragment
+import ru.airatyunusov.carservice.admin.employees.EmployeeFragment
+import ru.airatyunusov.carservice.admin.services.ListTokenAdminFragment
+import ru.airatyunusov.carservice.admin.services.ServicesFragment
+import ru.airatyunusov.carservice.auth.AuthorizationFragment
+import ru.airatyunusov.carservice.customer.CustomerFragment
+import ru.airatyunusov.carservice.customer.cars.CarDetailFragment
+import ru.airatyunusov.carservice.customer.enroll.EnrollFragment
+import ru.airatyunusov.carservice.customer.enroll.SelectDateTimeFragment
+import ru.airatyunusov.carservice.customer.services.ListTokenCustomerFragment
+import ru.airatyunusov.carservice.employee.EmployeePageFragment
 import ru.airatyunusov.carservice.model.*
+import ru.airatyunusov.carservice.token.TokenDetailFragment
 
 class MainActivity : AppCompatActivity() {
     private var bottomNavigationView: BottomNavigationView? = null

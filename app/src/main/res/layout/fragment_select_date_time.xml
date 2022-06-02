@@ -106,6 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/main_start_margin"
         android:layout_marginTop="@dimen/main_margin_top"
+        android:visibility="gone"
         android:text="@string/title_complete_services"
         android:theme="@style/valueTheme"
         app:layout_constraintStart_toStartOf="parent"

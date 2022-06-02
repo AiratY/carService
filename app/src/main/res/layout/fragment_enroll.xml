@@ -36,12 +36,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/servicesListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_end_margin"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/main_margin_top"
-        android:layout_marginEnd="@dimen/main_end_margin"
         android:orientation="vertical"
+        android:layout_marginBottom="@dimen/main_margin_top"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleSelectServicesTextView" />
 
     <Spinner
@@ -57,11 +57,11 @@
         android:id="@+id/sumPriceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginTop="@dimen/main_margin_top"
         android:theme="@style/valueTheme"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/servicesListRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoriesServices"
         tools:text="Итого: 0 руб." />
 
     <TextView

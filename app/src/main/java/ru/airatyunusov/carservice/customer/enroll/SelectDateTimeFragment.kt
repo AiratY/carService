@@ -37,6 +37,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
     private var messageTextView: TextView? = null
     private var timeCompleteTextView: TextView? = null
     private var listTokenRecyclerView: RecyclerView? = null
+    private var titleCompleteTextView: TextView? = null
 
     private var timeStart: LocalTime = LocalTime.of(8, 0)
     private var timeEnd: LocalTime = LocalTime.of(20, 0)
@@ -59,6 +60,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
     private var carId = ""
     private var branchId = ""
     private var price = 0L
+    private var phone = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,6 +85,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         titleSelectDateTimeTextView = view.findViewById(R.id.selectDateTimeTextView)
         titleSelectEmployeeTextView = view.findViewById(R.id.titleSelectEmployeeTextView)
         timeCompleteTextView = view.findViewById(R.id.timeCompleteTextView)
+        titleCompleteTextView = view.findViewById(R.id.titleCompleteTextView)
 
         listTokenRecyclerView = view.findViewById(R.id.listTokenRecyclerView)
         listTokenRecyclerAdapter =
@@ -103,6 +106,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             carId = it.getString(CAR_ID, "")
             val branchModel = it.get(BRANCH) as? BranchModel ?: BranchModel()
             branchId = branchModel.id
+            phone = branchModel.phone
             price = it.getLong(PRICE, 0)
 
             timeStart = LocalTime.parse(branchModel.startTime)
@@ -254,7 +258,12 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             dayExecuteServices = hoursCompleteTemp / diffTimeWork
             hoursCompleteTemp %= diffTimeWork
 
-
+            if (dayExecuteServices >= 7) {
+                Handler(Looper.getMainLooper()).post {
+                    callBack.get()?.showMessage(MESSAGE_CALL_CARSERVICE + phone)
+                }
+                return
+            }
 
             if (!checkDate(hoursCompleteTemp, dayExecuteServices, startWeek, endWeek)) {
                 updateStartEndWeekDateTime()
@@ -263,9 +272,15 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             workWithTokens(callBack)
         } else {
             Handler(Looper.getMainLooper()).post {
-                callBack.get()?.showMessage()
+                callBack.get()?.showMessage(MESSAGE_MAINTENANCE)
             }
         }
+    }
+    /**
+     * Показывает titleCompleteTextView
+     * */
+    private fun visibleTitleComplete() {
+        titleCompleteTextView?.visibility = View.VISIBLE
     }
 
     /**
@@ -278,10 +293,10 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
     /**
      * Показывает сообщение об отстсвие сотрудников
      * */
-    override fun showMessage() {
+    override fun showMessage(message: String) {
         messageTextView?.visibility = View.VISIBLE
         progressBar?.visibility = View.GONE
-        messageTextView?.text = "Ведуться технические работы, попробуйте в другой раз снова"
+        messageTextView?.text = message
     }
 
     /**
@@ -620,6 +635,9 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
 
         private const val TITLE_TOOLBAR = "Запись"
 
+        private const val MESSAGE_MAINTENANCE = "Ведуться технические работы, попробуйте в другой раз снова"
+        private const val MESSAGE_CALL_CARSERVICE = "Время выполнения услуги превышает 7 дней, позвоните в автосервис для записи:"
+
         fun newInstance(
             list: List<ServiceModel>,
             branchModel: BranchModel,
@@ -652,6 +670,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         } else {
             showViews()
 
+            visibleTitleComplete()
             timeCompleteTextView?.text =
                 if (dayExecuteServices == 0) "$hoursCompleteTemp ч." else "$dayExecuteServices д. $hoursCompleteTemp ч."
 

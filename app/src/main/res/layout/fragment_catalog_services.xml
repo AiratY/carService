@@ -50,12 +50,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listServicesRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/main_margin_top"
-        android:layout_marginEnd="@dimen/main_end_margin"
         android:orientation="vertical"
+        android:layout_marginBottom="@dimen/height_bottom_bar"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleListServicesTextView" />
 
     <TextView

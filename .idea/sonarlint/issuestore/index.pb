@@ -64,5 +64,3 @@ x
 Happ/src/main/java/ru/airatyunusov/carservice/model/TokenFirebaseModel.kt,2\e\2e5d0e4df4887a102bc0d232b49676b1865495e9
 x
 Happ/src/main/java/ru/airatyunusov/carservice/TokenRecyclerViewAdapter.kt,9\c\9cb28f001dd313aad5a0563a0906c8e5f5b39c5f
-x
-Happ/src/main/java/ru/airatyunusov/carservice/callbacks/EnrollCallBack.kt,e\b\ebc0eb77163e27c62332c564320953b58866d920

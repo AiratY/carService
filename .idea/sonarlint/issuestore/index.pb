@@ -61,6 +61,4 @@ n
 r
 Bapp/src/main/java/ru/airatyunusov/carservice/model/ServiceModel.kt,2\f\2f5af1bf39386a9d2a3636de21ce1bcf9d0ceb11
 x
-Happ/src/main/java/ru/airatyunusov/carservice/model/TokenFirebaseModel.kt,2\e\2e5d0e4df4887a102bc0d232b49676b1865495e9
-x
 Happ/src/main/java/ru/airatyunusov/carservice/TokenRecyclerViewAdapter.kt,9\c\9cb28f001dd313aad5a0563a0906c8e5f5b39c5f

@@ -61,6 +61,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
     private var branchId = ""
     private var price = 0L
     private var phone = ""
+    private var nameCategory = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,6 +109,8 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             branchId = branchModel.id
             phone = branchModel.phone
             price = it.getLong(PRICE, 0)
+
+            nameCategory = it.getString(NAME_CATEGORY, "")
 
             timeStart = LocalTime.parse(branchModel.startTime)
             timeEnd = LocalTime.parse(branchModel.endTime)
@@ -194,7 +197,9 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
      * */
 
     private fun workWithTokens(callBack: WeakReference<EnrollCallBack>) {
-        val listTokenModel: List<TokenModel> = loadListToken() // уже существующие записи в БД
+        val listTokenFirebaseModel =
+            loadListToken(startWeek, endWeek) // уже существующие записи в БД
+        val listTokenModel: List<TokenModel> = convertToTokenModel(listTokenFirebaseModel)
 
         val listNewTokenModel: List<TokenModel> = generateNewToken(
             listEmployee,
@@ -206,6 +211,30 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         Handler(Looper.getMainLooper()).post {
             callBack.get()?.setListEmployeeAndNewToken(listEmployee, listNewTokenModel)
         }
+    }
+
+    /**
+     * Преобразует список TokenFirebaseModel в TokenModel
+     * */
+
+    private fun convertToTokenModel(listTokenFirebaseModel: List<TokenFirebaseModel>): List<TokenModel> {
+        val listToken: MutableList<TokenModel> = mutableListOf()
+
+        for (firebaseModel in listTokenFirebaseModel) {
+            listToken.add(
+                TokenModel(
+                    startRecordDateTime = DateTimeHelper.convertToLocalDateTime(
+                        firebaseModel.startRecordDateTime
+                    ),
+                    endRecordDateTime = DateTimeHelper.convertToLocalDateTime(
+                        firebaseModel.endRecordDateTime
+                    ),
+                    idEmployee = firebaseModel.idEmployee
+                )
+            )
+        }
+
+        return listToken
     }
 
     /**
@@ -248,11 +277,19 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         listEmployee = loadListEmployee() // список сотрудников
 
         if (listEmployee.isNotEmpty()) {
+
+
             hoursCompleteTemp = getHoursAllServices(listServiceModel)
 
             startWeek = updateStartWeekDateTime(startWeek)
             startWeekCash = startWeek
             endWeek = getDateTimeEndWeek()
+
+            val startPrevTwoWeek = endWeek.minusWeeks(3L).plusDays(1L).withHour(timeStart.hour)
+            val endPrevTwoWeek = endWeek.minusWeeks(1L)
+
+            val listTokenPrevTwoWeek = loadListToken(startPrevTwoWeek, endPrevTwoWeek)
+            listEmployee = sortListEmployee(listEmployee, listTokenPrevTwoWeek)
 
             // в отдельную функцию
             dayExecuteServices = hoursCompleteTemp / diffTimeWork
@@ -276,6 +313,37 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             }
         }
     }
+
+
+    /**
+     * Сортировка списка сотрудников на основе их загружености на протяжение двух последних недель
+     * */
+
+    private fun sortListEmployee(
+        listEmployee: List<Employee>,
+        listTokenPrevTwoWeek: List<TokenFirebaseModel>
+    ): List<Employee> {
+        val mapEmployee = mutableMapOf<String, Long>()
+        val sortedListEmployee = mutableListOf<Employee>()
+        for (employee in listEmployee) {
+            mapEmployee[employee.id] = 0L
+        }
+        for (token in listTokenPrevTwoWeek) {
+            if (mapEmployee.containsKey(token.idEmployee)){
+                val value = mapEmployee[token.idEmployee]
+                value?.let {
+                    mapEmployee[token.idEmployee] = value + token.hoursComplete
+                }
+            }
+        }
+        val sortedMap = mapEmployee.toList().sortedBy { (key,value) -> value}.toMap()
+        for (entry in sortedMap) {
+            listEmployee.find { it.id == entry.key }?.let { sortedListEmployee.add(it) }
+        }
+
+        return sortedListEmployee
+    }
+
     /**
      * Показывает titleCompleteTextView
      * */
@@ -461,13 +529,16 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
      * Загружает список записей из БД для текущей недели
      * */
 
-    private fun loadListToken(): List<TokenModel> {
-        val listToken: MutableList<TokenModel> = mutableListOf()
+    private fun loadListToken(
+        startWeekInterval: LocalDateTime,
+        endWeekInterval: LocalDateTime
+    ): List<TokenFirebaseModel> {
+        val listToken: MutableList<TokenFirebaseModel> = mutableListOf()
 
         val tokenQuery =
             reference.child(TOKEN_MODEL_FIREBASE_KEY).orderByChild("startRecordDateTime")
-                .startAt(DateTimeHelper.convertToStringDateTime(startWeek))
-                .endAt(DateTimeHelper.convertToStringDateTime(endWeek))
+                .startAt(DateTimeHelper.convertToStringDateTime(startWeekInterval))
+                .endAt(DateTimeHelper.convertToStringDateTime(endWeekInterval))
 
         var allCount = 0L
         var count = 1L
@@ -478,16 +549,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
                 for (data in snapshot.children) {
                     val tokenFirebase = data.getValue<TokenFirebaseModel>()
                     tokenFirebase?.apply {
-                        val token = TokenModel(
-                            startRecordDateTime = DateTimeHelper.convertToLocalDateTime(
-                                startRecordDateTime
-                            ),
-                            endRecordDateTime = DateTimeHelper.convertToLocalDateTime(
-                                endRecordDateTime
-                            ),
-                            idEmployee = idEmployee
-                        )
-                        listToken.add(token)
+                        listToken.add(tokenFirebase)
                         count++
                     }
                 }
@@ -526,7 +588,9 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
                 allCount = snapshot.childrenCount
                 for (child in snapshot.children) {
                     val employee = child.getValue<Employee>()
-                    employee?.let { lisEmployee.add(it) }
+                    employee?.let {
+                        if (it.category == nameCategory) lisEmployee.add(it)
+                    }
                     count++
                 }
             }
@@ -629,27 +693,32 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         private const val BRANCH = "branch"
         private const val CAR_ID = "car_id"
         private const val PRICE = "price"
+        private const val NAME_CATEGORY = "name_category"
         private const val FIREBASE_LOG_TAG = "Firebase"
 
         private const val TOKEN_MODEL_FIREBASE_KEY = "tickets"
 
         private const val TITLE_TOOLBAR = "Запись"
 
-        private const val MESSAGE_MAINTENANCE = "Ведуться технические работы, попробуйте в другой раз снова"
-        private const val MESSAGE_CALL_CARSERVICE = "Время выполнения услуги превышает 7 дней, позвоните в автосервис для записи:"
+        private const val MESSAGE_MAINTENANCE =
+            "Ведуться технические работы, попробуйте в другой раз снова"
+        private const val MESSAGE_CALL_CARSERVICE =
+            "Время выполнения услуги превышает 7 дней, позвоните в автосервис для записи:"
 
         fun newInstance(
             list: List<ServiceModel>,
             branchModel: BranchModel,
             carId: String,
-            price: Long
+            price: Long,
+            categoryName: String
         ): SelectDateTimeFragment {
             return SelectDateTimeFragment().apply {
                 arguments = bundleOf(
                     LIST_SERVICE to list,
                     BRANCH to branchModel,
                     CAR_ID to carId,
-                    PRICE to price
+                    PRICE to price,
+                    NAME_CATEGORY to categoryName
                 )
             }
         }
@@ -702,7 +771,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {
-                        TODO("Not yet implemented")
+                        Log.e("SELECTED", "Ничего не выбранно")
                     }
                 }
         }

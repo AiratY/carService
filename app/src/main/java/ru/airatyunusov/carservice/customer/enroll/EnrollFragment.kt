@@ -35,6 +35,7 @@ class EnrollFragment : BaseFragment(), EnrollCustomerCallBack {
     private var price: Long = 0
     private var listCategoriesServices: List<CategoryServices> = emptyList()
     private var branchAdminId = ""
+    private var nameCategory = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,7 +68,6 @@ class EnrollFragment : BaseFragment(), EnrollCustomerCallBack {
         serviceListRecyclerView.adapter = servicesListRecyclerViewAdapter
         loadBranchList()
 
-        // Заполняем спинер списком автомобилей
         listCars?.let {
             val carSpinnerAdapter: ArrayAdapter<CarModel> = ArrayAdapter(
                 requireContext(),
@@ -238,7 +238,8 @@ class EnrollFragment : BaseFragment(), EnrollCustomerCallBack {
                 MainActivity.LIST_SERVICES to listService,
                 MainActivity.BRANCH to branch,
                 MainActivity.CAR_ID to carID,
-                MainActivity.PRICE to price
+                MainActivity.PRICE to price,
+                MainActivity.CATEGORY to nameCategory
             )
         )
     }
@@ -297,6 +298,7 @@ class EnrollFragment : BaseFragment(), EnrollCustomerCallBack {
                             listServiceOrderByCategory.add(services)
                         }
                     }
+                    nameCategory = category.name
                     servicesListRecyclerViewAdapter?.setDataSet(listServiceOrderByCategory)
                 }
 

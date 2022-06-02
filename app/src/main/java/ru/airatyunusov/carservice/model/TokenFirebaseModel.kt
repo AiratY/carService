@@ -11,6 +11,7 @@ data class TokenFirebaseModel(
     var startRecordDateTime: String = "",
     var endRecordDateTime: String = "",
     val idEmployee: String = "",
+    val hoursComplete: Long = 0L,
     var price: Long = 0,
     var listServices: List<ServiceModel> = emptyList()
 ) : Parcelable {
@@ -22,6 +23,7 @@ data class TokenFirebaseModel(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
+        parcel.readLong(),
         parcel.readLong(),
         listOf<ServiceModel>().apply {
             parcel.readArrayList(ServiceModel::class.java.classLoader)
@@ -37,6 +39,7 @@ data class TokenFirebaseModel(
         parcel.writeString(startRecordDateTime)
         parcel.writeString(endRecordDateTime)
         parcel.writeString(idEmployee)
+        parcel.writeLong(hoursComplete)
         parcel.writeLong(price)
         parcel.writeTypedList(listServices)
     }

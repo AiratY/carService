@@ -91,12 +91,14 @@ class MainActivity : AppCompatActivity() {
                 val branchId = bundle.get(BRANCH) as? BranchModel ?: BranchModel()
                 val carID = bundle.getString(CAR_ID, "")
                 val price = bundle.getLong(PRICE, 0)
+                val nameCategory = bundle.getString(CATEGORY, "")
                 replaceFragment(
                     SelectDateTimeFragment.newInstance(
                         listServicesModel,
                         branchId,
                         carID,
-                        price
+                        price,
+                        nameCategory
                     )
                 )
             }

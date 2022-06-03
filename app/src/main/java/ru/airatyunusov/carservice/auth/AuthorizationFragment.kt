@@ -230,7 +230,7 @@ class AuthorizationFragment : BaseFragment() {
     }
 
     /**
-     * Скрывает кнопку Ввойти
+     * Скрывает кнопку Войти
      * */
 
     private fun goneSignInBtn() {

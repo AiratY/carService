@@ -1,4 +1,4 @@
-package ru.airatyunusov.carservice.admin.categoryServices
+package ru.airatyunusov.carservice.admin.services
 
 import android.os.Bundle
 import android.view.LayoutInflater

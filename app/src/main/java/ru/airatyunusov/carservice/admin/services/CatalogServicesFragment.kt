@@ -1,4 +1,4 @@
-package ru.airatyunusov.carservice.admin
+package ru.airatyunusov.carservice.admin.services
 
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +16,6 @@ import com.google.firebase.database.ktx.getValue
 import ru.airatyunusov.carservice.BaseFragment
 import ru.airatyunusov.carservice.MainActivity
 import ru.airatyunusov.carservice.R
-import ru.airatyunusov.carservice.admin.services.ServicesRecyclerViewAdapter
 import ru.airatyunusov.carservice.callbacks.ServicesCallBack
 import ru.airatyunusov.carservice.model.CategoryServices
 import ru.airatyunusov.carservice.model.ServiceModel

@@ -16,7 +16,6 @@ import com.google.firebase.database.ktx.getValue
 import ru.airatyunusov.carservice.BaseFragment
 import ru.airatyunusov.carservice.MainActivity
 import ru.airatyunusov.carservice.R
-import ru.airatyunusov.carservice.customer.services.ServicesListRecyclerViewAdapter
 import ru.airatyunusov.carservice.callbacks.EnrollCustomerCallBack
 import ru.airatyunusov.carservice.model.BranchModel
 import ru.airatyunusov.carservice.model.CarModel

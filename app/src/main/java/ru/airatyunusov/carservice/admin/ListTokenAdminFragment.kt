@@ -1,4 +1,4 @@
-package ru.airatyunusov.carservice.admin.services
+package ru.airatyunusov.carservice.admin
 
 import android.os.Bundle
 import android.util.Log

@@ -1,4 +1,4 @@
-package ru.airatyunusov.carservice.customer.services
+package ru.airatyunusov.carservice.customer.enroll
 
 import android.view.LayoutInflater
 import android.view.View

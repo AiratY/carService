@@ -1,182 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".token.TokenDetailFragment">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
-        android:id="@+id/titleStartDateTimeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginTop="@dimen/main_margin_top"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:text="@string/text_title_dateTime_TV"
-        android:theme="@style/titleTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include" />
+        <TextView
+            android:id="@+id/titleStartDateTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginTop="@dimen/main_margin_top"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:text="@string/text_title_dateTime_TV"
+            android:theme="@style/titleTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include" />
 
-    <TextView
-        android:id="@+id/startDateTimeTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:theme="@style/valueTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleStartDateTimeTextView"
-        tools:text="@string/text_date_time_TV" />
+        <TextView
+            android:id="@+id/startDateTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:theme="@style/valueTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleStartDateTimeTextView"
+            tools:text="@string/text_date_time_TV" />
 
-    <TextView
-        android:id="@+id/titleBranchTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:text="@string/text_title_branch_TV"
-        android:theme="@style/titleTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startDateTimeTextView" />
+        <TextView
+            android:id="@+id/titleBranchTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:text="@string/text_title_branch_TV"
+            android:theme="@style/titleTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/startDateTimeTextView" />
 
-    <TextView
-        android:id="@+id/branchTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:theme="@style/valueTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleBranchTextView"
-        tools:text="@string/text_branch_TV" />
+        <TextView
+            android:id="@+id/branchTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:theme="@style/valueTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleBranchTextView"
+            tools:text="@string/text_branch_TV" />
 
-    <TextView
-        android:id="@+id/titleEmployeeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:text="@string/text_title_employee_tV"
-        android:theme="@style/titleTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/branchTextView" />
+        <TextView
+            android:id="@+id/titleEmployeeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:text="@string/text_title_employee_tV"
+            android:theme="@style/titleTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/branchTextView" />
 
-    <TextView
-        android:id="@+id/employeeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:theme="@style/valueTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleEmployeeTextView"
-        tools:text="@string/text_employee_TV" />
+        <TextView
+            android:id="@+id/employeeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:theme="@style/valueTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleEmployeeTextView"
+            tools:text="@string/text_employee_TV" />
 
-    <TextView
-        android:id="@+id/titleCarTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:text="@string/text_title_cat_TV"
-        android:theme="@style/titleTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/employeeTextView" />
+        <TextView
+            android:id="@+id/titleCarTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:text="@string/text_title_cat_TV"
+            android:theme="@style/titleTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/employeeTextView" />
 
-    <TextView
-        android:id="@+id/carTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:theme="@style/valueTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleCarTextView"
-        tools:text="@string/text_car_TV" />
+        <TextView
+            android:id="@+id/carTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:theme="@style/valueTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleCarTextView"
+            tools:text="@string/text_car_TV" />
 
-    <TextView
-        android:id="@+id/titleServicesTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:text="@string/text_title_Services_TV"
-        android:theme="@style/titleTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priceTextView" />
+        <TextView
+            android:id="@+id/titleServicesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:text="@string/text_title_Services_TV"
+            android:theme="@style/titleTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceTextView" />
 
-    <TextView
-        android:id="@+id/servicesTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:theme="@style/valueTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleServicesTextView"
-        tools:text="@string/text_services_TV" />
+        <TextView
+            android:id="@+id/servicesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:theme="@style/valueTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleServicesTextView"
+            tools:text="@string/text_services_TV" />
 
-    <Button
-        android:id="@+id/deleteTokenButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/text_delete_token_btn"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/servicesTextView" />
+        <Button
+            android:id="@+id/deleteTokenButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/text_delete_token_btn"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/servicesTextView" />
 
-    <TextView
-        android:id="@+id/titlePriceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:text="@string/text_title_price_tV"
-        android:theme="@style/titleTheme"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/carTextView" />
+        <TextView
+            android:id="@+id/titlePriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:text="@string/text_title_price_tV"
+            android:theme="@style/titleTheme"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/carTextView" />
 
-    <TextView
-        android:id="@+id/priceTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_start_margin"
-        android:layout_marginEnd="@dimen/main_end_margin"
-        android:theme="@style/valueTheme"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/titlePriceTextView"
-        tools:layout_editor_absoluteX="152dp"
-        tools:text="@string/text_price_tV" />
+        <TextView
+            android:id="@+id/priceTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_start_margin"
+            android:layout_marginEnd="@dimen/main_end_margin"
+            android:theme="@style/valueTheme"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/titlePriceTextView"
+            tools:layout_editor_absoluteX="152dp"
+            tools:text="@string/text_price_tV" />
 
-    <ProgressBar
-        android:id="@+id/descTokenProgressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/descTokenProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

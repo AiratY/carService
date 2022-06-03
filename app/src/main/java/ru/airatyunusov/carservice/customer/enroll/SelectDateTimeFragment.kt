@@ -62,6 +62,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
     private var price = 0L
     private var phone = ""
     private var nameCategory = ""
+    private var allHoursComplete = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -256,6 +257,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
                 startRecordDateTime = DateTimeHelper.convertToStringDateTime(token.startRecordDateTime),
                 endRecordDateTime = DateTimeHelper.convertToStringDateTime(token.endRecordDateTime),
                 idEmployee = token.idEmployee,
+                hoursComplete = allHoursComplete.toLong(),
                 price = price,
                 listServices = listServiceModel
             )
@@ -278,8 +280,8 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
 
         if (listEmployee.isNotEmpty()) {
 
-
-            hoursCompleteTemp = getHoursAllServices(listServiceModel)
+            allHoursComplete = getHoursAllServices(listServiceModel)
+            hoursCompleteTemp = allHoursComplete
 
             startWeek = updateStartWeekDateTime(startWeek)
             startWeekCash = startWeek

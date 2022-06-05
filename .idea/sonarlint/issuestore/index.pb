@@ -50,8 +50,6 @@ v
 Fapp/src/main/java/ru/airatyunusov/carservice/model/CategoryServices.kt,7\d\7d9515332aedb0da9c0b9e62febf1e4db9217e2d
 n
 >app/src/main/java/ru/airatyunusov/carservice/model/Customer.kt,b\0\b045f00f5d7417b556d9a5dac629fdf6a748d588
-n
->app/src/main/java/ru/airatyunusov/carservice/model/Employee.kt,2\b\2b6981872cde41829a31bc72941356d32d1753ca
 r
 Bapp/src/main/java/ru/airatyunusov/carservice/model/ServiceModel.kt,2\f\2f5af1bf39386a9d2a3636de21ce1bcf9d0ceb11
 q
@@ -70,8 +68,6 @@ p
 @app/src/main/java/ru/airatyunusov/carservice/model/TokenModel.kt,b\c\bc5e5303b8126bc08a7e53f1b54870566742a66d
 x
 Happ/src/main/java/ru/airatyunusov/carservice/callbacks/EnrollCallBack.kt,e\b\ebc0eb77163e27c62332c564320953b58866d920
-
-Oapp/src/main/java/ru/airatyunusov/carservice/admin/services/ServicesFragment.kt,1\4\1435d9bac2ddc9c93af17fe3027309bd410de3a0
 Š
 Zapp/src/main/java/ru/airatyunusov/carservice/admin/services/ServicesRecyclerViewAdapter.kt,a\1\a13753a631da59a702559eaad284063159052d20
 „
@@ -84,5 +80,3 @@ z
 Japp/src/main/java/ru/airatyunusov/carservice/auth/AuthorizationFragment.kt,5\5\5531c17a3fc54354a20a5b3b04ef6c9a760577bc
 ‡
 Wapp/src/main/java/ru/airatyunusov/carservice/admin/services/CategoryServicesFragment.kt,b\5\b57cc037886f6a06d419c2a30ca04bfc6375545f
-‚
-Rapp/src/main/java/ru/airatyunusov/carservice/admin/branchs/DetailBranchFragment.kt,3\1\3159ec0ad6c9350b4755a708a22f5b03b708558f

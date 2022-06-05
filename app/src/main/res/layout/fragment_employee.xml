@@ -56,30 +56,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lastNameEditText" />
 
-    <!--<Button
-        android:id="@+id/saveEmployeeButton"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/phoneEditText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/branch_mt_8dp"
-        android:layout_marginStart="@dimen/branch_sm_8dp"
-        android:layout_marginEnd="@dimen/branch_em_8dp"
-        android:text="@string/text_save_branch_btn"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        android:autofillHints="name"
+        android:ems="10"
+        android:hint="@string/text_phone_name_branch"
+        android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEmployeeEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/patronymicEditText" />
 
-    <Button
-        android:id="@+id/deleteEmployeeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/branch_sm_8dp"
-        android:layout_marginEnd="@dimen/branch_em_8dp"
-        android:layout_marginTop="@dimen/branch_mt_8dp"
-        android:text="@string/text_delete_branch_btn"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveEmployeeButton" />-->
 
     <EditText
         android:id="@+id/loginEmployeeEditText"
@@ -118,7 +109,7 @@
         android:layout_marginTop="@dimen/main_margin_top"
         android:text="@string/text_title_category_employee"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patronymicEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/phoneEditText" />
 
     <Spinner
         android:id="@+id/spinnerCategoriesServices"
@@ -128,5 +119,31 @@
         android:layout_marginTop="@dimen/main_margin_top"
         android:layout_marginEnd="@dimen/main_end_margin"
         app:layout_constraintTop_toBottomOf="@id/titleCategoryTextView" />
+
+    <TextView
+        android:id="@+id/loginTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        android:theme="@style/valueTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoriesServices" />
+
+    <TextView
+        android:id="@+id/passwordTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        android:theme="@style/valueTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

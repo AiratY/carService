@@ -35,13 +35,19 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
     private var firstNameEditText: EditText? = null
     private var lastNameEditText: EditText? = null
     private var patronymicEditText: EditText? = null
+    private var phoneEditText: EditText? = null
+    private var loginTextView:TextView? = null
+    private var passwordTextView:TextView? = null
     private var childName = ""
     private var spinnerCategoriesServices: Spinner? = null
+
+
 
     private var firstName: String = ""
     private var lastName: String = ""
     private var patronymic: String = ""
     private var category = ""
+    private var phone = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,6 +95,9 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
         spinnerCategoriesServices = view.findViewById(R.id.spinnerCategoriesServices)
         loginEditText = view.findViewById(R.id.loginEmployeeEditText)
         passwordEditText = view.findViewById(R.id.passwordEmployeeEditText)
+        phoneEditText =view.findViewById(R.id.phoneEditText)
+        loginTextView = view.findViewById(R.id.loginTextView)
+        passwordTextView = view.findViewById(R.id.passwordTextView)
 
         arguments?.let {
             branchId = it.getString(BRANCH_ID) ?: ""
@@ -99,6 +108,9 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
             firstNameEditText?.setText(firstName)
             lastNameEditText?.setText(lastName)
             patronymicEditText?.setText(patronymic)
+            phoneEditText?.setText(phone.toString())
+            loginTextView?.text = login
+            passwordTextView?.text = password
             // Todo val убрать впеременную isEmptu сзделать true
             val textNull = "null"
             loginEditText?.setText(textNull)
@@ -121,6 +133,7 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
         firstName = firstNameEditText?.text.toString()
         lastName = lastNameEditText?.text.toString()
         patronymic = patronymicEditText?.text.toString()
+        phone = phoneEditText?.text.toString().toLong()
         val login: String = loginEditText?.text.toString()
         val password: String = passwordEditText?.text.toString()
         category = spinnerCategoriesServices?.selectedItem.toString()
@@ -150,7 +163,7 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
             ?.addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     val id = auth?.currentUser?.uid ?: ""
-                    updateEmployeeInFireBase(id, branchId, firstName, lastName, patronymic, category)
+                    updateEmployeeInFireBase(id, branchId, firstName, lastName, patronymic, category, phone, email, password)
                     val user = User(id = id, role = MainActivity.ROLE_EMPLOYEE, name = firstName)
                     user.saveUser()
                 } else {
@@ -218,7 +231,7 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
         val key = employee?.id
         val branchId = employee?.branchId ?: ""
         key?.let {
-            updateEmployeeInFireBase(it, branchId, firstName, lastName, patronymic, category)
+            updateEmployeeInFireBase(it, branchId, firstName, lastName, patronymic, category, phone)
         }
     }
 
@@ -236,9 +249,16 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
         firstName: String,
         lastName: String,
         patronymic: String,
-        category: String
+        category: String,
+        phone: Long,
+        login: String = "",
+        password: String = ""
     ) {
-        val employee = Employee(key, branchId, firstName, lastName, patronymic, category = category)
+        val employee = Employee(key, branchId, firstName, lastName, patronymic,phone, category = category)
+        if (login.isNotEmpty() || password.isNotEmpty()){
+            employee.login = login
+            employee.password = password
+        }
         val childUpdates = hashMapOf<String, Any>(
             "/$childName/$key" to employee
         )

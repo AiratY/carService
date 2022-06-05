@@ -59,14 +59,13 @@
             android:inputType="phone"
             app:layout_constraintTop_toBottomOf="@+id/addressEditText" />
 
-        <TimePicker
-            android:id="@+id/startTimeTimePicker"
-            android:layout_width="match_parent"
+        <NumberPicker
+            android:id="@+id/startTimePicker"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/main_start_margin"
-            android:layout_marginEnd="@dimen/main_end_margin"
             android:timePickerMode="spinner"
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleStartTimeTextView" />
 
         <TextView
@@ -80,13 +79,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/phoneBranchEditText" />
 
-        <TimePicker
-            android:id="@+id/endTimeTimePicker"
-            android:layout_width="match_parent"
+        <NumberPicker
+            android:id="@+id/endTimePicker"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/main_start_margin"
-            android:layout_marginEnd="@dimen/main_end_margin"
             android:timePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleEndTimeTextView" />
 
         <TextView
@@ -98,7 +97,7 @@
             android:text="@string/text_title_end_time_text_view"
             android:theme="@style/titleTheme"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/startTimeTimePicker" />
+            app:layout_constraintTop_toBottomOf="@+id/startTimePicker" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

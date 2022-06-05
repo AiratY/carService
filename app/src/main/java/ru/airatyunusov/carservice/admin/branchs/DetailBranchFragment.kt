@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TimePicker
+import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
@@ -28,8 +28,8 @@ class DetailBranchFragment : BaseFragment() {
     private var nameBranchEditText: EditText? = null
     private var addressEditText: EditText? = null
     private var phoneBranchEditText: EditText? = null
-    private var startTimeTimePicker: TimePicker? = null
-    private var endTimeTimePicker: TimePicker? = null
+    private var startTimeTimePicker: NumberPicker? = null
+    private var endTimeTimePicker: NumberPicker? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,13 +71,18 @@ class DetailBranchFragment : BaseFragment() {
         nameBranchEditText = view.findViewById(R.id.nameBranchEditText)
         addressEditText = view.findViewById(R.id.addressEditText)
         phoneBranchEditText = view.findViewById(R.id.phoneBranchEditText)
-        startTimeTimePicker = view.findViewById(R.id.startTimeTimePicker)
-        endTimeTimePicker = view.findViewById(R.id.endTimeTimePicker)
+        startTimeTimePicker = view.findViewById(R.id.startTimePicker)
+        endTimeTimePicker = view.findViewById(R.id.endTimePicker)
 
-        startTimeTimePicker?.setIs24HourView(true)
+        /*startTimeTimePicker?.setIs24HourView(true)
         startTimeTimePicker?.minute = 0
         endTimeTimePicker?.setIs24HourView(true)
-        endTimeTimePicker?.minute = 0
+        endTimeTimePicker?.minute = 0*/
+
+        startTimeTimePicker?.minValue = 1
+        startTimeTimePicker?.maxValue = 24
+        endTimeTimePicker?.minValue = 1
+        endTimeTimePicker?.maxValue = 24
 
         arguments?.let {
             branchModel = it.get(BRANCH) as? BranchModel
@@ -88,10 +93,10 @@ class DetailBranchFragment : BaseFragment() {
 
                 val startTime: LocalTime = LocalTime.parse(startTime)
                 val endTime: LocalTime = LocalTime.parse(endTime)
-                startTimeTimePicker?.hour = startTime.hour
-                startTimeTimePicker?.minute = startTime.minute
-                endTimeTimePicker?.hour = endTime.hour
-                endTimeTimePicker?.minute = endTime.minute
+                startTimeTimePicker?.value = startTime.hour
+                //startTimeTimePicker?.minute = startTime.minute
+                endTimeTimePicker?.value = endTime.hour
+                //endTimeTimePicker?.minute = endTime.minute
             }
         }
 
@@ -110,8 +115,8 @@ class DetailBranchFragment : BaseFragment() {
         val address = addressEditText?.text.toString()
         val phone: Long = phoneBranchEditText?.text.toString().toLong()
         val startTime =
-            startTimeTimePicker?.let { LocalTime.of(it.hour, it.minute) }
-        val endTime = endTimeTimePicker?.let { LocalTime.of(it.hour, it.minute) }
+            startTimeTimePicker?.let { LocalTime.of(it.value, 0) }
+        val endTime = endTimeTimePicker?.let { LocalTime.of(it.value, 0) }
 
         if (name.isEmpty() || address.isEmpty() || (phone == 0L)) {
             Toast.makeText(

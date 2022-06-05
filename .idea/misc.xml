@@ -6,7 +6,14 @@
         <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_automobile_1300231.xml" value="0.2203125" />
         <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_baseline_business_24.xml" value="0.2203125" />
         <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_baseline_confirmation_number_24.xml" value="0.2203125" />
+        <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_baseline_engineering_24.xml" value="0.2203125" />
         <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.2203125" />
+        <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_blue_services_24.xml" value="0.13385416666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_icon_branch.xml" value="0.2203125" />
+        <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_man_engineer.xml" value="0.13385416666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_professions_man.xml" value="0.13385416666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/drawable/ic_streamlinehq_car_fix_transportation_48__1_.xml" value="0.2203125" />
+        <entry key="..\:/DevelopApp/app/src/main/res/drawable/rounded_btn.xml" value="0.2203125" />
         <entry key="..\:/DevelopApp/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/DevelopApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
         <entry key="..\:/DevelopApp/app/src/main/res/layout/fragment_add_car.xml" value="0.20416666666666666" />
@@ -33,6 +40,7 @@
         <entry key="..\:/DevelopApp/app/src/main/res/layout/item_token.xml" value="0.33" />
         <entry key="..\:/DevelopApp/app/src/main/res/layout/list_token.xml" value="0.20416666666666666" />
         <entry key="..\:/DevelopApp/app/src/main/res/layout/services_item_on_list.xml" value="0.20416666666666666" />
+        <entry key="..\:/DevelopApp/app/src/main/res/layout/switch_compact.xml" value="0.20416666666666666" />
         <entry key="..\:/DevelopApp/app/src/main/res/layout/token_item_recyler_view.xml" value="0.33" />
         <entry key="..\:/DevelopApp/app/src/main/res/layout/toolbar.xml" value="0.20416666666666666" />
         <entry key="..\:/DevelopApp/app/src/main/res/menu/bottom_menu_admin.xml" value="0.20416666666666666" />

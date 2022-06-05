@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
@@ -31,15 +32,21 @@ open class ListTokenFragment : BaseFragment(), ListTokenCallBack {
     private var messageTextView: TextView? = null
     protected var branchId = ""
 
+    private var listAllToken: List<TokenFirebaseModel> = emptyList()
+    private var listExpectedToken: List<TokenFirebaseModel> = emptyList()
+    private var isShowAllToken = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val tokenRecyclerView: RecyclerView = view.findViewById(R.id.tokenRecyclerView)
         prevWeekBtn = view.findViewById(R.id.prevWeekButton)
         nextWeekBtn = view.findViewById(R.id.nextWeekButton)
-        tokenRecyclerViewAdapter = TokenRecyclerViewAdapter { token -> openDetailToken(token) }
+        tokenRecyclerViewAdapter = TokenRecyclerViewAdapter(requireContext()) { token -> openDetailToken(token) }
         messageTextView = view.findViewById(R.id.messageNullTokenTextView)
         tokenRecyclerView.adapter = tokenRecyclerViewAdapter
+
+        val switch: SwitchCompat = view.findViewById(R.id.switchOldTickets)
 
         startWeek = getDateTimeStartWeek()
         startWeekCash = startWeek
@@ -58,8 +65,36 @@ open class ListTokenFragment : BaseFragment(), ListTokenCallBack {
                 disablePrevBtn()
             }
         }
+
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            isShowAllToken = isChecked
+            if (isChecked) {
+                showAllListToken()
+            } else {
+                showExpectedToken()
+            }
+        }
     }
 
+    /**
+     * Показывает весь список записей
+     * */
+
+    private fun showAllListToken() {
+        tokenRecyclerViewAdapter?.setDateSet(listAllToken)
+    }
+
+    /**
+     * Показывает список только ожидающихся записей
+     * */
+
+    private fun showExpectedToken() {
+        tokenRecyclerViewAdapter?.setDateSet(listExpectedToken)
+    }
+
+    /**
+     * Осуществляет преход на фрагмент для просмтра детального описания записи
+     * */
     private fun openDetailToken(token: TokenFirebaseModel) {
         setFragmentResult(
             MainActivity.SHOW_DETAIL_TOKEN,
@@ -155,7 +190,7 @@ open class ListTokenFragment : BaseFragment(), ListTokenCallBack {
      * Вычисляет дату начала текущей неделя
      * */
 
-    fun getDateTimeStartWeek(): LocalDateTime {
+    private fun getDateTimeStartWeek(): LocalDateTime {
         return LocalDateTime.now().let {
             it.minusDays(it.dayOfWeek.ordinal.toLong()).withHour(0).withMinute(0)
                 .withSecond(0).withNano(0)
@@ -166,7 +201,7 @@ open class ListTokenFragment : BaseFragment(), ListTokenCallBack {
      * Вычисляет дату окончание текущей неделя
      * */
 
-    fun getDateTimeEndWeek(): LocalDateTime {
+    private fun getDateTimeEndWeek(): LocalDateTime {
         return LocalDateTime.now().let { // apply
             val diffDayOfWeek = 6 - it.dayOfWeek.ordinal
             it.plusDays(diffDayOfWeek.toLong()).withHour(23).withMinute(59)
@@ -177,11 +212,31 @@ open class ListTokenFragment : BaseFragment(), ListTokenCallBack {
     override fun setListTokenFirebaseModel(listToken: List<TokenFirebaseModel>) {
         if (listToken.isEmpty()) {
             visibleNullMessage()
+            tokenRecyclerViewAdapter?.setDateSet(listToken)
+            listAllToken = listToken
+            listExpectedToken = listToken
         } else {
             goneNullMessage()
-        }
 
-        tokenRecyclerViewAdapter?.setDateSet(listToken)
+            listAllToken = listToken.sortedByDescending { it.startRecordDateTime }
+
+            val mutListExpectedToken: MutableList<TokenFirebaseModel> = mutableListOf()
+
+            val dateNow = LocalDateTime.now()
+
+            for (token in listAllToken) {
+                if (LocalDateTime.parse(token.endRecordDateTime) > dateNow) {
+                    mutListExpectedToken.add(token)
+                }
+            }
+
+            listExpectedToken = mutListExpectedToken
+            if (isShowAllToken) {
+                showAllListToken()
+            } else {
+                showExpectedToken()
+            }
+        }
     }
 
     companion object {

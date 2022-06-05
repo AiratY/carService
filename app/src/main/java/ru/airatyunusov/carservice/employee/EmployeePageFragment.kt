@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,10 @@ class EmployeePageFragment : BaseFragment(), EmployeePageCallBack {
     private var messageTextView: TextView? = null
     private var phoneTextView: TextView? = null
 
+    private var listAllToken: List<TokenFirebaseModel> = emptyList()
+    private var listExpectedToken: List<TokenFirebaseModel> = emptyList()
+    private var isShowAllToken = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,10 +62,11 @@ class EmployeePageFragment : BaseFragment(), EmployeePageCallBack {
         val tokenRecyclerView: RecyclerView = view.findViewById(R.id.tokenRecyclerView)
         prevWeekBtn = view.findViewById(R.id.prevWeekButton)
         nextWeekBtn = view.findViewById(R.id.nextWeekButton)
-        tokenRecyclerViewAdapter = TokenRecyclerViewAdapter { token -> openDetailToken(token) }
+        tokenRecyclerViewAdapter = TokenRecyclerViewAdapter(requireContext()) { token -> openDetailToken(token) }
         tokenRecyclerView.adapter = tokenRecyclerViewAdapter
         messageTextView = view.findViewById(R.id.messageNullTokenTextView)
         phoneTextView = view.findViewById(R.id.phoneTextView)
+        val switch: SwitchCompat = view.findViewById(R.id.switchOldTickets)
 
         startWeek = getDateTimeStartWeek()
         startWeekCash = startWeek
@@ -84,6 +90,31 @@ class EmployeePageFragment : BaseFragment(), EmployeePageCallBack {
                 disablePrevBtn()
             }
         }
+
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            isShowAllToken = isChecked
+            if (isChecked) {
+                showAllListToken()
+            } else {
+                showExpectedToken()
+            }
+        }
+    }
+
+    /**
+     * Показывает весь список записей
+     * */
+
+    private fun showAllListToken() {
+        tokenRecyclerViewAdapter?.setDateSet(listAllToken)
+    }
+
+    /**
+     * Показывает список только ожидающихся записей
+     * */
+
+    private fun showExpectedToken() {
+        tokenRecyclerViewAdapter?.setDateSet(listExpectedToken)
     }
 
     /**
@@ -225,13 +256,34 @@ class EmployeePageFragment : BaseFragment(), EmployeePageCallBack {
 
     override fun setListTokenFirebaseModel(list: List<TokenFirebaseModel>) {
         goneProgressBar()
+
         if (list.isEmpty()) {
             visibleNullMessage()
+            tokenRecyclerViewAdapter?.setDateSet(list)
+            listAllToken = list
+            listExpectedToken = list
         } else {
             goneNullMessage()
-        }
 
-        tokenRecyclerViewAdapter?.setDateSet(list)
+            listAllToken = list.sortedByDescending { it.startRecordDateTime }
+
+            val mutListExpectedToken: MutableList<TokenFirebaseModel> = mutableListOf()
+
+            val dateNow = LocalDateTime.now()
+
+            for (token in listAllToken) {
+                if (LocalDateTime.parse(token.endRecordDateTime) > dateNow) {
+                    mutListExpectedToken.add(token)
+                }
+            }
+
+            listExpectedToken = mutListExpectedToken
+            if (isShowAllToken) {
+                showAllListToken()
+            } else {
+                showExpectedToken()
+            }
+        }
     }
 
     /**

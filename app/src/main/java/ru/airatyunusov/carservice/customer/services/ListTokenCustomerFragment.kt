@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
@@ -15,14 +16,18 @@ import com.google.firebase.database.ktx.getValue
 import ru.airatyunusov.carservice.BaseFragment
 import ru.airatyunusov.carservice.MainActivity
 import ru.airatyunusov.carservice.R
-import ru.airatyunusov.carservice.token.TokenRecyclerViewAdapter
 import ru.airatyunusov.carservice.callbacks.ListTokenCallBack
 import ru.airatyunusov.carservice.model.TokenFirebaseModel
+import ru.airatyunusov.carservice.token.TokenRecyclerViewAdapter
 import java.lang.ref.WeakReference
+import java.time.LocalDateTime
 
 class ListTokenCustomerFragment : BaseFragment(), ListTokenCallBack {
 
     private var tokenRecyclerViewAdapter: TokenRecyclerViewAdapter? = null
+    private var listAllToken: List<TokenFirebaseModel> = emptyList()
+    private var listExpectedToken: List<TokenFirebaseModel> = emptyList()
+    private var isShowAllToken = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,10 +44,37 @@ class ListTokenCustomerFragment : BaseFragment(), ListTokenCallBack {
         setMenuWithExit()
 
         val recyclerView: RecyclerView = view.findViewById(R.id.listMyTokenRecyclerView)
-        tokenRecyclerViewAdapter = TokenRecyclerViewAdapter { token -> openDetailToken(token) }
+        val switch: SwitchCompat = view.findViewById(R.id.switchOldTickets)
+
+        tokenRecyclerViewAdapter = TokenRecyclerViewAdapter(requireContext()) { token -> openDetailToken(token) }
         recyclerView.adapter = tokenRecyclerViewAdapter
 
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            isShowAllToken = isChecked
+            if (isChecked) {
+                showAllListToken()
+            } else {
+                showExpectedToken()
+            }
+        }
+
         loadListCustomerServices(this)
+    }
+
+    /**
+     * Показывает весь список записей
+     * */
+
+    private fun showAllListToken() {
+        tokenRecyclerViewAdapter?.setDateSet(listAllToken)
+    }
+
+    /**
+     * Показывает список только ожидающихся записей
+     * */
+
+    private fun showExpectedToken() {
+        tokenRecyclerViewAdapter?.setDateSet(listExpectedToken)
     }
 
     /**
@@ -95,6 +127,24 @@ class ListTokenCustomerFragment : BaseFragment(), ListTokenCallBack {
     }
 
     override fun setListTokenFirebaseModel(listToken: List<TokenFirebaseModel>) {
-        tokenRecyclerViewAdapter?.setDateSet(listToken)
+
+        listAllToken = listToken.sortedByDescending { it.startRecordDateTime }
+
+        val mutListExpectedToken: MutableList<TokenFirebaseModel> = mutableListOf()
+
+        val dateNow = LocalDateTime.now()
+
+        for (token in listAllToken) {
+            if (LocalDateTime.parse(token.endRecordDateTime) > dateNow) {
+                mutListExpectedToken.add(token)
+            }
+        }
+
+        listExpectedToken = mutListExpectedToken
+        if (isShowAllToken) {
+            showAllListToken()
+        } else {
+            showExpectedToken()
+        }
     }
 }

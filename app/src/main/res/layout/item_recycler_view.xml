@@ -17,11 +17,12 @@
             android:id="@+id/iconImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginStart="@dimen/small_margin"
             android:contentDescription="@string/desc_icon_image_view"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_engineering_24" />
+            app:srcCompat="@drawable/ic_professions_man" />
 
         <TextView
             android:id="@+id/nameTextView"
@@ -30,7 +31,9 @@
             android:layout_marginStart="@dimen/mt_16dp"
             android:layout_marginTop="@dimen/mt_16dp"
             android:text="@string/text_name_text_view"
+            android:layout_marginEnd="@dimen/main_end_margin"
             android:theme="@style/valueTheme"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iconImageView"
             app:layout_constraintTop_toTopOf="parent" />
 

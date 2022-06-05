@@ -45,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mt_20dp"
+        android:background="@drawable/rounded_btn"
         android:text="@string/text_sign_in_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/main_margin_top"
         android:text="@string/text_registration_btn"
+        android:background="@drawable/rounded_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleOrTextView" />

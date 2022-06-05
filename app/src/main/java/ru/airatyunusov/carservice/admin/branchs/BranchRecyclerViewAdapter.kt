@@ -21,7 +21,7 @@ class BranchRecyclerViewAdapter(val callback: AdminCallBack) : RecyclerView.Adap
         private var currentBranch: BranchModel? = null
 
         init {
-            icon.setImageResource(R.drawable.ic_baseline_business_24)
+            icon.setImageResource(R.drawable.ic_icon_branch)
             view.setOnClickListener {
                 currentBranch?.let {
                     callback.transferOnDetailDescriptionBranchs(it)

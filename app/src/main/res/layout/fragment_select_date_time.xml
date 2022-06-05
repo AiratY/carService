@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_btn"
         android:enabled="false"
         android:text="@string/text_prev_week_btn"
         app:layout_constraintEnd_toStartOf="@+id/nextWeekButton"
@@ -30,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_btn"
         android:text="@string/text_next_week_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/prevWeekButton"
@@ -70,9 +72,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
         android:text="@string/text_select_text_view"
         android:theme="@style/valueTheme"
-        android:layout_marginTop="@dimen/main_margin_top"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listEmployeeSpinner" />
 
@@ -106,9 +108,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/main_start_margin"
         android:layout_marginTop="@dimen/main_margin_top"
-        android:visibility="gone"
         android:text="@string/title_complete_services"
         android:theme="@style/valueTheme"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
@@ -116,9 +118,9 @@
         android:id="@+id/timeCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/main_margin_top"
         android:layout_marginEnd="@dimen/main_end_margin"
         android:theme="@style/valueTheme"
-        android:layout_marginTop="@dimen/main_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
         tools:text="4 д. 3 ч." />

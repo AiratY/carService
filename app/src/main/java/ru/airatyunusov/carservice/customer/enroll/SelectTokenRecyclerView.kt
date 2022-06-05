@@ -1,27 +1,29 @@
 package ru.airatyunusov.carservice.customer.enroll
 
 import android.annotation.SuppressLint
-import android.graphics.Color
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import ru.airatyunusov.carservice.utils.DateTimeHelper
 import ru.airatyunusov.carservice.R
 import ru.airatyunusov.carservice.model.TokenModel
+import ru.airatyunusov.carservice.utils.DateTimeHelper
+import java.lang.ref.WeakReference
 
-class SelectTokenRecyclerView(private val onClick: (TokenModel) -> Unit) :
+class SelectTokenRecyclerView(context: Context, private val onClick: (TokenModel) -> Unit) :
     RecyclerView.Adapter<SelectTokenRecyclerView.ViewHolder>() {
     private var dataset: List<TokenModel> = mutableListOf()
     private var selectTokenPosition: Int = RecyclerView.NO_POSITION
+    private val weakReferenceContext = WeakReference(context)
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val startDateTimeTextView: TextView = view.findViewById(R.id.startDateTimeTextView)
         private val endDateTimeTextView: TextView = view.findViewById(R.id.endDateTimeTextView)
         private var currentToken: TokenModel? = null
-
 
         init {
             view.setOnClickListener {
@@ -36,7 +38,6 @@ class SelectTokenRecyclerView(private val onClick: (TokenModel) -> Unit) :
             } else {
                 view.setBackgroundResource(R.color.white)
             }*/
-
         }
 
         @SuppressLint("ResourceAsColor")
@@ -47,10 +48,25 @@ class SelectTokenRecyclerView(private val onClick: (TokenModel) -> Unit) :
             endDateTimeTextView.text =
                 DateTimeHelper.convertToStringMyPattern(tokenModel.endRecordDateTime)
 
-            val d = if (selectTokenPosition == adapterPosition) Color.GRAY else Color.WHITE
-            (itemView as? CardView)?.setCardBackgroundColor(d)
+            val color = if (selectTokenPosition == adapterPosition) {
+                weakReferenceContext.get()
+                    ?.let {
+                        ContextCompat.getColor(
+                            it,
+                            R.color.light_light_blue
+                        )
+                    }
+            } else {
+                weakReferenceContext.get()
+                    ?.let {
+                        ContextCompat.getColor(
+                            it,
+                            R.color.white
+                        )
+                    }
+            }
+            color?.let { (itemView as? CardView)?.setCardBackgroundColor(it) }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

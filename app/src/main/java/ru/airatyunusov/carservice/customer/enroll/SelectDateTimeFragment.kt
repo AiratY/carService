@@ -91,7 +91,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
 
         listTokenRecyclerView = view.findViewById(R.id.listTokenRecyclerView)
         listTokenRecyclerAdapter =
-            SelectTokenRecyclerView { tokenModel -> setTokenModel(tokenModel) }
+            SelectTokenRecyclerView(requireContext()) { tokenModel -> setTokenModel(tokenModel) }
         listTokenRecyclerView?.adapter = listTokenRecyclerAdapter
 
         messageTextView = view.findViewById(R.id.messageTextView)
@@ -316,7 +316,6 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         }
     }
 
-
     /**
      * Сортировка списка сотрудников на основе их загружености на протяжение двух последних недель
      * */
@@ -331,14 +330,14 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
             mapEmployee[employee.id] = 0L
         }
         for (token in listTokenPrevTwoWeek) {
-            if (mapEmployee.containsKey(token.idEmployee)){
+            if (mapEmployee.containsKey(token.idEmployee)) {
                 val value = mapEmployee[token.idEmployee]
                 value?.let {
                     mapEmployee[token.idEmployee] = value + token.hoursComplete
                 }
             }
         }
-        val sortedMap = mapEmployee.toList().sortedBy { (key,value) -> value}.toMap()
+        val sortedMap = mapEmployee.toList().sortedBy { (key, value) -> value }.toMap()
         for (entry in sortedMap) {
             listEmployee.find { it.id == entry.key }?.let { sortedListEmployee.add(it) }
         }

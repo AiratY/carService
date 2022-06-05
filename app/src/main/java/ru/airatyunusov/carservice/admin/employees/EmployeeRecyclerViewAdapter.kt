@@ -20,7 +20,7 @@ class EmployeeRecyclerViewAdapter(private val onClick: (Employee) -> Unit) : Rec
         private var currentEmployee: Employee? = null
 
         init {
-            icon.setImageResource(R.drawable.ic_baseline_engineering_24)
+            icon.setImageResource(R.drawable.ic_professions_man)
             view.setOnClickListener {
                 currentEmployee?.let {
                     onClick(it)

@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.CarService" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/light_blue</item>
+        <item name="colorPrimaryVariant">@color/light_blue</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/light_purple</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
@@ -30,11 +30,13 @@
 
     <style name="actionTextView">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/teal_200</item>
+        <item name="android:textColor">@color/light_purple</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CardViewTheme">
-        <item name="cardCornerRadius">8dp</item>
+        <item name="cardCornerRadius">32dp</item>
         <item name="cardElevation">8dp</item>
     </style>
+
 </resources>

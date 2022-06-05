@@ -3,7 +3,7 @@
     <string name="text_customer_btn">Клиент</string>
     <string name="text_employee_btn">Сотрудник</string>
     <string name="text_admin_btn">Администратор</string>
-    <string name="text_splash_screen_tv">Автосервисы</string>
+    <string name="text_splash_screen_tv">Автосервисник</string>
     <string name="hint_email_edit_text">Email</string>
     <string name="hint_password_edit_text">Пароль</string>
     <string name="text_sign_in_btn">Войти</string>
@@ -105,4 +105,6 @@
     <string name="text_change_categories">Изменить</string>
     <string name="title_complete_text_view">Выполнение:</string>
     <string name="title_complete_services">Выполнение:</string>
+    <string name="text_btn_enroll">Записаться</string>
+    <string name="show_complete_token">Показать завершённые</string>
 </resources>

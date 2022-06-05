@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="Замена масла"
+        tools:text="Замена масла"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginStart="@dimen/main_start_margin"
         android:theme="@style/valueTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,7 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="10 ч."
+        tools:text="10 ч."
+        android:layout_marginEnd="@dimen/main_end_margin"
         android:theme="@style/valueTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameServiceTextView" />
@@ -30,13 +33,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:theme="@style/valueTheme"
-        android:text="1999 руб."
+        android:layout_marginStart="@dimen/main_start_margin"
+        tools:text="1999 руб."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameServiceTextView" />
     <View
         android:layout_width="match_parent"
-        android:background="@color/design_default_color_primary"
-        android:layout_marginTop="@dimen/main_margin_top"
+        android:background="@color/grey"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginStart="@dimen/main_start_margin"
         app:layout_constraintTop_toBottomOf="@id/priceServiceTextView"
         android:layout_height="1dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

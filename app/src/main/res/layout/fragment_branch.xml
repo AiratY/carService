@@ -19,9 +19,11 @@
         android:layout_height="@dimen/width_icon_branch"
         android:contentDescription="@string/desc_icon_image_view"
         android:visibility="gone"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/include"
-        app:srcCompat="@drawable/ic_baseline_business_24" />
+        app:srcCompat="@drawable/ic_icon_branch" />
 
     <TextView
         android:id="@+id/addressBranchTextView"

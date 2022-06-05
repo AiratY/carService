@@ -36,8 +36,9 @@ class ServicesListRecyclerViewAdapter(private val onClick: (Int) -> Unit) :
         }
 
         fun bind(services: ServiceModel) {
+            servicesCheckBox.isChecked = false
             servicesCheckBox.text = services.name
-            priceTextView.text = services.price.toString() + "руб."
+            priceTextView.text = services.price.toString() + " руб."
         }
     }
 
@@ -58,6 +59,9 @@ class ServicesListRecyclerViewAdapter(private val onClick: (Int) -> Unit) :
 
     fun setDataSet(dataset: List<ServiceModel>) {
         this.dataset = dataset
+        sum = 0
+        onClick(sum)
+        checkedServicesList = mutableListOf()
         notifyDataSetChanged()
     }
 

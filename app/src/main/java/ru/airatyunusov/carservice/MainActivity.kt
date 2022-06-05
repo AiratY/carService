@@ -12,12 +12,12 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.airatyunusov.carservice.admin.AdminFragment
-import ru.airatyunusov.carservice.admin.services.CatalogServicesFragment
+import ru.airatyunusov.carservice.admin.ListTokenAdminFragment
 import ru.airatyunusov.carservice.admin.branchs.BranchFragment
 import ru.airatyunusov.carservice.admin.branchs.DetailBranchFragment
-import ru.airatyunusov.carservice.admin.services.CategoryServicesFragment
 import ru.airatyunusov.carservice.admin.employees.EmployeeFragment
-import ru.airatyunusov.carservice.admin.ListTokenAdminFragment
+import ru.airatyunusov.carservice.admin.services.CatalogServicesFragment
+import ru.airatyunusov.carservice.admin.services.CategoryServicesFragment
 import ru.airatyunusov.carservice.admin.services.ServicesFragment
 import ru.airatyunusov.carservice.auth.AuthorizationFragment
 import ru.airatyunusov.carservice.customer.CustomerFragment

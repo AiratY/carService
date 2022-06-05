@@ -15,9 +15,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import ru.airatyunusov.carservice.BaseFragment
-import ru.airatyunusov.carservice.admin.branchs.BranchRecyclerViewAdapter
 import ru.airatyunusov.carservice.MainActivity
 import ru.airatyunusov.carservice.R
+import ru.airatyunusov.carservice.admin.branchs.BranchRecyclerViewAdapter
 import ru.airatyunusov.carservice.callbacks.AdminCallBack
 import ru.airatyunusov.carservice.model.*
 import java.lang.ref.WeakReference

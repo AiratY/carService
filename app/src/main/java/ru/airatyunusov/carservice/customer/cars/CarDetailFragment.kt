@@ -8,8 +8,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import ru.airatyunusov.carservice.BaseFragment
-import ru.airatyunusov.carservice.customer.CustomerFragment
 import ru.airatyunusov.carservice.R
+import ru.airatyunusov.carservice.customer.CustomerFragment
 import ru.airatyunusov.carservice.model.CarModel
 
 class CarDetailFragment : BaseFragment() {

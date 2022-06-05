@@ -3,8 +3,8 @@ package ru.airatyunusov.carservice.model
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
-import ru.airatyunusov.carservice.utils.FirebaseHelper
 import ru.airatyunusov.carservice.R
+import ru.airatyunusov.carservice.utils.FirebaseHelper
 import java.lang.ref.WeakReference
 
 data class User(

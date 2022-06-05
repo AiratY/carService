@@ -99,7 +99,7 @@ class EmployeeFragment : BaseFragment(), CategoryCallBack {
             firstNameEditText?.setText(firstName)
             lastNameEditText?.setText(lastName)
             patronymicEditText?.setText(patronymic)
-            //Todo val убрать впеременную isEmptu сзделать true
+            // Todo val убрать впеременную isEmptu сзделать true
             val textNull = "null"
             loginEditText?.setText(textNull)
             passwordEditText?.setText(textNull)

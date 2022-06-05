@@ -62,8 +62,6 @@ y
 Iapp/src/main/java/ru/airatyunusov/carservice/customer/CustomerFragment.kt,a\b\aba93f8cae90c20f23f0b9f5fbd2eacab0c5cd54
 t
 Dapp/src/main/java/ru/airatyunusov/carservice/utils/DateTimeHelper.kt,9\d\9d5f124529628c53a2b0a0c5d26754351b64a52f
-j
-:app/src/main/java/ru/airatyunusov/carservice/model/User.kt,4\b\4b0233e78ad9151bac9885ca7753e2933c45f9d6
 l
 <app/src/main/java/ru/airatyunusov/carservice/BaseFragment.kt,b\b\bb2c987c251d7bd86c4387c0e1ff332a5da9bd5e
 t
@@ -72,10 +70,6 @@ p
 @app/src/main/java/ru/airatyunusov/carservice/model/TokenModel.kt,b\c\bc5e5303b8126bc08a7e53f1b54870566742a66d
 x
 Happ/src/main/java/ru/airatyunusov/carservice/callbacks/EnrollCallBack.kt,e\b\ebc0eb77163e27c62332c564320953b58866d920
-
-Oapp/src/main/java/ru/airatyunusov/carservice/customer/cars/CarDetailFragment.kt,5\2\52dfeca9a4dabd75d6c971d15ffa48c4ca124493
-€
-Papp/src/main/java/ru/airatyunusov/carservice/admin/employees/EmployeeFragment.kt,7\a\7aab379c8677edb8b93bb11ca5b470dc5c7d8aa5
 
 Oapp/src/main/java/ru/airatyunusov/carservice/admin/services/ServicesFragment.kt,1\4\1435d9bac2ddc9c93af17fe3027309bd410de3a0
 Š
@@ -86,14 +80,8 @@ x
 Happ/src/main/java/ru/airatyunusov/carservice/model/TokenFirebaseModel.kt,2\e\2e5d0e4df4887a102bc0d232b49676b1865495e9
 ~
 Napp/src/main/java/ru/airatyunusov/carservice/customer/enroll/EnrollFragment.kt,8\5\8564208014a7e40d216e0dc36560bdcb4d2f46ff
-l
-<app/src/main/java/ru/airatyunusov/carservice/MainActivity.kt,0\1\01532d6830471924867a05b9ae5cb0f1ea595df6
 z
 Japp/src/main/java/ru/airatyunusov/carservice/auth/AuthorizationFragment.kt,5\5\5531c17a3fc54354a20a5b3b04ef6c9a760577bc
-
-_app/src/main/java/ru/airatyunusov/carservice/customer/enroll/ServicesListRecyclerViewAdapter.kt,b\f\bfdae6aea61eb4449a7c811e6eff3c1b6c080d55
-s
-Capp/src/main/java/ru/airatyunusov/carservice/admin/AdminFragment.kt,8\c\8c561550fa2b6f1e050fde9c4311443458652944
 ‡
 Wapp/src/main/java/ru/airatyunusov/carservice/admin/services/CategoryServicesFragment.kt,b\5\b57cc037886f6a06d419c2a30ca04bfc6375545f
 ‚

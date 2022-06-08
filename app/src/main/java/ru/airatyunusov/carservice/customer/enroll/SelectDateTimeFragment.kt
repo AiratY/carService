@@ -492,7 +492,7 @@ class SelectDateTimeFragment : BaseFragment(), EnrollCallBack {
         endWeek: LocalDateTime
     ): List<TicketModelTest> {
         val listTicket: MutableList<TicketModelTest> = mutableListOf()
-        val hoursDiff: Int = Duration.between(startWeek, endWeek).toHours().toInt() // неправильно
+        val hoursDiff: Int = Duration.between(startWeek, endWeek).toHours().toInt()
         var i = 0
         while (i < hoursDiff) {
             val daysDiff = i / diffTimeWork

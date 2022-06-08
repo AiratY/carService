@@ -87,7 +87,7 @@ class EnrollFragment : BaseFragment(), EnrollCustomerCallBack {
                     parent?.getItemAtPosition(position) as? BranchModel ?: BranchModel()
 
                 branchAdminId = branch.adminId
-                loadListCategoriesServices(this@EnrollFragment)
+                loadListCategoriesServices()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -131,7 +131,7 @@ class EnrollFragment : BaseFragment(), EnrollCustomerCallBack {
      * Загружает список категорий услуг
      * */
 
-    private fun loadListCategoriesServices(callBack: EnrollFragment) {
+    private fun loadListCategoriesServices() {
         val weakReferenceCallBack = WeakReference(callBack)
         val childName = "categories"
         val adminId = branchAdminId

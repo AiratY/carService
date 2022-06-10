@@ -86,7 +86,8 @@ class ListTokenCustomerFragment : BaseFragment(), ListTokenCallBack {
             MainActivity.SHOW_DETAIL_TOKEN,
             bundleOf(
                 MainActivity.BUNDLE_KEY to true,
-                MainActivity.TOKEN to token
+                MainActivity.TOKEN to token,
+                MainActivity.IS_DELETE_TOKEN to true
             )
         )
     }

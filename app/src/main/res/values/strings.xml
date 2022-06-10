@@ -40,8 +40,8 @@
     <string name="text_hint_patronymic_employee">Отчество</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="text_exit">exit</string>
-    <string name="textedit">edit</string>
+    <string name="text_exit">выход</string>
+    <string name="textedit">изменить</string>
     <string name="text_delete_token_btn">Удалить запись</string>
     <string name="text_services_TV">Замена масла\nЗамена свечей</string>
     <string name="text_title_Services_TV">Услуги:</string>
@@ -83,7 +83,7 @@
     <string name="text_title_start_time">Начало рабочего дня:</string>
     <string name="text_title_end_time_text_view">Окончание рабочего дня:</string>
     <string name="text_menu_save">Сохранить</string>
-    <string name="text_menu_delete">delete</string>
+    <string name="text_menu_delete">удалить</string>
     <string name="text_hint_employee_edit_text">Email</string>
     <string name="text_hint_emplyee_edit_text">Пароль</string>
     <string name="text_item_menu_list_token">Записи</string>

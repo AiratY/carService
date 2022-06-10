@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
@@ -29,7 +28,6 @@ class TokenDetailFragment : BaseFragment(), TokenCallBack {
     private var callBack: WeakReference<TokenCallBack>? = null
 
     private var progressBar: ProgressBar? = null
-    private var deleteTokenButton: Button? = null
 
     private var branchTextView: TextView? = null
     private var employeeTextView: TextView? = null
@@ -60,7 +58,6 @@ class TokenDetailFragment : BaseFragment(), TokenCallBack {
         showButtonBack()
         showButtonBack()
         setListenerArrowBack()
-        setMenuWithExit()
 
         callBack = WeakReference(this)
         dateTimeTextView = view.findViewById(R.id.startDateTimeTextView)
@@ -68,7 +65,6 @@ class TokenDetailFragment : BaseFragment(), TokenCallBack {
         employeeTextView = view.findViewById(R.id.employeeTextView)
         carTextView = view.findViewById(R.id.carTextView)
         servicesTextView = view.findViewById(R.id.servicesTextView)
-        deleteTokenButton = view.findViewById(R.id.deleteTokenButton)
         priceTextView = view.findViewById(R.id.priceTextView)
         progressBar = view.findViewById(R.id.descTokenProgressBar)
 
@@ -98,10 +94,29 @@ class TokenDetailFragment : BaseFragment(), TokenCallBack {
             loadEmployee()
         }
 
-        deleteTokenButton?.setOnClickListener {
-            removeToken()
-            returnBack()
+        if (isDelete) {
+            setMenu(R.menu.menu_delete)
+
+            toolbar?.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.actionExit -> {
+                        signOut()
+                        true
+                    }
+                    R.id.actionDelete -> {
+                        removeToken()
+                        returnBack()
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
+        } else {
+            setMenuWithExit()
         }
+
     }
 
     private fun removeToken() {
@@ -232,10 +247,6 @@ class TokenDetailFragment : BaseFragment(), TokenCallBack {
         servicesTextView?.visibility = View.VISIBLE
         priceTextView?.visibility = View.VISIBLE
         dateTimeTextView?.visibility = View.VISIBLE
-
-        if (isDelete) {
-            deleteTokenButton?.visibility = View.VISIBLE
-        }
     }
 
     /**

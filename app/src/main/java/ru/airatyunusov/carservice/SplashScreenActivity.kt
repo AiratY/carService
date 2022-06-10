@@ -18,17 +18,6 @@ class SplashScreenActivity : AppCompatActivity() {
             finish()
         }, TIME_PAUSE)
 
-        /*findViewById<TextView>(R.id.customerButton).setOnClickListener {
-            startActivityWithBundle(CUSTOMER)
-        }
-
-        findViewById<TextView>(R.id.employeeButton).setOnClickListener {
-            startActivityWithBundle(EMPLOYEE)
-        }
-
-        findViewById<TextView>(R.id.adminButton).setOnClickListener {
-            startActivityWithBundle(ADMIN)
-        }*/
     }
 
     private fun startActivityWithBundle(user: String) {
@@ -39,12 +28,6 @@ class SplashScreenActivity : AppCompatActivity() {
             )
         )
 
-        /*startActivity(
-            Intent(
-                this,
-                MainActivity::class.java
-            ).apply { putExtra(MainActivity.MESSAGE_USER, user) }
-        )*/
     }
     companion object {
 

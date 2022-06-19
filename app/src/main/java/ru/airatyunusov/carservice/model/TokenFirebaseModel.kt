@@ -2,6 +2,7 @@ package ru.airatyunusov.carservice.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import ru.airatyunusov.carservice.utils.DateTimeHelper
 
 data class TokenFirebaseModel(
     var id: String = "",
@@ -49,7 +50,10 @@ data class TokenFirebaseModel(
     }
 
     override fun toString(): String {
-        return "$startRecordDateTime - $endRecordDateTime"
+        val start = DateTimeHelper.convertToLocalDateTime(startRecordDateTime)
+        val end = DateTimeHelper.convertToLocalDateTime(endRecordDateTime)
+
+        return "${DateTimeHelper.convertToStringMyPattern(start)}\n${DateTimeHelper.convertToStringMyPattern(end)}"
     }
 
     companion object CREATOR : Parcelable.Creator<TokenFirebaseModel> {

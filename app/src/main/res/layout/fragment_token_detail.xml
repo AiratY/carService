@@ -139,16 +139,6 @@
             app:layout_constraintTop_toBottomOf="@+id/titleServicesTextView"
             tools:text="@string/text_services_TV" />
 
-        <Button
-            android:id="@+id/deleteTokenButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/text_delete_token_btn"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/servicesTextView" />
 
         <TextView
             android:id="@+id/titlePriceTextView"

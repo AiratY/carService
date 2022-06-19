@@ -31,6 +31,7 @@ import ru.airatyunusov.carservice.token.TokenDetailFragment
 
 class MainActivity : AppCompatActivity() {
     private var bottomNavigationView: BottomNavigationView? = null
+    private var listener = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,37 +43,54 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.user_data_sharedPreference),
             Context.MODE_PRIVATE
         )
-        if (!sharedPreferences.getBoolean(AUTH, false)) {
-            showAuthorizationFragment()
-        } else {
-            val ROLE_KEY = getString(R.string.ROLE_SHARED_PREFERENCE_KEY)
-            val role = sharedPreferences.getString(ROLE_KEY, "")
-            when (role) {
-                ROLE_CUSTOMER -> {
-                    supportFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        add<CustomerFragment>(R.id.fragment_container_view)
-                        addToBackStack(NAME_BACK_STACK)
+
+        if (savedInstanceState == null || !savedInstanceState.getBoolean(FRAGMENT_CREATE)) {
+            if (!sharedPreferences.getBoolean(AUTH, false)) {
+                showAuthorizationFragment()
+            } else {
+                val ROLE_KEY = getString(R.string.ROLE_SHARED_PREFERENCE_KEY)
+                val role = sharedPreferences.getString(ROLE_KEY, "")
+                when (role) {
+                    ROLE_CUSTOMER -> {
+                        supportFragmentManager.commit {
+                            setReorderingAllowed(true)
+                            add<CustomerFragment>(R.id.fragment_container_view)
+                            addToBackStack(NAME_BACK_STACK)
+                        }
+                        setCustomerListener()
+                        listener = ROLE_CUSTOMER
                     }
+                    ROLE_EMPLOYEE -> {
+                        supportFragmentManager.commit {
+                            setReorderingAllowed(true)
+                            add<EmployeePageFragment>(R.id.fragment_container_view)
+                            addToBackStack(NAME_BACK_STACK)
+                        }
+                    }
+                    ROLE_ADMIN -> {
+                        supportFragmentManager.commit {
+                            setReorderingAllowed(true)
+                            add<AdminFragment>(R.id.fragment_container_view)
+                            addToBackStack(NAME_BACK_STACK)
+                        }
+                        setAdminListener()
+                        listener = ROLE_ADMIN
+                    }
+                    else -> {
+                        showAuthorizationFragment()
+                    }
+                }
+            }
+        } else {
+            val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view)
+            fragment?.let { checkFragmentInBottomBar(it) }
+            listener = savedInstanceState.getString(LISTENER, "")
+            when (listener) {
+                ROLE_CUSTOMER -> {
                     setCustomerListener()
                 }
-                ROLE_EMPLOYEE -> {
-                    supportFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        add<EmployeePageFragment>(R.id.fragment_container_view)
-                        addToBackStack(NAME_BACK_STACK)
-                    }
-                }
                 ROLE_ADMIN -> {
-                    supportFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        add<AdminFragment>(R.id.fragment_container_view)
-                        addToBackStack(NAME_BACK_STACK)
-                    }
                     setAdminListener()
-                }
-                else -> {
-                    showAuthorizationFragment()
                 }
             }
         }
@@ -108,6 +126,7 @@ class MainActivity : AppCompatActivity() {
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 replaceFragment(AdminFragment())
                 setAdminListener()
+                listener = ROLE_ADMIN
             }
         }
 
@@ -170,6 +189,7 @@ class MainActivity : AppCompatActivity() {
         ) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 replaceFragment(CustomerFragment())
+                listener = ROLE_CUSTOMER
                 setCustomerListener()
             }
         }
@@ -201,7 +221,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        supportFragmentManager.setFragmentResultListener(SHOW_ADD_CATEGORY_SERVICE, this) { _, bundle ->
+        supportFragmentManager.setFragmentResultListener(
+            SHOW_ADD_CATEGORY_SERVICE,
+            this
+        ) { _, bundle ->
             if (bundle.getBoolean(BUNDLE_KEY)) {
                 val categoryServices = bundle.get(CATEGORY) as? CategoryServices
                 if (categoryServices == null) {
@@ -211,6 +234,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(FRAGMENT_CREATE, true)
+        outState.putString(LISTENER, listener)
     }
 
     private fun showAuthorizationFragment() {
@@ -285,6 +314,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.profile -> {
                     replaceFragment(CustomerFragment())
+                    listener = ROLE_CUSTOMER
                     true
                 }
                 R.id.listToken -> {
@@ -309,6 +339,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.profile -> {
                     replaceFragment(AdminFragment())
+                    listener = ROLE_ADMIN
                     true
                 }
                 R.id.listToken -> {
@@ -359,5 +390,7 @@ class MainActivity : AppCompatActivity() {
         private const val ROLE_CUSTOMER = "Клиент"
         const val ROLE_EMPLOYEE = "Сотрудник"
         private const val ROLE_ADMIN = "Администратор"
+        private const val FRAGMENT_CREATE = "fragment_create"
+        private const val LISTENER = "listener"
     }
 }

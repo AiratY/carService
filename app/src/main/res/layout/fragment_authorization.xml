@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".auth.AuthorizationFragment">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/loginEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:autofillHints="emailAddress"
+        android:ems="10"
+        android:hint="@string/hint_email_edit_text"
+        android:inputType="textEmailAddress"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/include"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:autofillHints="password"
+        android:ems="10"
+        android:hint="@string/hint_password_edit_text"
+        android:inputType="textPassword"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/loginEditText" />
+
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mt_20dp"
+        android:background="@drawable/rounded_btn"
+        android:text="@string/text_sign_in_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phoneEditText" />
+
+    <Button
+        android:id="@+id/createUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:text="@string/text_registration_btn"
+        android:background="@drawable/rounded_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleOrTextView" />
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:autofillHints="name"
+        android:ems="10"
+        android:inputType="text"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerRole"
+        tools:hint="@string/text_hint_name_ed_auth" />
+
+    <EditText
+        android:id="@+id/phoneEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:autofillHints="phone"
+        android:ems="10"
+        android:hint="@string/text_title_phone_TV"
+        android:inputType="phone"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+
+    <TextView
+        android:id="@+id/titleOrTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:text="@string/text_title_or_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInButton" />
+
+    <Spinner
+        android:id="@+id/spinnerRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

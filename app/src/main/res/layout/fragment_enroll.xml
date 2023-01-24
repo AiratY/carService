@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".customer.enroll.EnrollFragment">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleSelectCarTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_end_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:text="@string/text_title_select_car_title"
+        android:theme="@style/valueTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include" />
+
+    <Spinner
+        android:id="@+id/carSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_end_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        app:layout_constraintTop_toBottomOf="@id/titleSelectCarTextView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/servicesListRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/main_margin_top"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleSelectServicesTextView" />
+
+    <Spinner
+        android:id="@+id/branchSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_end_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        app:layout_constraintTop_toBottomOf="@id/titleSelectBranchTextView" />
+
+    <TextView
+        android:id="@+id/sumPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/valueTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoriesServices"
+        tools:text="Итого: 0 руб." />
+
+    <TextView
+        android:id="@+id/titleSelectBranchTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:text="@string/text_title_select_branch"
+        android:theme="@style/valueTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/carSpinner" />
+
+    <TextView
+        android:id="@+id/titleSelectServicesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:text="@string/text_title_select_service_text_view"
+        android:theme="@style/valueTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoriesServices" />
+
+    <TextView
+        android:id="@+id/selectCategoriesServicesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:text="@string/text_title_select_category"
+        android:theme="@style/valueTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/branchSpinner" />
+
+    <Spinner
+        android:id="@+id/spinnerCategoriesServices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        app:layout_constraintTop_toBottomOf="@id/selectCategoriesServicesTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

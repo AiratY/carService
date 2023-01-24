@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.ListTokenAdminFragment">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleBranchTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:text="@string/text_title_branch_text_view"
+        android:theme="@style/valueTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <Spinner
+        android:id="@+id/spinnerListToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        app:layout_constraintTop_toBottomOf="@+id/titleBranchTextView" />
+
+    <include
+        android:id="@+id/includeLisToken"
+        layout="@layout/list_token"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/height_bottom_bar"
+        android:layout_marginTop="@dimen/main_margin_top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchOldTickets" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchOldTickets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:text="@string/show_complete_token"
+        android:theme="@style/titleTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerListToken" />
+</androidx.constraintlayout.widget.ConstraintLayout>

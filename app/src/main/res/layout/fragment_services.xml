@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.services.ServicesFragment">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nameServiceEditText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleNameTextView" />
+
+    <TextView
+        android:id="@+id/titleCategoryServiceTextView"
+        android:text="@string/text_title_category_services"
+        android:theme="@style/titleTheme"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/nameServiceEditText" />
+
+    <Spinner
+        android:id="@+id/spinnerCategoriesServices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        app:layout_constraintTop_toBottomOf="@id/titleCategoryServiceTextView" />
+
+    <NumberPicker
+        android:id="@+id/hoursServiceNumberPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleCountHoursTextView" />
+
+
+    <TextView
+        android:id="@+id/titleCountHoursTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="16dp"
+        android:text="@string/text_title_hours_service_TV"
+        android:theme="@style/titleTheme"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoriesServices" />
+
+    <TextView
+        android:id="@+id/titleNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        android:text="@string/text_title_name_service_TV"
+        android:theme="@style/titleTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include" />
+
+    <TextView
+        android:id="@+id/priceServiceTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:text="@string/text_title_price_service"
+        android:theme="@style/titleTheme"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hoursServiceNumberPicker" />
+
+    <EditText
+        android:id="@+id/priceServiceEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:layout_marginTop="@dimen/main_margin_top"
+        android:layout_marginEnd="@dimen/main_end_margin"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceServiceTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

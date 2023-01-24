@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/nameServiceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        tools:text="Замена масла"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginStart="@dimen/main_start_margin"
+        android:theme="@style/valueTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/hoursServiceTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="10 ч."
+        android:layout_marginEnd="@dimen/main_end_margin"
+        android:theme="@style/valueTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameServiceTextView" />
+
+    <TextView
+        android:id="@+id/priceServiceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/valueTheme"
+        android:layout_marginStart="@dimen/main_start_margin"
+        tools:text="1999 руб."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameServiceTextView" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/grey"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginStart="@dimen/main_start_margin"
+        app:layout_constraintTop_toBottomOf="@id/priceServiceTextView"
+        android:layout_height="1dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mb_button_splash_screen">25dp</dimen>
+    <dimen name="ms_splash_btn">40dp</dimen>
+    <dimen name="me_splash_btn">40dp</dimen>
+    <dimen name="mb_admin_btn">50dp</dimen>
+    <dimen name="width_icon_splash_screen">150dp</dimen>
+    <dimen name="main_start_margin">16dp</dimen>
+    <dimen name="main_end_margin">16dp</dimen>
+    <dimen name="main_margin_top">16dp</dimen>
+    <dimen name="mt_16dp">16dp</dimen>
+    <dimen name="width_icon_user">120dp</dimen>
+    <dimen name="corner_radius_8dp">8dp</dimen>
+    <dimen name="card_elevation_8dp">8dp</dimen>
+    <dimen name="mt_20dp">20dp</dimen>
+    <dimen name="width_icon_branch">100dp</dimen>
+    <dimen name="width_icon_car">150dp</dimen>
+    <dimen name="height_icon_profile_image_view">200dp</dimen>
+    <dimen name="height_bottom_bar">60dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+</resources>
